@@ -1,0 +1,114 @@
+{include 'header.latte'}
+<script>
+   window.addEventListener("load", () => {
+       const preloader = document.getElementById("preloader");
+       const loadingMessage = document.getElementById("loading-message");
+       clearTimeout(showMessageTimeout);
+       preloader.style.transition = "opacity 0.5s ease";
+       preloader.style.opacity = "0";
+       setTimeout(() => {
+           preloader.style.display = "none";
+       }, 500);
+   });
+   const showMessageTimeout = setTimeout(() => {
+       const loadingMessage = document.getElementById("loading-message");
+       loadingMessage.style.opacity = "1";
+   }, 10000);
+</script>
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+   <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading"></div>
+   <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>
+{include 'sidebar.latte'}
+<div class="w-full lg:ps-64">
+   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <ol class="flex items-center whitespace-nowrap">
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="{$ROOT_URL}learn">
+            Learn
+            </a>
+            <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="m9 18 6-6-6-6"></path>
+            </svg>
+         </li>
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="#">
+               Math
+               <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6"></path>
+               </svg>
+            </a>
+         </li>
+         <li class="inline-flex items-center text-sm font-semibold text-gray-800 truncate" aria-current="page">
+            {$name}
+         </li>
+      </ol>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+         <div class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex flex-auto flex-col p-4 md:p-5">
+               <h1 class="text-2xl">Sorry, incorrect...</h1>
+               <p class="text-sm my-4 text-gray-600">The correct answer is:</p>
+               <div class="grid max-w-xl sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-4">
+                  <button disabled type="button" class="py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                  ones place
+                  </button>
+                  <button type="button" class="cursor-default py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-green-500 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                  tens place
+                  </button>
+                  <button disabled type="button" class="py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                  hundreds place
+                  </button>
+                  <button disabled type="button" class="py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+                  thousands place
+                  </button>
+               </div>
+               <div class="grid max-w-xl sm:grid-cols-1 text-center items-center justify-center mt-4 lg:grid-cols-1 gap-2 sm:gap-4">
+                  <button type="button" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-white dark:text-neutral-800">
+                  Got it
+                  </button>
+               </div>
+            </div>
+         </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-6 sm:gap-6">
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+                <p class="text-4xl font-bold text-gray-800">0</p>
+                <p class="mt-2 text-sm text-gray-800">
+                Questions answered
+                </p>
+            </div>
+        </div>
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex text-center flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <p class="text-md font-bold text-gray-800">0hr. 54min. 59s.</p>
+            <p class="mt-2 text-sm text-gray-800">
+                Time elapsed
+            </p>
+            </div>
+        </div>
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex text-center flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <p class="text-md font-bold text-gray-800">0 / 100</p>
+            <p class="mt-2 text-sm text-gray-800">
+                Score
+            </p>
+            </div>
+        </div>
+      </div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+      <div class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <h1 class="text-2xl">Explanation</h1>
+               <p class="text-md my-4">It can be helpful to use a place-value chart.</p>
+               <p class="text-md my-4">The 6 is in the <span class="font-bold">hundreds place.</span></p>
+               <button type="button" class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border transition border-transparent bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
+                  Got it
+               </button>
+            </div>
+      </div>
+      </div>
+   </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
+{include 'footer.latte'}

@@ -1,0 +1,73 @@
+{include 'header.latte'}
+<div class="bg-white">
+  <div class=" px-6 pt-14 lg:px-8">
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div class="border rounded-xl p-10 ">
+            <div class="text-center mb-8">
+                <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
+                <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
+            </div>
+            <div class="flex items-center justify-center">
+            <img class="inline-block size-16 rounded-full" src="{$picture}" alt="Avatar">
+            </div>
+            <div class="flex-none text-center mt-4"><p>{$fullname}</p></div>
+            <div id="message" class="text-center mt-4"></div>
+<div class="flex items-center justify-center">
+    <div class="w-full mr-4">
+        <label for="first-name" class="block text-sm font-medium mb-2">First name <span class="text-red-500">*</span></label>
+        <input type="text" id="first-name" class="py-2.5 px-4 block w-full border-gray-200 shadow-sm outline-none focus:border-green-500 transition rounded-xl text-sm" placeholder="First name">
+    </div>
+    <div class="w-full">
+        <label for="last-name" class="block text-sm font-medium mb-2">Last name <span class="text-red-500">*</span></label>
+        <input type="text" id="last-name" class="py-2.5 px-4 block w-full border-gray-200 shadow-sm outline-none focus:border-green-500 transition rounded-xl text-sm" placeholder="Last name">
+    </div>
+</div>
+<div class="flex items-center justify-center mt-8">
+    <div class="w-full">
+        <label for="token" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
+        <input type="text" id="token" class="py-2.5 px-4 block w-full border-gray-200 shadow-sm outline-none focus:border-green-500 transition rounded-xl text-sm" placeholder="e.g. MyGreatTeacher">
+    </div>
+</div>
+<button id="submit-btn" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600">
+    Save
+</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+
+{include 'footer.latte'}
+<script n:syntax=off>
+document.getElementById('submit-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const firstName = document.getElementById('first-name').value;
+    const lastName = document.getElementById('last-name').value;
+    const token = document.getElementById('token').value;
+
+    fetch('/api/save-profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ firstName, lastName, token })
+    })
+    .then(response => response.json())
+    .then(data => {
+        const messageDiv = document.getElementById('message');
+        if (data.success) {
+            messageDiv.innerHTML = `<p class="text-green-500">${data.message}</p>`;
+            setTimeout(() => {
+                window.location.href = '/learn';
+            }, 2000);
+        } else {
+            messageDiv.innerHTML = `<p class="text-red-500">${data.message}</p>`;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>

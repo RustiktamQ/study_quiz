@@ -1,0 +1,84 @@
+{include '../header.latte'}
+<div class="bg-white">
+  <div class="px-6 pt-14 lg:px-8">
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+      <div class="border rounded-xl p-10">
+        <div class="text-center">
+          <h2 class="text-2xl font-semibold">{$lang['teacher_reg']}</h2>
+          <form id="registrationForm" class="mt-4">
+            <input type="text" id="firstname" placeholder="{$lang['fname']}" class="block w-full p-2 border rounded mt-2" required>
+            <input type="text" id="lastname" placeholder="{$lang['lname']}" class="block w-full p-2 border rounded mt-2" required>
+            <input type="email" id="email" placeholder="{$lang['email']}" class="block w-full p-2 border rounded mt-2" required>
+            <input type="password" id="password" placeholder="{$lang['password']}" class="block w-full p-2 border rounded mt-2" required>
+            <button type="submit" class="mt-4 px-6 py-2 bg-green-500 text-white rounded">{$lang['treg']}</button>
+          </form>
+
+          <h2 class="text-2xl font-semibold mt-8">{$lang['teacher_login']}</h2>
+          <form id="loginForm" class="mt-4">
+            <input type="email" id="loginEmail" placeholder="{$lang['email']}" class="block w-full p-2 border rounded mt-2" required>
+            <input type="password" id="loginPassword" placeholder="{$lang['password']}" class="block w-full p-2 border rounded mt-2" required>
+            <button type="submit" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded">{$lang['tlogin']}</button>
+          </form>
+
+          <div id="message" class="mt-4 text-red-500"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const data = {
+        firstname: document.getElementById('firstname').value,
+        lastname: document.getElementById('lastname').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+
+    fetch('/api/register-teacher', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('message').innerText = data.message;
+        if (data.success) {
+            document.getElementById('message').classList.remove('text-red-500');
+            document.getElementById('message').classList.add('text-green-500');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const data = {
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPassword').value
+    };
+
+    fetch('/api/login-teacher', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('message').innerText = data.message;
+        if (data.success) {
+            document.getElementById('message').classList.remove('text-red-500');
+            document.getElementById('message').classList.add('text-green-500');
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 2000);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+{include '../footer.latte'}
