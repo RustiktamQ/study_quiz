@@ -1,0 +1,103 @@
+{include 'header.latte'}
+<script>
+   window.addEventListener("load", () => {
+       const preloader = document.getElementById("preloader");
+       const loadingMessage = document.getElementById("loading-message");
+       clearTimeout(showMessageTimeout);
+       preloader.style.transition = "opacity 0.5s ease";
+       preloader.style.opacity = "0";
+       setTimeout(() => {
+           preloader.style.display = "none";
+       }, 500);
+   });
+   const showMessageTimeout = setTimeout(() => {
+       const loadingMessage = document.getElementById("loading-message");
+       loadingMessage.style.opacity = "1";
+   }, 10000);
+</script>
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+   <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading"></div>
+   <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>
+{include 'sidebar.latte'}
+<div class="w-full lg:ps-64">
+   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <ol class="flex items-center whitespace-nowrap">
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="{$ROOT_URL}learn">
+            Learn
+            </a>
+            <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="m9 18 6-6-6-6"></path>
+            </svg>
+         </li>
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="#">
+               Math
+               <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6"></path>
+               </svg>
+            </a>
+         </li>
+         <li class="inline-flex items-center text-sm font-semibold text-gray-800 truncate" aria-current="page">
+            {$name}
+         </li>
+      </ol>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+         <div class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex flex-auto flex-col p-4 md:p-5">
+               <h1 class="text-2xl">Quiz has been completed!</h1>
+            </div>
+         </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-6 sm:gap-6">
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+                <p id="answered" class="text-4xl font-bold text-gray-800">0</p>
+                <p class="mt-2 text-sm text-gray-800">
+                Questions answered
+                </p>
+            </div>
+        </div>
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex text-center flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <p id="time" class="text-md font-bold text-gray-800">0hr. 0min. 0s.</p>
+            <p class="mt-2 text-sm text-gray-800">
+                Time elapsed
+            </p>
+            </div>
+        </div>
+        <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="flex text-center flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <p id="score" class="text-md font-bold text-gray-800">100 / 100</p>
+            <p class="mt-2 text-sm text-gray-800">
+                Score
+            </p>
+            </div>
+        </div>
+      </div>
+      </div>
+   </div>
+</div>
+{include 'footer.latte'}
+<script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
+<script  n:syntax=off>
+function getQuizId() {
+    const currentUrl = window.location.pathname;
+    const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    return quizId;
+}
+
+function formatTime(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs}hr. ${mins}min. ${secs}s.`;
+}
+
+const quizId = getQuizId();
+const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
+const timeElapsed = JSON.parse(localStorage.getItem(`timerSec-${quizId}`), true);
+document.getElementById('time').innerText = formatTime(timeElapsed);
+document.getElementById('score').innerText = `${quizData.score} / 100`;
+document.getElementById('answered').innerText = quizData.answered;
+</script>

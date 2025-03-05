@@ -1,6 +1,4 @@
 class ApiController {
-    isStarted = false
-
     async startQuiz(student_id, quiz_id) {
         try {
             const response = await fetch(`${window.location.origin}/quiz/start`, {
@@ -15,22 +13,16 @@ class ApiController {
             });
     
             if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status}`);
+                throw new Error(`Error: ${response.status}`);
             }
     
             return await response.json();
         } catch (error) {
-            console.error("Error on quiz start:", error);
-            return null;
+            return error.message;;
         }
     }
 
-    async answerQuestion(student_id, quiz_id, answer) {
-        if (!this.isStarted) {
-            this.startQuiz(student_id, quiz_id);
-            this.isStarted = false
-        }
-
+    async answerQuestion(student_id, quiz_id, answer, question_id) {
         try {
             const response = await fetch(`${window.location.origin}/quiz/answer`, {
                 method: "POST",
@@ -41,18 +33,41 @@ class ApiController {
                     student_id,
                     quiz_id,
                     answer,
+                    question_id,
                     acknowledged: false
                 })
             });
     
             if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status}`);
+                throw new Error(`Error: ${response.status}`);
             }
     
             return await response.json();
         } catch (error) {
-            console.error("Error on quiz answer:", error);
-            return null;
+            return error.message;
+        }
+    }
+
+    async getNextQuestion(user_id, quiz_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/getNextQuestion`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    quiz_id
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
         }
     }
 }

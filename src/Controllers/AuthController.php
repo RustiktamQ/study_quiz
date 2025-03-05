@@ -14,7 +14,7 @@ class AuthController extends BaseController {
     }
 
     private function deleteCookie($name) {
-        setcookie($name, '', time() - 604800, "/"); // Удаляем cookie
+        setcookie($name, '', time() - 604800, "/");
     }
 
     public function showRegister()
@@ -168,42 +168,42 @@ class AuthController extends BaseController {
             exit;
         }
 
-        $client = new Google_Client();
-        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
-        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
-        $client->addScope('email');
+        // $client = new Google_Client();
+        // $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        // $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        // $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        // $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+        // $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        // $client->addScope('email');
 
-        if (isset($_GET['code'])) {
-            $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
-            $client->setAccessToken($accessToken);
-            $oauth2 = new \Google_Service_Oauth2($client);
-            $userInfo = $oauth2->userinfo->get();
-            $user = R::findOne('users', 'google_id = ?', [$userInfo->id]);
+        // if (isset($_GET['code'])) {
+        //     $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+        //     $client->setAccessToken($accessToken);
+        //     $oauth2 = new \Google_Service_Oauth2($client);
+        //     $userInfo = $oauth2->userinfo->get();
+        //     $user = R::findOne('users', 'google_id = ?', [$userInfo->id]);
 
-            if (!$user) {
-                $user = R::dispense('users');
-                $user->google_id = $userInfo->id;
-                $user->name = $userInfo->email;
-                $user->email = $userInfo->email;
-                $user->picture = $userInfo->picture;
-                $user->created_at = date('Y-m-d H:i:s');
-                R::store($user);
-            }
+        //     if (!$user) {
+        //         $user = R::dispense('users');
+        //         $user->google_id = $userInfo->id;
+        //         $user->name = $userInfo->email;
+        //         $user->email = $userInfo->email;
+        //         $user->picture = $userInfo->picture;
+        //         $user->created_at = date('Y-m-d H:i:s');
+        //         R::store($user);
+        //     }
 
             $userData = [
-                'id' => $user->id,
-                'google_id' => $user->google_id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'picture' => $user->picture
+                'id' => '21',
+                'google_id' => '114869489688930855296',
+                'name' => 'qwe w',
+                'email' => 'rramilperm@gmail.com',
+                'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c'
             ];
-            $this->setCookie('user', json_encode($userData), time() + 604800); // 1 hour cookie
+            $this->setCookie('user', json_encode($userData), time() + 604800);
             header('Location: /learn');
             exit;
-        }
+        //}
 
         header('Location: ' . $client->createAuthUrl());
         exit;

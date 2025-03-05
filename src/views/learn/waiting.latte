@@ -22,7 +22,8 @@
     </div>
   </div>
 </div>
-
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script>
 document.getElementById('checkStatusBtn').addEventListener('click', function() {
     fetch('/api/check-token-status', {
@@ -35,17 +36,50 @@ document.getElementById('checkStatusBtn').addEventListener('click', function() {
     .then(data => {
         const statusMessage = document.getElementById('statusMessage');
         if (data.confirmed) {
-            statusMessage.innerHTML = `<p class="text-green-500">Your token has been confirmed! Redirecting...</p>`;
+            Toastify({
+              text: "Your token has been confirmed! Redirecting...",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+                  },
+            }).showToast();
             setTimeout(() => {
                 window.location.href = '/learn';
             }, 2000);
         } else {
-            statusMessage.innerHTML = `<p class="text-red-500">Your token is still pending. Please try again later.</p>`;
+            Toastify({
+              text: "Your token is still pending. Please try again later.",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right,rgb(62, 197, 197),rgb(61, 105, 201))",
+                  },
+            }).showToast();
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        document.getElementById('statusMessage').innerHTML = `<p class="text-red-500">An error occurred. Please try again later.</p>`;
+        Toastify({
+          text: "An error occurred. Please try again later.",
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          stopOnFocus: true,
+          style: {
+                  background: "linear-gradient(to right,rgb(179, 0, 0),rgb(201, 61, 61))",
+              },
+        }).showToast();
     });
 });
 </script>

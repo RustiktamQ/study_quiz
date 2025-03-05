@@ -47,18 +47,25 @@ class APIController extends BaseController {
             $currentQuestionId = $progress->current_question;
         } else {
             $progress = R::dispense('progress');
+            $startQuestion = R::findOne('questions_quizzes', 'quiz_id = ?', [$quizId]);
+            if (!$startQuestion) {
+                http_response_code(404);
+                echo json_encode(['error' => 'No questions found for this quiz']);
+                return;
+            }
             $progress->student_id = $studentId;
             $progress->quiz_id = $quizId;
-            $progress->current_question = 1;
+            $progress->current_question = $startQuestion->question_id;
             $progress->score = 0;
             $progress->completed = 0;
             $progress->start_time = date('Y-m-d H:i:s');
             R::store($progress);
-            $currentQuestionId = 1;
+            $currentQuestionId = $startQuestion->question_id;
         }
     
-        // Загружаем первый вопрос
-        $question = R::findOne('questions', 'quiz_id = ? AND id = ?', [$quizId, $currentQuestionId]);
+        $question = R::findOne('questions', 'id = ?', [$currentQuestionId]);
+        $query = "SELECT name FROM quizzes JOIN `questions_quizzes` ON quizzes.id = quiz_id WHERE question_id = $currentQuestionId";
+        $quizTitle = R::getRow($query);
     
         if (!$question) {
             http_response_code(404);
@@ -72,8 +79,8 @@ class APIController extends BaseController {
             'time' => strtotime($progress->start_time),
             'question' => [
                 'id' => $question->id,
-                'title' => $question->question_text,
-                'content' => $question->content,
+                'title' => $quizTitle['name'],
+                'content' => $question->question_text,
                 'answers' => json_decode($question->options, true)
             ]
         ]);
@@ -97,57 +104,51 @@ class APIController extends BaseController {
         $answer = $params['answer'];
         $acknowledged = $params['acknowledged'];
 
-        $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = ?', [$studentId, $quizId, 0]);
+        $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ?', [$studentId, $quizId]);
 
         if (!$progress) {
-            http_response_code(400);
+            http_response_code(404);
             echo json_encode(['error' => 'No active quiz found for this student']);
+            return;
+        } else if ($progress->completed) {
+            http_response_code(409);
+            echo json_encode(['error' => 'This quiz has been completed']);
             return;
         }
 
-        $question = R::findOne('questions', 'id = ? AND quiz_id = ?', [$questionId, $quizId]);
+        $question = R::findOne('questions', 'id = ?', [$questionId]);
 
         if (!$question) {
-            http_response_code(400);
+            http_response_code(404);
             echo json_encode(['error' => 'Invalid question']);
             return;
         }
 
-        // Если ответ неверный
         $isCorrect = $answer === $question->correct_answer;
 
-        // Если ответ неверный, проверяем, был ли подтвержден показ объяснения
         if (!$isCorrect && !$acknowledged) {
-            // Возвращаем объяснение
             echo json_encode([
                 'correct_answer' => $question->correct_answer,
                 'explanation' => $question->explanation,
-                'next_step' => 'acknowledge'
+                'next_step' => 'acknowledge',
+                'status' => false
             ]);
             return;
         }
 
-        // Если пользователь подтвердил объяснение или ответ правильный
         $newScore = $progress->score;
         if ($isCorrect) {
-            $newScore = $this->calculateScore($progress->score, true);
-        } else {
-            $newScore = $this->calculateScore($progress->score, false);
+            $newScore = $this->calculateScore($quizId, $progress->score);
         }
-
+        
         $progress->score = $newScore;
-        $progress->current_question++;
 
-        // Проверяем, не набрал ли студент 100 очков
-        if ($progress->score >= 100) {
+        $questionId = $progress->current_question;
+        if ($questionId != $this->getLastQuestionId($quizId)) {
+            $progress->current_question = $this->getNextQuestionId($quizId, $progress->current_question);
+            $progress->answered++;
+        } else {
             $progress->completed = 1;
-        }
-
-        // Если студент набрал меньше 100 очков, перемешиваем вопросы и продолжаем
-        if ($progress->score < 100 && $progress->current_question > $this->getTotalQuestions($quizId)) {
-            // Перемешиваем вопросы и начинаем с первого
-            $progress->current_question = 1;
-            $this->reshuffleQuestions($quizId);
         }
 
         R::store($progress);
@@ -155,48 +156,122 @@ class APIController extends BaseController {
         echo json_encode([
             'current_question' => $progress->current_question,
             'score' => $progress->score,
-            'completed' => $progress->completed
+            'completed' => $progress->completed,
+            'status' => true
         ]);
     }
 
-    private function calculateScore($currentScore, $isCorrect) {
-        // REFACTOR
-        if ($isCorrect) {
-            if ($currentScore < 10) return $currentScore + 9;
-            if ($currentScore < 20) return $currentScore + 10;
-            if ($currentScore < 30) return $currentScore + 9;
-            if ($currentScore < 40) return $currentScore + 8;
-            if ($currentScore < 50) return $currentScore + 7;
-            if ($currentScore < 60) return $currentScore + 6;
-            if ($currentScore < 70) return $currentScore + 5;
-            if ($currentScore < 80) return $currentScore + 4;
-            if ($currentScore < 90) return $currentScore + 3;
-            return $currentScore + 2;
+    public function getQuestion($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+        
+        if (!isset($params['question_id'])) {
+            http_response_code(400);
+            var_dump($params);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
         }
 
-        if ($currentScore < 10) return $currentScore - 3;
-        if ($currentScore < 20) return $currentScore - 4;
-        if ($currentScore < 30) return $currentScore - 3;
-        if ($currentScore < 40) return $currentScore - 4;
-        if ($currentScore < 50) return $currentScore - 3;
-        if ($currentScore < 60) return $currentScore - 4;
-        if ($currentScore < 70) return $currentScore - 3;
-        if ($currentScore < 80) return $currentScore - 4;
-        if ($currentScore < 90) return $currentScore - 2;
-        return $currentScore;
+        $questionId = $params['question_id'];
+        $question = R::findOne('questions', 'id = ?', [$questionId]);
+
+        if (!$question) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Question not found']);
+            return;
+        }
+
+        echo json_encode([
+            'question_text' => $question-> question_text,
+            'correct_answer' => $question-> correct_answer,
+            'options' => $question -> options
+        ]);
+        return;
     }
 
-    private function getTotalQuestions($quizId) {
-        $questions = R::find('questions', 'quiz_id = ?', [$quizId]);
-        return count($questions);
+    public function getNextQuestion($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+        
+        if (!isset($params['user_id']) || !isset($params['quiz_id'])) {
+            http_response_code(400);
+            var_dump($params);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        $userId = $params['user_id'];
+        $quizId = $params['quiz_id'];
+        $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ?', [$userId, $quizId]);
+        $question = R::findOne('questions', 'id = ?', [$progress->current_question]);
+
+        if ($progress->completed == 1) {
+            http_response_code(200);
+            echo json_encode([
+                'completed' => 1,
+                'quiz_id' => $quizId,
+                'user_id' => $userId,
+                'score' => $progress->score
+            ]);
+            return;
+        }
+
+        if (!$question) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Question not found']);
+            return;
+        }
+
+        echo json_encode([
+            'question_id' => $question->id,
+            'question_text' => $question->question_text,
+            'correct_answer' => $question->correct_answer,
+            'options' => $question->options,
+            'score' => $progress->score
+        ]);
+        return;
+    }
+
+    private function calculateScore($quizId, $currentScore) {
+        $totalQuestions = $this->getToltalQuestions($quizId);
+    
+        if ($totalQuestions == 0) {
+            return $currentScore;
+        }
+    
+        return $currentScore + ceil(100 / $totalQuestions);
+    }
+    
+    private function getToltalQuestions($quizId) {
+        $questions = R::getRow(
+            'SELECT COUNT(*) as questions FROM `questions_quizzes` WHERE `quiz_id` = ?',
+            [$quizId]
+        );
+    
+        return $questions['questions'] ?? 0;
+    }
+    
+    private function getNextQuestionId($quizId, $currentQuestionId) {
+        $nextQuestion = R::findOne(
+            'questions_quizzes',
+            'quiz_id = ? AND question_id > ? ORDER BY question_id ASC LIMIT 1',
+            [$quizId, $currentQuestionId]
+        );
+        return $nextQuestion->question_id;
+    }
+
+    private function getLastQuestionId($quizId) {
+        $nextQuestion = R::findOne(
+            'questions_quizzes',
+            'quiz_id = ? ORDER BY question_id DESC LIMIT 1',
+            [$quizId]
+        );
+        return $nextQuestion->question_id;
     }
 
     private function reshuffleQuestions($quizId) {
-        // Извлекаем все вопросы для квиза и перемешиваем их
-        $questions = R::find('questions', 'quiz_id = ?', [$quizId]);
-        shuffle($questions);
-
-        // Здесь можно логировать или обновить порядок вопросов в базе, если необходимо
-        // В зависимости от требований, можно сохранять порядок вопросов или использовать его только для текущей сессии.
+        // TODO
     }
 }

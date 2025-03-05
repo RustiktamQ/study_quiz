@@ -184,11 +184,11 @@ class HomeController extends BaseController {
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ?', [$user->id, $quizid]);
         if (!$progress) {
-            $firstQuestion = R::findOne('questions', 'quiz_id = ? ORDER BY id ASC', [$quizid]);
+            $firstQuestion = R::findOne('questions_quizzes', 'quiz_id = ?', [$quizid]);
             $progress = R::dispense('progress');
             $progress->student_id = $user->id;
             $progress->quiz_id = $quizid;
-            $progress->current_question = $firstQuestion->id;
+            $progress->current_question = $firstQuestion->question_id;
             $progress->score = 0;
             $progress->completed = 0;
             $progress->start_time = date('Y-m-d H:i:s');
@@ -197,7 +197,12 @@ class HomeController extends BaseController {
         
         $question = R::findOne('questions', 'id = ?', [$progress->current_question]);
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';    
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+        
+        // if (!$question) {
+        //     header("Location: /learn");
+        //     exit; 
+        // }
 
         $this->renderPartial('learn/quiz', [
             'lang' => $this->lang,
@@ -245,6 +250,38 @@ class HomeController extends BaseController {
             'name' => $quiz->name
         ]);   
     }
+
+    public function showSuccesQuiz($params)
+    {
+        $isAuthorized = isset($_COOKIE['user']);
+        if (!$isAuthorized) {
+            header("Location: /auth/signup");
+            exit;
+        }
+        $quizid = $params['id'];
+        $userData = json_decode($_COOKIE['user'], true);
+        $user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+        $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
+        if(!$quiz){
+            header("Location: /learn");
+            exit; 
+        }
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
+        $this->renderPartial('learn/succes', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'picture' => $user->picture,
+            'isAuthorized' => $isAuthorized,
+            'userid' => $user->id,
+            'quizid' => $quizid,
+            'name' => $quiz->name
+        ]);   
+    }
+
 
     public function saveProfile() {
         $data = json_decode(file_get_contents('php://input'), true);

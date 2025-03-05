@@ -59,7 +59,7 @@
 </div>
 
 <div id="quiz-container" class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
-    <div class="flex flex-auto flex-col p-4 md:p-5">
+    <div  id="quiz-inner-container" class="flex flex-auto flex-col p-4 md:p-5">
         <h1 class="text-xl" id="question-title">{$name}</h1>
         <p style="font-family: monospace;" class="text-2xl my-4" id="question-content" data-id="">{$question}</p>
         <div class="grid max-w-xl sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-4" id="answers">
@@ -82,6 +82,9 @@
             </button>
         </div>
     </div>
+        <button type="button" style="display:none" id="start-quiz" onclick="startQuiz()" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-white dark:text-neutral-800">
+            Start Quiz
+        </button>
 </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-6 sm:gap-6">
         <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
@@ -94,7 +97,7 @@
         </div>
         <div class="min-h-24 w-48 flex flex-col bg-white border shadow-sm rounded-xl">
             <div class="flex text-center flex-auto flex-col justify-center items-center p-4 md:p-5">
-            <p id="time" class="time-elapsed text-md font-bold text-gray-800">0hr. 54min. 59s.</p>
+            <p id="time" class="time-elapsed text-md font-bold text-gray-800">0hr. 0min. 0s.</p>
             <p class="mt-2 text-sm text-gray-800">
                 Time elapsed
             </p>
@@ -112,11 +115,66 @@
 </div>
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
 <script src="/scripts/apiController.js"></script>
+<script src="/scripts/quizTimer.js"></script>
+<script src="/scripts/quizRender.js"></script>
 {include 'footer.latte'}
-<script n:syntax="off">
+<script n:syntax=off>
+const apiController = new ApiController();
+const quizTimer = new QuizTimer();
+const quizRender = new QuizRender();
+const quizId = getQuizId();
+
+if (isStarted(quizId)) {
+    const quizData = JSON.parse(localStorage.getItem(`quiz-${getQuizId()}`), true);
+    quizRender.update(quizData);
+    quizRender.render();
+}
+
+async function startQuiz() {
+    const user = JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('user='))
+            ?.split('=')[1] || '{}'
+            )
+        );
+    
+    const quizId = getQuizId();
+    const quizData =  await apiController.startQuiz(user.id, quizId);
+    quizData.answered = 0;
+    quizRender.blur();
+    quizRender.update(quizData);
+    quizTimer.startTimer(quizId);
+    localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
+}
+
+function getQuizId() {
+    const currentUrl = window.location.pathname;
+    const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    return quizId;
+}
+
+function isStarted(quizId) {
+    return (localStorage.getItem(`quiz-${quizId}`) != null || 
+    localStorage.getItem(`quiz-${quizId}`) != undefined);
+}
+
 $(document).ready(function() {
+    const quizId = getQuizId();
+    if (!isStarted(quizId)) {
+        document.getElementById("quiz-inner-container").style.filter = "blur(5px)"; 
+        document.getElementById("start-quiz").style.display = "block"; 
+    }
+
+    const savedTimer = localStorage.getItem(`timerSec-${quizId}`)
+    if (savedTimer > 1) {
+        quizTimer.startTimer(quizId, savedTimer);
+    }
+
     const buttons = document.querySelectorAll('.answer-btn');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -129,17 +187,56 @@ $(document).ready(function() {
         });
     });
 
-    document.getElementById("submit-answer").addEventListener("click", async function () {
+    // answer callback
+    document.getElementById("submit-answer").addEventListener("click", async () => {
         const currentUrl = window.location.pathname;
         const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        const user = JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('user='))
+                ?.split('=')[1] || '{}'
+                )
+            );
 
-        const user = JSON.parse(decodeURIComponent(document.cookie.split('; ').find(row => row.startsWith('user='))?.split('=')[1] || '{}'));
         const userId = user.id;
+        const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
+        quizData.answered++;
+        quizData.current_question = nextData.question_id;
+        quizData.question.id = nextData.question_id;
+        quizData.question.answers = JSON.parse(nextData.options, true);
+        quizData.question.content = nextData.question_text;
+        quizData.score = answerData.score; 
 
         const answer = document.querySelector('.answer-btn[selected]').value;
-        
-        const apiController = new ApiController();
-        apiController.answerQuestion(userId, quizId, answer)
+        const answerData = await apiController.answerQuestion(userId, quizId, answer, quizData.question.id);
+
+        if (answerData.status) {
+           const nextData = await apiController.getNextQuestion(userId, quizId);
+
+           if (nextData.error) {
+            // do something
+           } else if (nextData.completed == 1) {
+            window.location.href = `${window.location.origin}/quiz/succes/${quizId}`;
+           }
+
+            quizRender.update(quizData);
+            quizRender.render();
+            localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
+        } else if (!answerData.status) {
+            Toastify({
+                text: "incorrect answer!",
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right,rgb(179, 0, 0),rgb(201, 61, 61))",
+                },
+            }).showToast();
+        }
     });
 });
 </script>
