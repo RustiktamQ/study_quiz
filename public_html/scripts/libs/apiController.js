@@ -1,4 +1,4 @@
-class ApiController {
+export class ApiController {
     async startQuiz(student_id, quiz_id) {
         try {
             const response = await fetch(`${window.location.origin}/quiz/start`, {
@@ -22,7 +22,7 @@ class ApiController {
         }
     }
 
-    async answerQuestion(student_id, quiz_id, answer, question_id) {
+    async answerQuestion(student_id, quiz_id, answer, question_id, elapsed_time) {
         try {
             const response = await fetch(`${window.location.origin}/quiz/answer`, {
                 method: "POST",
@@ -34,7 +34,7 @@ class ApiController {
                     quiz_id,
                     answer,
                     question_id,
-                    acknowledged: false
+                    elapsed_time
                 })
             });
     
@@ -51,6 +51,29 @@ class ApiController {
     async getNextQuestion(user_id, quiz_id) {
         try {
             const response = await fetch(`${window.location.origin}/api/getNextQuestion`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    quiz_id
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async resetQuiz(user_id, quiz_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/resetQuiz`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

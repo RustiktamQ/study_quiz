@@ -1,4 +1,4 @@
-class QuizTimer {
+export class QuizTimer {
     constructor() {
         this.timer = null;
         this.totalSeconds = 0;

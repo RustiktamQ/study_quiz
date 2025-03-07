@@ -60,29 +60,37 @@
 
 <div id="quiz-container" class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
     <div  id="quiz-inner-container" class="flex flex-auto flex-col p-4 md:p-5">
-        <h1 class="text-xl" id="question-title">{$name}</h1>
+        <div class="question-title-container">
+            <div class="feedback-icon" id="title-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"></svg>
+            </div>
+            <h1 class="text-xl" id="question-title">{$name}</h1>
+        </div>
         <p style="font-family: monospace;" class="text-2xl my-4" id="question-content" data-id="">{$question}</p>
         <div class="grid max-w-xl sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:gap-4" id="answers">
-            <button type="button" value={$options[0]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+            <button type="button" value={$options[0]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none ">
                 {$options[0]}
             </button>
-            <button type="button" value={$options[1]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+            <button type="button" value={$options[1]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none ">
                 {$options[1]}
             </button>
-            <button type="button" value={$options[2]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+            <button type="button" value={$options[2]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none ">
                 {$options[2]}
             </button>
-            <button type="button" value={$options[3]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700">
+            <button type="button" value={$options[3]} class="answer-btn py-3 px-4 transition inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none ">
                 {$options[3]}
             </button>
         </div>
         <div class="grid max-w-xl sm:grid-cols-1 text-center items-center justify-center mt-4 lg:grid-cols-1 gap-2 sm:gap-4">
-            <button type="button" id="submit-answer" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-white dark:text-neutral-800">
+            <button type="button" id="submit-answer" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
                 Submit
+            </button>
+            <button disabled type="button" id="nextQuestion" class="hidden py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
+                Next question
             </button>
         </div>
     </div>
-        <button type="button" style="display:none" id="start-quiz" onclick="startQuiz()" class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none dark:bg-white dark:text-neutral-800">
+        <button type="button" id="start-quiz" class="hidden py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none ">
             Start Quiz
         </button>
 </div>
@@ -113,130 +121,22 @@
         </div>
     </div>
 </div>
-    </div>
+<div id="expBlock" class="hidden grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+      <div class="min-h-96 flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <h1 class="text-2xl">Explanation</h1>
+               <p id="explanation" class="text-md my-4">It can be helpful to use a place-value chart.</p>
+               <button id="submit-exp" type="button" class="py-2 px-6 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border transition border-transparent bg-green-500 text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
+                  Got it
+               </button>
+            </div>
+      </div>
+      </div>
+</div>
 </div>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
-<script src="/scripts/apiController.js"></script>
-<script src="/scripts/quizTimer.js"></script>
-<script src="/scripts/quizRender.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/quiz.css">
+<script type="module" src="/scripts/quizEventController.js"></script>
 {include 'footer.latte'}
-<script n:syntax=off>
-const apiController = new ApiController();
-const quizTimer = new QuizTimer();
-const quizRender = new QuizRender();
-const quizId = getQuizId();
-
-if (isStarted(quizId)) {
-    const quizData = JSON.parse(localStorage.getItem(`quiz-${getQuizId()}`), true);
-    quizRender.update(quizData);
-    quizRender.render();
-}
-
-async function startQuiz() {
-    const user = JSON.parse(
-        decodeURIComponent(
-            document.cookie.split('; ')
-            .find(row => row.startsWith('user='))
-            ?.split('=')[1] || '{}'
-            )
-        );
-    
-    const quizId = getQuizId();
-    const quizData =  await apiController.startQuiz(user.id, quizId);
-    quizData.answered = 0;
-    quizRender.blur();
-    quizRender.update(quizData);
-    quizTimer.startTimer(quizId);
-    localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
-}
-
-function getQuizId() {
-    const currentUrl = window.location.pathname;
-    const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-    return quizId;
-}
-
-function isStarted(quizId) {
-    return (localStorage.getItem(`quiz-${quizId}`) != null || 
-    localStorage.getItem(`quiz-${quizId}`) != undefined);
-}
-
-$(document).ready(function() {
-    const quizId = getQuizId();
-    if (!isStarted(quizId)) {
-        document.getElementById("quiz-inner-container").style.filter = "blur(5px)"; 
-        document.getElementById("start-quiz").style.display = "block"; 
-    }
-
-    const savedTimer = localStorage.getItem(`timerSec-${quizId}`)
-    if (savedTimer > 1) {
-        quizTimer.startTimer(quizId, savedTimer);
-    }
-
-    const buttons = document.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => {
-                b.classList.remove('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500', 'dark:bg-sky-500', 'dark:border-sky-700', 'dark:hover:bg-sky-600', 'dark:focus:bg-sky-600')
-                b.removeAttribute('selected');
-                });
-            btn.classList.add('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500', 'dark:bg-sky-500', 'dark:border-sky-700', 'dark:hover:bg-sky-600', 'dark:focus:bg-sky-600');
-            btn.setAttribute('selected', '');
-        });
-    });
-
-    // answer callback
-    document.getElementById("submit-answer").addEventListener("click", async () => {
-        const currentUrl = window.location.pathname;
-        const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-        const user = JSON.parse(
-            decodeURIComponent(
-                document.cookie.split('; ')
-                .find(row => row.startsWith('user='))
-                ?.split('=')[1] || '{}'
-                )
-            );
-
-        const userId = user.id;
-        const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
-        quizData.answered++;
-        quizData.current_question = nextData.question_id;
-        quizData.question.id = nextData.question_id;
-        quizData.question.answers = JSON.parse(nextData.options, true);
-        quizData.question.content = nextData.question_text;
-        quizData.score = answerData.score; 
-
-        const answer = document.querySelector('.answer-btn[selected]').value;
-        const answerData = await apiController.answerQuestion(userId, quizId, answer, quizData.question.id);
-
-        if (answerData.status) {
-           const nextData = await apiController.getNextQuestion(userId, quizId);
-
-           if (nextData.error) {
-            // do something
-           } else if (nextData.completed == 1) {
-            window.location.href = `${window.location.origin}/quiz/succes/${quizId}`;
-           }
-
-            quizRender.update(quizData);
-            quizRender.render();
-            localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
-        } else if (!answerData.status) {
-            Toastify({
-                text: "incorrect answer!",
-                duration: 3000,
-                newWindow: true,
-                close: true,
-                gravity: "top",
-                position: "right",
-                stopOnFocus: true,
-                style: {
-                    background: "linear-gradient(to right,rgb(179, 0, 0),rgb(201, 61, 61))",
-                },
-            }).showToast();
-        }
-    });
-});
-</script>

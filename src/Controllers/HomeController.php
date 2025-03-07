@@ -166,15 +166,10 @@ class HomeController extends BaseController {
 
     public function showQuiz($params)
     {
-        $isAuthorized = isset($_COOKIE['user']);
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
+        $this->checkAuthorization();
         
         $quizid = $params['id'];
-        $userData = json_decode($_COOKIE['user'], true);
-        $user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+        $user = $this->user;
         $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
         
         if(!$quiz){
@@ -183,28 +178,84 @@ class HomeController extends BaseController {
         }
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ?', [$user->id, $quizid]);
-        if (!$progress) {
-            $firstQuestion = R::findOne('questions_quizzes', 'quiz_id = ?', [$quizid]);
-            $progress = R::dispense('progress');
-            $progress->student_id = $user->id;
-            $progress->quiz_id = $quizid;
-            $progress->current_question = $firstQuestion->question_id;
-            $progress->score = 0;
-            $progress->completed = 0;
-            $progress->start_time = date('Y-m-d H:i:s');
-            R::store($progress);
-        }
         
-        $question = R::findOne('questions', 'id = ?', [$progress->current_question]);
+        if ($progress && $progress->completed == 1) {
+            header("Location: /quiz/complete/$quizid");
+            exit;
+        }
+
+        $isNewQuiz = false;
+        if (!$progress) {
+            $isNewQuiz = true;
+            $progress = R::dispense('progress');
+            $progress->current_question = -1;
+        }
+
+        $question = null;
+        if (!$isNewQuiz && $progress->current_question > 0) {
+            $question = R::findOne('questions', 'id = ?', [$progress->current_question]);
+        }
+
+        if ($isNewQuiz || !$question) {
+            $question = new \stdClass();
+            $question->question_text = 'Welcome to the quiz!';
+            $question->options = json_encode([':)', 'XD', ':D', ':O']);
+            $question->explanation = 'Press Button to continue';
+        }
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
         
-        // if (!$question) {
-        //     header("Location: /learn");
-        //     exit; 
-        // }
-
         $this->renderPartial('learn/quiz', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'picture' => $user->picture,
+            'userid' => $user->id,
+            'quizid' => $quizid,
+            'name' => $quiz->name,
+            'question' => $question->question_text,
+            'options' => json_decode($question->options, true),
+            'explanation' => $question->explanation,
+            'isNewQuiz' => $isNewQuiz // Флаг для шаблона
+        ]);   
+    }
+    public function showCompleteQuiz($params)
+    {
+        $isAuthorized = isset($_COOKIE['user']);
+        if (!$isAuthorized) {
+            header("Location: /auth/signup");
+            exit;
+        }
+        $quizid = $params['id'];
+        $userData = json_decode($_COOKIE['user'], true);
+        $user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+
+        if (!$user) {
+            header("Location: /learn");
+            exit; 
+        }
+
+        $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
+
+        if (!$quiz) {
+            header("Location: /learn");
+            exit; 
+        }
+
+        $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = 1', [$user['id'], $quizid]);
+        if (!$progress) {
+            header("Location: /learn");
+            exit;
+        }
+
+        $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = 1', [$user['id'], $quizid]);
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
+        $this->renderPartial('learn/complete', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -215,73 +266,11 @@ class HomeController extends BaseController {
             'userid' => $user->id,
             'quizid' => $quizid,
             'name' => $quiz->name,
-            'question' => $question->question_text,
-            'options' => json_decode($question->options, true),
-            'explanation' => $question->explanation
+            'score' => $progress->score,
+            'correct_answers' => $progress->correct_answers,
+            'elapsed_time' => $progress->elapsed_time
         ]);   
     }
-
-    public function showFailQuiz($params)
-    {
-        $isAuthorized = isset($_COOKIE['user']);
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
-        $quizid = $params['id'];
-        $user = R::findOne('users', 'google_id = ?', [$_COOKIE['user']['google_id']]);
-        $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
-        if(!$quiz){
-            header("Location: /learn");
-            exit; 
-        }
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
-        $this->renderPartial('learn/fail', [
-            'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'picture' => $user->picture,
-            'isAuthorized' => $isAuthorized,
-            'userid' => $user->id,
-            'quizid' => $quizid,
-            'name' => $quiz->name
-        ]);   
-    }
-
-    public function showSuccesQuiz($params)
-    {
-        $isAuthorized = isset($_COOKIE['user']);
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
-        $quizid = $params['id'];
-        $userData = json_decode($_COOKIE['user'], true);
-        $user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
-        $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
-        if(!$quiz){
-            header("Location: /learn");
-            exit; 
-        }
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
-        $this->renderPartial('learn/succes', [
-            'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'picture' => $user->picture,
-            'isAuthorized' => $isAuthorized,
-            'userid' => $user->id,
-            'quizid' => $quizid,
-            'name' => $quiz->name
-        ]);   
-    }
-
 
     public function saveProfile() {
         $data = json_decode(file_get_contents('php://input'), true);

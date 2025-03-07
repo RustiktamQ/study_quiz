@@ -1,4 +1,4 @@
-class QuizRender {
+export class QuizRender {
     constructor() {}
 
     render() {
