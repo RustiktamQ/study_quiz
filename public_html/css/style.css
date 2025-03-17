@@ -103,3 +103,7 @@ html, body {
 	align-items: center;
 	opacity: 1;
 }
+
+.hs-dropdown-menu {
+	transition: opacity 0.3s, margin 0.3s;
+}

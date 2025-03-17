@@ -1,0 +1,89 @@
+{include './partials/header.latte'}
+
+<div class="flex">
+  <div class="mx-auto mt-72">
+    <h1 class="text-center mb-8 quest text-4xl">Welcome back!</h1>
+    <div actions="/qwe" method="POST" class="w-[450px] shadow-xl border rounded-2xl px-6 py-10 border-gray-200">
+        <div class="max-w-sm">
+            <label for="email-input" class="block text-sm font-medium mb-2">Email</label>
+            <input type="email" id="email-input" class="w-full px-2 py-1.5 shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="you@youremail.com">
+        </div>
+        <div class="max-w-sm mt-4 relative">
+            <label for="password-input" class="block text-sm font-medium mb-2">Password</label>
+            <input type="password" id="password-input" class="w-full px-2 py-1.5 shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="••••••">
+            <button type="button" id="password-toggle" class="absolute inset-y-0 right-0 flex transition hover:text-gray-700" aria-label="Toggle password visibility">
+                <svg id="toggle-icon-show size-2" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/>
+                    <path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"/>
+                </svg>
+                <svg id="toggle-icon-hide size-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828"/><path d="M16.681 16.673A8.7 8.7 0 0 1 12 18q-5.4 0-9-6q1.908-3.18 4.32-4.674m2.86-1.146A9 9 0 0 1 12 6q5.4 0 9 6q-1 1.665-2.138 2.87M3 3l18 18"/>
+                </svg>
+            </button>
+        </div>
+        <button id="authBtn" type="button" class="mt-4 py-2 w-full px-4 text-center transition inline-flex items-center justify-center gap-x-2 text-sm font-medium rounded-lg bg-green-500 text-white shadow-sm hover:bg-green-400 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+            Continue
+            <svg class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+            </svg>
+        </button>
+    </div>
+  </div>
+</div>
+
+<script n:syntax=off>
+    const emailInput = document.getElementById('email-input');
+    const passwordInput = document.getElementById('password-input');
+    const passwordToggle = document.getElementById('password-toggle');
+    const toggleIconShow = document.getElementById('toggle-icon-show');
+    const toggleIconHide = document.getElementById('toggle-icon-hide');
+
+    passwordToggle.addEventListener('click', function() {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIconShow.classList.remove('hidden');
+            toggleIconHide.classList.add('hidden');
+        } else {
+            passwordInput.type = 'password';
+            toggleIconShow.classList.add('hidden');
+            toggleIconHide.classList.remove('hidden');
+        }
+    });
+
+    async function authAdmin(email, password) {
+        try {
+            const response = await fetch(`${window.location.origin}/auth/adminPanel`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    document.getElementById('authBtn').addEventListener('click', async () => {
+        const res = await authAdmin(emailInput.value, passwordInput.value);
+
+        if (res.success) {
+            window.location.href = `${window.location.origin}/adminPanel`;
+        } else {
+            alert(res.message);
+        }
+    });
+</script>
+
+
+{include './partials/footer.latte'}

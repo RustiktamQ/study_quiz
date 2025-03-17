@@ -113,6 +113,7 @@ class HomeController extends BaseController {
         $picture = $user->picture ?? 'https://vk.com/images/wall/deleted_avatar_50.png';
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
         if (is_null($user->token)) {
             $this->renderPartial('learn/confirm', [
                 'lang' => $this->lang,
@@ -120,7 +121,7 @@ class HomeController extends BaseController {
                 'ROOT_URL' => $root,
                 'fullname' => $user->name,
                 'picture' => $picture,
-                'error_message' => 'Вы не ввели токен. Хотя какой дебил сможет обойти это, думаю это лишнее'
+                'error_message' => 'Вы не ввели токен'
             ]);
             return;
         }
@@ -147,6 +148,7 @@ class HomeController extends BaseController {
             ]);
             return;
         }
+        $notificationCollection = $this->getAllNotifs($user->id);
         if (isset($_COOKIE['user'])){
             $this->renderPartial('learn/index', [
                 'lang' => $this->lang,
@@ -156,7 +158,8 @@ class HomeController extends BaseController {
                 'fullname' => $user->name,
                 'picture' => $user->picture,
                 'isAuthorized' => $isAuthorized,
-                'userid' => $user->id
+                'userid' => $user->id,
+                'notifications' => $notificationCollection
             ]);
         } else {
             header("Location: /auth/signup");
@@ -203,6 +206,8 @@ class HomeController extends BaseController {
             $question->explanation = 'Press Button to continue';
         }
 
+        $notificationCollection = $this->getAllNotifs($user->id);
+        
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
         
@@ -219,8 +224,9 @@ class HomeController extends BaseController {
             'question' => $question->question_text,
             'options' => json_decode($question->options, true),
             'explanation' => $question->explanation,
-            'isNewQuiz' => $isNewQuiz // Флаг для шаблона
-        ]);   
+            'isNewQuiz' => $isNewQuiz,
+            'notifications' => $notificationCollection
+        ]); 
     }
     public function showCompleteQuiz($params)
     {
@@ -255,6 +261,8 @@ class HomeController extends BaseController {
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
+
+        $notificationCollection = $this->getAllNotifs($user->id);
         $this->renderPartial('learn/complete', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
@@ -268,7 +276,8 @@ class HomeController extends BaseController {
             'name' => $quiz->name,
             'score' => $progress->score,
             'correct_answers' => $progress->correct_answers,
-            'elapsed_time' => $progress->elapsed_time
+            'elapsed_time' => $progress->elapsed_time,
+            'notifications' => $notificationCollection
         ]);   
     }
 
@@ -304,5 +313,118 @@ class HomeController extends BaseController {
         $user->token_confirmed = 0;
         R::store($user);
         echo json_encode(['success' => true]);
+    }
+
+    public function showAdminPanel() {
+        if (isset($_COOKIE['admin'])) {
+            $admin = json_decode($_COOKIE['admin'], true);
+            if (isset($admin['token'])) {
+                $user = R::findOne('admins', 'token = ?', [$admin['token']]);
+                if($user) {
+                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                    $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+                    
+                    $currentHour = date('H');
+                    $greeting = 'Welcome!';
+                    if ($currentHour >= 6 && $currentHour < 12) {
+                        $greeting = "Good morning";
+                    } elseif ($currentHour >= 12 && $currentHour < 18) {
+                        $greeting = "Good afternoon";
+                    } elseif ($currentHour >= 18 && $currentHour < 21) {
+                        $greeting = "Good evening";
+                    } elseif ($currentHour >= 21 && $currentHour < 24) {
+                        $greeting = "Good night";
+                    } else {
+                        $greeting = "Good night";
+                    }
+                    
+                    $this->renderPartial('admin/index', [
+                        'lang' => $this->lang,
+                        'APP_NAME' => $_ENV['APP_NAME'],
+                        'ROOT_URL' => $root,
+                        'domain' => $_ENV['ROOT_URL'],
+                        'fullname' => $user->email,
+                        'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png',
+                        'greeting' => $greeting
+                    ]);
+                    exit;
+                }
+            } else {
+                header("Location: /auth/adminPanel");
+                exit;
+            }
+        }
+        header("Location: /auth/adminPanel");
+    }
+
+    public function showLoginAdminPanel() {
+        if (isset($_COOKIE['admin'])) {
+            $admin = json_decode($_COOKIE['admin'], true);
+            if (isset($admin['token'])) {
+                $user = R::findOne('admins', 'token = ?', [$admin['token']]);
+                if($user) {
+                    header("Location: /adminPanel");
+                }
+            } 
+        }
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+        
+        $this->renderPartial('admin/auth', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png',
+        ]); 
+    }
+
+    private function generateNotificationLink(array $notification): string
+    {
+        $baseUrl = $this->getBaseUrl();
+        
+        return match($notification['address_type']) {
+            'quiz' => $baseUrl . '/quiz/' . $notification['created_at'],
+            'message' => $baseUrl . '/messages/' . $notification['created_at'],
+            default => $baseUrl . '/notifications',
+        };
+    }
+
+    private function getBaseUrl(): string
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') 
+            ? 'https' 
+            : 'http';
+        return $protocol . '://' . $_ENV['ROOT_URL'];
+    }
+
+    private function getAllNotifs($userId) {
+        $allNotifs = R::getAll(
+            'SELECT * FROM notifications 
+             WHERE address_type = ? AND address_id = ? 
+             ORDER BY created_at DESC',
+            ["student", $userId]
+        );
+        
+        $notificationDTOs = [];
+        foreach ($allNotifs as $notif) {
+            try {
+                $link = $this->generateNotificationLink($notif);
+                $notificationDTOs[] = new NotificationDTO(
+                    message: $notif['message'],
+                    link: $link,
+                    createdAt: new \DateTimeImmutable($notif['created_at']),
+                    isRead: (bool)$notif['checked']
+                );
+            } catch (\Exception $e) {
+                error_log("Error creating NotificationDTO: " . $e->getMessage());
+            }
+        }
+        
+        return $notificationCollection = new NotificationCollection(
+            items: $notificationDTOs,
+            unreadCount: count(array_filter($notificationDTOs, fn($n) => !$n->isRead))
+        );
     }
 }

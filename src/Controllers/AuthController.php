@@ -6,7 +6,7 @@ use RedBeanPHP\R;
 class AuthController extends BaseController {
 
     private function setCookie($name, $value, $expire = 0) {
-        setcookie($name, $value, $expire, "/"); // Устанавливаем cookie на весь сайт
+        setcookie($name, $value, $expire, "/");
     }
 
     private function getCookie($name) {
@@ -116,7 +116,7 @@ class AuthController extends BaseController {
         $firstname = $data['firstname'];
         $lastname = $data['lastname'];
         $email = $data['email'];
-        $password = password_hash($data['password'], PASSWORD_BCRYPT);
+        $password = md5($data['password']);
         if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
             echo json_encode(['success' => false, 'message' => $this->lang['allfie']]);
             return;
@@ -157,7 +157,7 @@ class AuthController extends BaseController {
             'email' => $teacher->email,
             'picture' => $teacher->picture
         ];
-        $this->setCookie('teacher', json_encode($teacherData), time() + 604800); // 1 hour cookie
+        $this->setCookie('teacher', json_encode($teacherData), time() + 604800);
         echo json_encode(['success' => true, 'message' => $this->lang['lsuccess']]);
     }
 
@@ -207,6 +207,25 @@ class AuthController extends BaseController {
 
         header('Location: ' . $client->createAuthUrl());
         exit;
+    }
+
+    public function loginAdmin()
+    {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $email = $data['email'];
+        $password = md5($data['password']);
+        if (empty($email) || empty($password)) {
+            echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $teacher = R::findOne('admins', 'email = ? AND password = ?', [$email, $password]);
+        if (!$teacher) {
+            echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
+            return;
+        }
+        $adminToken = json_encode(['token' => md5($email . $password)]);
+        $this->setCookie('admin', $adminToken, time() + 3600);
+        echo json_encode(['success' => true, 'message' => 'success auth']);
     }
 
     private function renderPartial($template, $params = [])

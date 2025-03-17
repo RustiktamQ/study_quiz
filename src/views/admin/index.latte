@@ -1,0 +1,134 @@
+{include './partials/header.latte'}
+<script>
+   window.addEventListener("load", () => {
+       const preloader = document.getElementById("preloader");
+       const loadingMessage = document.getElementById("loading-message");
+       clearTimeout(showMessageTimeout);
+       preloader.style.transition = "opacity 0.5s ease";
+       preloader.style.opacity = "0";
+       setTimeout(() => {
+           preloader.style.display = "none";
+       }, 500);
+   });
+   const showMessageTimeout = setTimeout(() => {
+       const loadingMessage = document.getElementById("loading-message");
+       loadingMessage.style.opacity = "1";
+   }, 10000);
+</script>
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+   <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-red-600 rounded-full " role="status" aria-label="loading"></div>
+   <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>
+{include 'partials/sidebar.latte'}
+
+<div class="w-full !lg:ps-64 relative ">
+   <img src="/assets/img/hk.jpeg" alt="" class="w-full h-96 object-cover custom-padding">
+   <div class="absolute bottom-4 left-4 custom-padding">
+      <div class="min-h-48 flex w-96 flex-col bg-white border shadow-sm rounded-xl">
+         <div class=" p-4 md:p-5">
+            <div class="flex">
+            <svg class="my-auto mr-2 text-green-500 shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m10.614 17.796l.878-2.01a7.74 7.74 0 0 1 3.94-3.992l2.416-1.072c.768-.341.768-1.458 0-1.8l-2.34-1.038a7.75 7.75 0 0 1-3.997-4.125l-.89-2.142a.946.946 0 0 0-1.758 0l-.889 2.142a7.75 7.75 0 0 1-3.997 4.125l-2.34 1.039c-.768.34-.768 1.458 0 1.799l2.415 1.072a7.74 7.74 0 0 1 3.94 3.991l.878 2.01a.946.946 0 0 0 1.744 0m8.787 4.894l.247-.566a4.37 4.37 0 0 1 2.221-2.25l.76-.339a.53.53 0 0 0 0-.963l-.717-.319a4.37 4.37 0 0 1-2.253-2.326l-.254-.611a.507.507 0 0 0-.942 0l-.254.61a4.37 4.37 0 0 1-2.253 2.327l-.718.32a.53.53 0 0 0 0 .962l.76.338a4.37 4.37 0 0 1 2.222 2.251l.247.566c.18.414.754.414.934 0"/></svg>
+            <h2 class="font-semibold text-sm">{$APP_NAME} - Dashboard</h2>
+            </div>
+            
+            <div class="flex">
+
+                <!-- online users -->
+                <div class="flex mt-4 border rounded-lg px-4 py-1">
+                <span class="relative flex size-3 my-auto mr-1">
+                    <div class="my-auto flex">
+                    <span class="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+                    </div>
+                </span>
+                <p class="text-black text-sm">12</p>
+                </div>
+
+                <!-- total users -->
+                <div class="flex mt-4 ml-2 border rounded-lg px-4 py-1">
+                    <svg class="shrink-0 size-3 mr-2 my-auto text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12.5 22H6.59c-1.545 0-2.774-.752-3.877-1.803c-2.26-2.153 1.45-3.873 2.865-4.715A10.65 10.65 0 0 1 15 14.78m1.5-8.28a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m2 15.5v-7M15 18.5h7" color="currentColor"/></svg>
+                    <p class="text-black text-sm">500</p>
+                </div>
+
+            </div>
+            
+
+         </div>
+      </div>
+   </div>
+</div>
+
+<style>
+   @media screen and (min-width: 1024px) {
+   .custom-padding {
+   padding-inline-start: 16rem !important;
+   }
+   }
+</style>
+<div class="w-full lg:ps-64">
+   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <div class="mb-4">
+         <h1 class="font-bold text-black text-xl">
+            Hi <span class="text-green-500">{$fullname}</span>, {$greeting}
+         </h1>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+   <!-- Card 1 -->
+   <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden">
+      <div class="absolute -top-10 -left-10 w-32 h-32 bg-teal-100 rounded-full blur-2xl"></div>
+      <!-- Icon -->
+      <div class="relative w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center mb-4">
+         <svg class="w-6 h-6 text-teal-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+      </div>
+      <h3 class="mb-1 text-xs text-gray-600">
+         Total users registered
+      </h3>
+      <h1 class="text-bold text-xl">21520</h1>
+   </div>
+
+   <!-- Card 2 -->
+   <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden">
+      <div class="absolute -top-10 -left-10 w-32 h-32 bg-violet-100 rounded-full blur-2xl"></div>
+      <!-- Icon -->
+      <div class="relative w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center mb-4">
+      <svg class="w-6 h-6 text-tviolet-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M20.943 16.835a15.76 15.76 0 0 0-4.476-8.616c-.517-.503-.775-.754-1.346-.986C14.55 7 14.059 7 13.078 7h-2.156c-.981 0-1.472 0-2.043.233c-.57.232-.83.483-1.346.986a15.76 15.76 0 0 0-4.476 8.616C2.57 19.773 5.28 22 8.308 22h7.384c3.029 0 5.74-2.227 5.25-5.165"/><path d="M7.257 4.443c-.207-.3-.506-.708.112-.8c.635-.096 1.294.338 1.94.33c.583-.009.88-.268 1.2-.638C10.845 2.946 11.365 2 12 2s1.155.946 1.491 1.335c.32.37.617.63 1.2.637c.646.01 1.305-.425 1.94-.33c.618.093.319.5.112.8l-.932 1.359c-.4.58-.599.87-1.017 1.035S13.837 7 12.758 7h-1.516c-1.08 0-1.619 0-2.036-.164S8.589 6.38 8.189 5.8zm6.37 8.476c-.216-.799-1.317-1.519-2.638-.98s-1.53 2.272.467 2.457c.904.083 1.492-.097 2.031.412c.54.508.64 1.923-.739 2.304c-1.377.381-2.742-.214-2.89-1.06m1.984-5.06v.761m0 5.476v.764"/></g></svg>
+      </div>
+      <h3 class="mb-1 text-xs text-gray-600">
+         This month
+      </h3>
+      <div class="flex">
+      <h1 class="text-bold text-xl">1 000 000$</h1>
+      <div class="my-auto ml-2">
+              <span class="py-[5px] px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-md bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500">
+                <svg class="inline-block size-3.5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"></path>
+                  <path d="m19 12-7 7-7-7"></path>
+                </svg>
+                99%
+              </span>
+            </div>
+      </div>
+      
+   </div>
+
+   <!-- Card 3 -->
+   <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden">
+      <div class="absolute -top-10 -left-10 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
+      <!-- Icon -->
+      <div class="relative w-12 h-12 bg-white rounded-xl shadow-md flex items-center justify-center mb-4">
+      <svg class="w-6 h-6 text-blue-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 17v-4m5 4V7m5 10v-6M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12" color="currentColor"/></svg>
+      </div>
+      
+      <p class="mb-1 text-xs text-gray-600">
+         Total website requests (Main page)
+      </p>
+      <h1 class="text-bold text-xl">798412</h1>
+
+   </div>
+    </div>
+   </div>
+</div>
+<script src="https://cdn.tailwindcss.com/"></script>
+<script src="https://cdn.jsdelivr.net/npm/preline@2.7.0/dist/preline.min.js"></script>
+{include './partials/footer.latte'}

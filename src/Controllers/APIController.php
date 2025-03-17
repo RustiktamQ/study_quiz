@@ -143,6 +143,7 @@ class APIController extends BaseController {
         );
 
         if (is_null($nextQuest) || $progress->score >= 100) {
+            $this->notifyTeacher($quizId, $studentId, "teachers");
             $progress->completed = 1;
             R::store($progress);
             echo json_encode([
@@ -383,7 +384,40 @@ class APIController extends BaseController {
         return $nextQuestion->question_id;
     }
 
-    private function reshuffleQuestions($quizId) {
-        // TODO
+    private function notifyTeacher($quizId, $userId, $addressType)
+    {
+        $student = R::findOne('users', 'id = ?', [$userId]);
+        if (!$student) {
+            throw new \RuntimeException("Student not found with ID: {$userId}");
+        }
+    
+        $teacher = R::findOne('teachers', 'token = ?', [$student->token]);
+        if (!$teacher) {
+            throw new \RuntimeException("Teacher not found for student token: {$student->token}");
+        }
+    
+        $quiz = R::findOne('quizzes', 'id = ?', [$quizId]);
+        if (!$quiz) {
+            throw new \RuntimeException("Quiz not found with ID: {$quizId}");
+        }
+    
+        $message = sprintf(
+            "Student %s has completed the quiz '%s'",
+            $student->name,
+            $quiz->name
+        );
+    
+        try {
+            $notification = R::dispense('notifications');
+            $notification->message = $message;
+            $notification->address_type = $addressType;
+            $notification->address_id = $teacher->id;
+            $notification->created_at = date('Y-m-d H:i:s');
+            $notification->checked = 0;
+            
+            return (bool)R::store($notification);
+        } catch (\Exception $e) {
+            throw new \RuntimeException("Failed to create notification: " . $e->getMessage());
+        }
     }
 }

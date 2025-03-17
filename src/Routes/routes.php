@@ -3,11 +3,17 @@
 $r->addRoute('GET', '/', ['HomeController', 'index']);
 $r->addRoute('GET', '/lang/{lang}', ['LanguageController', 'switchLanguage']);
 
+// Admin
+$r->addRoute('GET', '/adminPanel', ['HomeController', 'showAdminPanel']);
+$r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
+$r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
+
 // Auth
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showRegister']);
 $r->addRoute('GET', '/auth/teacher/signup', ['AuthController', 'showRegisterTeacher']);
 $r->addRoute('GET', '/auth/teacher/signin', ['AuthController', 'showLoginTeacher']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
+
 $r->addRoute('POST', '/api/register-teacher', ['AuthController', 'registerTeacher']);
 $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
 

@@ -8,7 +8,7 @@ class BaseController {
 
     public function __construct() {
         $this->lang = $this->loadLanguage();
-        $this->checkAuthorization();
+        $this->user =  json_decode($_COOKIE['user'] ?? '{}', true);
     }
 
     private function loadLanguage() {
@@ -47,7 +47,7 @@ class BaseController {
     }
 
     protected function validateOwnership($userId) {
-        if ($this->user->id != $userId) {
+        if ($this->user['id'] != $userId) {
             $this->jsonError(403, 'Access denied');
         }
     }
