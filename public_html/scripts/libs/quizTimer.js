@@ -4,15 +4,19 @@ export class QuizTimer {
         this.totalSeconds = 0;
     }
 
-    getformatTime() {
+    getformatTime(withHour = true) {
         let hours = Math.floor(this.totalSeconds / 3600);
         let minutes = Math.floor((this.totalSeconds % 3600) / 60);
         let secs = this.totalSeconds % 60;
-        return `${hours}hr. ${minutes}min. ${secs}s.`;
+        if (secs < 10) secs = `0${secs}`
+        if (minutes < 10) minutes = `0${minutes}`
+        if (hours < 10) hours = `0${hours}`
+        if (withHour) return `${hours}:${minutes}:${secs}`;
+        if (!withHour) return `${minutes}:${secs}`;
     }
 
     updateTimerDisplay() {
-        document.getElementById("time").innerText = this.getformatTime();
+        document.getElementById("time").innerText = this.getformatTime(false);
     }
 
     startTimer(quizId, offset = 0) {

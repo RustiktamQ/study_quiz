@@ -277,6 +277,89 @@ class APIController extends BaseController {
         return;
     }
 
+    public function updateStudentData($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+    
+        if (
+            !isset($params['user_id']) ||
+            !isset($params['data']['first_name']) ||
+            !isset($params['data']['last_name'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+    
+        $this->validateOwnership($params['user_id']);
+    
+        $userId = $params['user_id'];
+        $firstName = $params['data']['first_name'];
+        $lastName = $params['data']['last_name'];
+        $fullName = "$firstName $lastName";
+
+        $student = R::findOne('users', 'id = ?', [$userId]);
+
+        if (empty($firstName) || empty($lastName)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing Fields']);
+            return;
+        }        
+
+        if (!$student) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Student not found']);
+            return;
+        }
+
+        if ($student->id != $this->user['id']) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Access denied']);
+            return;
+        }
+    
+        R::exec(
+            'UPDATE users SET firstname = ?, lastname = ?, name = ? WHERE id = ?',
+            [$firstName, $lastName, $fullName, $userId]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+    
+
+    // TODO
+    public function getDayStats($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+        
+        if (!isset($params['student_id']) || !isset($params['day'])) {
+            http_response_code(400);
+            var_dump($params);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        $this->validateOwnership($params['user_id']);
+        $userId = $params['user_id'];
+        $day = $params['day'];
+
+        $date = '2024-03-18';
+
+        $statistics = R::getRow(
+            'SELECT SUM(completed) AS quizzes_completed, 
+                    SUM(correct_answers) AS answers_completed, 
+                    SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
+            FROM progress 
+            WHERE student_id = ? 
+            AND DATE(created_at) = ? 
+            GROUP BY student_id',
+            [$user->id, $date]
+        );
+
+    }
+
     private function calculateScore($progress) {
         $correctCount = $progress->correct_answers;
         $correctScores = [

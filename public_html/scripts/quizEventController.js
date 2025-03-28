@@ -23,7 +23,7 @@ function isStarted(quizId) {
     localStorage.getItem(`quiz-${quizId}`) != undefined);
 }
 
-$(document).ready(function() {
+const main = function() {
     if (!isStarted(quizId)) {
         document.getElementById("quiz-inner-container").style.filter = "blur(5px)"; 
         document.getElementById("start-quiz").style.display = "block"; 
@@ -34,13 +34,23 @@ $(document).ready(function() {
         quizTimer.startTimer(quizId, savedTimer);
     }
 
-    const buttons = document.querySelectorAll('.answer-btn');
-    buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            buttons.forEach(b => {
-                b.removeAttribute('selected');
-            });
-            btn.setAttribute('selected', 'true');
+    const options = document.querySelectorAll('.option-button');
+    const submitBtn = document.querySelector('.quiz-container button[type="submit"]');
+
+    let selectedOption = null;
+
+    options.forEach(button => {
+        button.addEventListener('click', () => {
+            options.forEach(btn => {
+                btn.classList.remove('!border-blue-500', '!bg-blue-100', 'ring-2', 'ring-blue-300')
+                btn.removeAttribute('selected');
+            }); 
+
+            button.classList.add('!border-blue-500', '!bg-blue-100', 'ring-2', 'ring-blue-300');
+            button.setAttribute('selected', 'true');
+            selectedOption = button.textContent.trim(); 
+
+            if (submitBtn) submitBtn.disabled = false;
         });
     });
 
@@ -57,9 +67,11 @@ $(document).ready(function() {
         "Spot on!"
     ];
 
-    const icon = document.getElementById('title-icon');
-    const svg = icon.querySelector('svg');
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    const quizBox = document.getElementById('quizBox');
+    const nextBtn = document.getElementById('nextQuestion');
+    const thisBtn = document.getElementById('submit-answer');
+    const messBox = document.getElementById('messBox');
+    const mess = document.getElementById('mess');
     
     function getRandomPhrase() {
         return positivePhrases[Math.floor(Math.random() * positivePhrases.length)];
@@ -67,7 +79,6 @@ $(document).ready(function() {
 
     // quiz start callback
     document.getElementById('start-quiz').addEventListener("click", async () => {
-        svg.innerHTML = '';
         const quizData =  await apiController.startQuiz(user.id, quizId);
         quizData.answered = 0;
         quizRender.blur();
@@ -79,7 +90,6 @@ $(document).ready(function() {
 
     // next btn callback
     document.getElementById('nextQuestion').addEventListener("click", async () => {
-        svg.innerHTML = '';
         const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
         quizRender.update(quizData);
         quizRender.render();
@@ -92,22 +102,15 @@ $(document).ready(function() {
         answBtn.disabled = false;
         answBtn.classList.remove('hidden');
 
-        const buttons = document.querySelectorAll('.answer-btn');
-        buttons.forEach(btn => {
-            btn.disabled = false;
-            btn.classList.remove('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500');
-            btn.removeAttribute('selected');
+        messBox.classList.add('hidden');
+        options.forEach(button => {
+            button.disabled = false;
+            button.classList = 'answer-btn option-button w-full p-4 md:p-5 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-blue-400 hover:text-blue-600 bg-white focus:border-blue-500 focus:text-blue-700 focus:bg-blue-50 flex items-center justify-center text-lg md:text-xl font-medium';
         });
-    
-        document.getElementById('question-content').className = 'text-2xl my-4';
-        document.getElementById('question-title').innerText = quizData.question.title;
-        icon.classList.remove('visible');
-    })
 
-    // Go it callback
-    document.getElementById('submit-exp').addEventListener("click", async () => {
+        quizBox.classList = 'border border-gray-200 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-white';
+
         const nextData = await apiController.getNextQuestion(userId, quizId);
-        const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
         quizData.current_question = nextData.question_id;
         quizData.question.id = nextData.question_id;
         quizData.question.answers = JSON.parse(nextData.options, true);
@@ -119,19 +122,8 @@ $(document).ready(function() {
         } else if (nextData.status == 2) {
             window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
         }
-    
-        const buttons = document.querySelectorAll('.answer-btn');
-        buttons.forEach(btn => {
-            btn.disabled = false;
-            btn.classList.remove('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500');
-            btn.removeAttribute('selected');
-        });
-    
+
         document.getElementById('submit-answer').classList.remove('hidden');
-        document.getElementById('expBlock').classList.add('hidden');
-        document.getElementById('question-content').className = 'text-2xl my-4';
-        document.getElementById('question-title').innerText = quizData.question.title;
-        icon.classList.remove('visible');
         localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
         quizRender.update(quizData);
         quizRender.render();
@@ -157,6 +149,7 @@ $(document).ready(function() {
                 window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
             }
         }
+
         if (answerData.status == 1) {
             const nextData = await apiController.getNextQuestion(userId, quizId);
             quizData.current_question = nextData.question_id;
@@ -165,66 +158,56 @@ $(document).ready(function() {
             quizData.question.content = nextData.question_text;
             quizData.score = answerData.score;
 
-            const qContent = document.getElementById('question-content')
-            qContent.innerText = 'The correct answer is:';
-            qContent.classList.add('text-sm', 'text-gray-600');
-            qContent.classList.remove('text-2xl');
-
-            buttons.forEach(btn => {
-                if (btn.value != answerData.correct_answer)  {
-                    btn.disabled = true;
-                } else {
-                    btn.classList.add('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500');
-                    btn.setAttribute('selected', '');
-                }
-            });
-            const nextBtn = document.getElementById('nextQuestion');
             nextBtn.disabled = false;
             nextBtn.classList.remove('hidden');
-
-            const thisBtn = document.getElementById("submit-answer");
             thisBtn.disabled = true;
             thisBtn.classList.add('hidden');
+            messBox.classList.remove('hidden');
 
-            icon.classList.remove('incorrect-icon');
-            icon.classList.add('correct-icon');
-            path.setAttribute("d", "M5 13l4 4L19 7");
-            path.setAttribute("stroke-linecap", "round");
-            path.setAttribute("stroke-linejoin", "round");
-            document.getElementById('question-title').innerText = getRandomPhrase();
+            messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-green-100 border border-green-300 rounded-lg shadow-inner';
+            mess.classList = 'text-lg font-semibold green-green-800 flex items-center justify-center gap-2';
+
+            mess.innerText = getRandomPhrase();
+
+            options.forEach(button => {
+                if (button.hasAttribute('selected')) {
+                    button.classList = 'option-button correct-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed';
+                } else {
+                    button.classList = 'option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed'
+                }
+                button.disabled = true;
+            });
+
+            quizBox.classList = 'border-4 border-dashed border-green-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50';
 
             localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
         } else if (answerData.status == 0) {
             document.getElementById('submit-answer').classList.add('hidden');
-            document.getElementById('expBlock').classList.remove('hidden');
-            document.getElementById('explanation').innerText = answerData.explanation;
-            document.getElementById('question-title').innerText = 'Sorry, incorrect...';
-            const qContent = document.getElementById('question-content')
-            qContent.innerText = 'The correct answer is:';
-            qContent.classList.add('text-sm', 'text-gray-600');
-            qContent.classList.remove('text-2xl');
 
-            const buttons = document.querySelectorAll('.answer-btn');
-            buttons.forEach(btn => {
-                if (btn.value != answerData.correct_answer)  {
-                    btn.disabled = true;
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('hidden');
+            thisBtn.disabled = true;
+            thisBtn.classList.add('hidden');
+            messBox.classList.remove('hidden');
+
+            messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-red-100 border border-red-300 rounded-lg shadow-inner';
+            mess.classList = 'text-lg font-semibold red-green-800 flex items-center justify-center gap-2';
+
+            mess.innerText = 'bad';
+
+            options.forEach(button => {
+                if (button.hasAttribute('selected')) {
+                    button.classList = 'option-button bad-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed';
                 } else {
-                    btn.classList.add('bg-sky-400', 'bg-opacity-80', 'border-sky-600', 'hover:bg-sky-500', 'focus:bg-sky-500');
-                    btn.setAttribute('selected', '');
+                    button.classList = 'option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed'
                 }
+                button.disabled = true;
             });
 
-            icon.classList.remove('correct-icon');
-            icon.classList.add('incorrect-icon');
-            path.setAttribute("d", "M18 6L6 18M6 6l12 12");
-            path.setAttribute("stroke-linecap", "round");
-            path.setAttribute("stroke-linejoin", "round");
-            icon.innerHTML = '<path d="M18 6L6 18M6 6l12 12"/>';
+            quizBox.classList = 'border-4 border-dashed border-red-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-red-50 via-rose-50 to-pink-50';
+
         } else if (answerData.status == 2) {
             window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
         }
-
-        svg.appendChild(path);
-        icon.classList.add('visible');
     });
-});
+}();

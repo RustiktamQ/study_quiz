@@ -93,4 +93,27 @@ export class ApiController {
             return error.message;
         }
     }
+
+    async updateStudentData(user_id, data) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/settings/update`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    data
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
 }

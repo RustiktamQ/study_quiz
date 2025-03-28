@@ -1,0 +1,21 @@
+<script>
+    window.addEventListener("load", () => {
+        const preloader = document.getElementById("preloader");
+        const loadingMessage = document.getElementById("loading-message");
+        clearTimeout(showMessageTimeout);
+        preloader.style.transition = "opacity 0.5s ease";
+        preloader.style.opacity = "0";
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 500);
+    });
+    const showMessageTimeout = setTimeout(() => {
+        const loadingMessage = document.getElementById("loading-message");
+        loadingMessage.style.opacity = "1";
+    }, 10000);
+</script>
+
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+    <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading"></div>
+    <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>

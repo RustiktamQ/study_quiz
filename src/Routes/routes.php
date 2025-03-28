@@ -20,10 +20,18 @@ $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
 // Profile
 $r->addRoute('POST', '/api/save-profile', ['HomeController', 'saveProfile']);
 $r->addRoute('GET', '/api/check-token-status', ['HomeController', 'checkTokenStatus']);
+$r->addRoute('POST', '/api/settings/update', ['APIController', 'updateStudentData']);
 
 // Dashboards
 $r->addRoute('GET', '/dashboard', ['HomeController', 'showDashboard']);
 $r->addRoute('GET', '/learn', ['HomeController', 'showLearn']);
+$r->addRoute('GET', '/dashboard/student', ['HomeController', 'showStudentDashboard']);
+$r->addRoute('GET', '/dashboard/student/learn', ['HomeController', 'showStudentLearn']);
+$r->addRoute('GET', '/dashboard/student/teacher', ['HomeController', 'showStudentTeacher']);
+$r->addRoute('GET', '/dashboard/student/analytics', ['HomeController', 'showStudentAnalytics']);
+$r->addRoute('GET', '/dashboard/student/settings', ['HomeController', 'showStudentSettings']);
+$r->addRoute('GET', '/dashboard/teacher', ['HomeController', 'showTeacherDashboard']);
+
 
 // Quizzes
 $r->addRoute('GET', '/quiz/{id}', ['HomeController', 'showQuiz']);

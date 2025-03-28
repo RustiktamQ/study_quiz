@@ -1,4 +1,4 @@
-{include 'header.latte'}
+{include '../partials/header.latte'}
 <script>
    window.addEventListener("load", () => {
        const preloader = document.getElementById("preloader");
@@ -19,7 +19,6 @@
    <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading"></div>
    <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
 </div>
-{include 'sidebar.latte'}
 <div class="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
     <div class="grid grid-cols-1">
     <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl border text-center pointer-events-auto max-w-3xl w-full mx-4">
@@ -96,4 +95,4 @@
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
 <script type="module" src="/scripts/completedQuizController.js"></script>
-{include 'footer.latte'}
+{include '../partials/footer.latte'}

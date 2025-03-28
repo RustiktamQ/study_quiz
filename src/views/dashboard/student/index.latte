@@ -1,0 +1,518 @@
+{include '../../partials/header.latte'}
+        <!-- Main content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6 border p-5 rounded-2xl">
+          <div class="lg:col-span-2">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
+              <h1 class="text-2xl flex font-bold">
+              Главная
+              </h1>
+              <div class="relative w-full md:w-auto md:max-w-md md:ml-6">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+                <input type="text" class="w-full pl-12 pr-4 py-2 rounded-full transition bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Поиск заданий..">
+              </div>
+              <div class="flex flex-wrap justify-center gap-2 w-full md:w-auto md:ml-4">
+                <button class="px-6 py-2 bg-black text-white rounded-full text-sm w-full sm:w-auto">Статистика</button>
+                <button class="px-6 py-2 rounded-full text-sm w-full sm:w-auto">Задания</button>
+                <button class="px-6 py-2 rounded-full text-sm w-full sm:w-auto">От учителя</button>
+              </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <!-- Certificates Card -->
+              <div class="bg-green-50 rounded-2xl p-6 card-stats3 text-green-600">
+                <div class="flex items-center mb-8 relative z-10">
+                  <div class="text-center flex items-center justify-center">
+                    <span class="text-5xl font-bold">{$statistics['quizzes_completed']}</span>
+                  </div>
+                </div>
+                <p class=" text-gray-800 font-medium text-lg relative z-10">Навыков изучено</p>
+              </div>
+
+              <!-- Courses Card -->
+              <div class="bg-yellow-50 rounded-2xl p-6 card-stats2 text-yellow-600">
+                <div class="flex justify-between items-center mb-8 relative z-10">
+
+                  <div class="text-center">
+                    <span class="text-5xl font-bold">{$statistics['answers_completed']}</span>
+                  </div>
+                </div>
+                <p class=" text-gray-800 font-medium text-lg relative z-10">Вопросов решено</p>
+              </div>
+              <style>
+                  .card-stats {
+                    position: relative;
+                    overflow: hidden;
+                  }
+                  .card-stats::before {
+                    content: "";
+                    position: absolute;
+                    bottom: -24px;
+                    right: -24px;
+                    width: 100px;
+                    height: 100px;
+                    opacity: 0.2;
+                    z-index: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgb(147, 51, 234)' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' color='rgb(147, 51, 234)'%3E%3Ccircle cx='12' cy='13' r='9'/%3E%3Cpath d='m5 19l-2 2m16-2l2 2M19 3.57l.596-.298c.845-.423 1.162-.374 1.834.298s.72.99.298 1.834L21.43 6M5 3.57l-.596-.298c-.845-.423-1.162-.374-1.834.298s-.72.99-.298 1.834L2.57 6M12 9.5v4l2 2m-2-12V2m-2 0h4'/%3E%3C/g%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                  }
+                  .card-stats2 {
+                    position: relative;
+                    overflow: hidden;
+                  }
+                  .card-stats2::before {
+                    content: "";
+                    position: absolute;
+                    bottom: -24px;
+                    right: -24px;
+                    width: 100px;
+                    height: 100px;
+                    opacity: 0.2;
+                    z-index: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgb(202, 138, 4)' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' color='rgb(202, 138, 4)'%3E%3Cpath d='M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z'/%3E%3Cpath d='M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009'/%3E%3C/g%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                  }
+                  .card-stats3 {
+                    position: relative;
+                    overflow: hidden;
+                  }
+                  .card-stats3::before {
+                    content: "";
+                    position: absolute;
+                    bottom: -24px;
+                    right: -24px;
+                    width: 100px;
+                    height: 100px;
+                    opacity: 0.2;
+                    z-index: 0;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='rgb(22, 163, 74)' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' color='rgb(22, 163, 74)'%3E%3Cpath d='M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12'/%3E%3Cpath d='m5.5 12.5l.475-.316c.473-.316.71-.474.938-.404c.227.071.333.335.545.864L9 16.5l2.088-6.265c.44-1.32.66-1.98 1.184-2.357s1.22-.378 2.611-.378H18.5M17 12l-1.5 1.5m0 0L14 15m1.5-1.5L17 15m-1.5-1.5L14 12'/%3E%3C/g%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                  }
+                  .circle-progress {
+                    transform: rotate(-90deg);
+                    transform-origin: center;
+                    stroke-dasharray: 251.2;
+                    transition: stroke-dashoffset 0.8s ease;
+                  }
+              </style>
+              <!-- Hours Card -->
+              <div class="bg-purple-50 rounded-2xl p-6 card-stats text-purple-600">
+                <div class="flex justify-between items-center mb-8 relative z-10">
+
+                  <div class="text-center">
+                    <span class="text-5xl font-bold">{$statistics['time_spent']}h</span>
+                  </div>
+                </div>
+                <p class=" text-gray-800 font-medium text-lg relative z-10">Затраченно</p>
+              </div>
+            </div>
+
+            <!-- Learning Today -->
+            <div class="hidden bg-purple-50 rounded-2xl p-6 mb-6">
+              <div class="flex items-center mb-4">
+              <svg class="text-purple-800 my-auto mr-2 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M2.5 3.002h19m-17 0V14c0 2.329.43 3.09 2.428 4.288l3.014 1.808C10.945 20.7 11.446 21 12 21s1.055-.301 2.058-.903l3.015-1.809c1.996-1.198 2.427-1.958 2.427-4.287v-11"/><path d="m12.605 8.005l.615 1.243a.76.76 0 0 0 .497.37l1.117.187c.714.12.882.642.367 1.157l-.868.875a.77.77 0 0 0-.182.64l.249 1.082c.196.858-.256 1.19-1.008.741l-1.046-.624a.75.75 0 0 0-.693 0l-1.047.624c-.749.448-1.204.113-1.008-.74l.249-1.084a.77.77 0 0 0-.182-.639l-.868-.875c-.511-.515-.347-1.037.367-1.157l1.117-.187a.76.76 0 0 0 .493-.37l.616-1.243c.336-.673.882-.673 1.214 0"/></g></svg>
+                <h3 class="font-semibold">Цель на сегодня</h3>
+              </div>
+              <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                  <span class="text-3xl font-bold mr-2">58%</span>
+                  <span class="text-gray-600">/</span>
+                  <span class="text-gray-600 ml-2">28<span class="text-sm">мин</span></span>
+                </div>
+                <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+              <div class="progress-bar mt-4">
+                <div class="progress-fill" style="width: 58%"></div>
+              </div>
+            </div>
+
+            <!-- Analytics Cards -->
+            <div class="grid grid-cols-1 gap-6">
+                {if $quiz}
+                    <div class="bg-blue-100 rounded-2xl p-6 relative overflow-hidden">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-xl mb-3">Продолжение: {$quiz->name}</h3>
+                                <p class="text-gray-600">
+                                <span class="flex">
+                                <svg class="mr-2 size-4 my-auto" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></g></svg>
+                                {$progress->elapsed_time}
+                                </span>
+                                </p>
+                                <a href="/quiz/{$quiz->id}"><button class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition-colors mt-4">
+                                Продолжить задание</button></a>
+                            </div>
+                            <div class="relative w-16 h-16">
+                                <div class="absolute inset-0 rounded-full border-8 border-blue-200"></div>
+                                <div class="absolute inset-0 rounded-full border-8 border-t-8 border-t-blue-600 border-r-transparent border-b-transparent border-l-transparent transform -rotate-45"></div>
+                                <span class="absolute inset-0 flex items-center justify-center text-md font-bold">{$progress->score}<span class="text-xs"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
+              
+            <div class="bg-purple-100 rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="font-bold text-xl mb-3">
+                    
+                    <span class="flex">
+                    <svg class="mr-2 size-4 my-auto" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258"><defs><radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient><radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient></defs><path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/><path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/></svg>
+                    Рекомендуется: Определить и выбрать страны Европы: регион 3
+                    </span>
+
+
+                    </h3>
+                    <p class="text-gray-600">	Определить и выбрать страны Европы: регион 3</p>
+                    <div class="space-x-4">
+                      <button class="bg-purple-600 border-purple-600 border text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors mt-4">
+                        Начать задание
+                      </button>
+                      <button class="border-purple-600 border text-purple-600 bg-white px-6 py-2 rounded-full hover:bg-purple-700 hover:text-white transition-colors mt-4">
+                      <span class="flex">
+                      Обновить
+                      </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="space-y-6">
+            <!-- Progress with Avatar -->
+            <div class="bg-pink-100 rounded-2xl p-6">
+              <h3 class="font-semibold mb-2">Недельный прогресс</h3>
+              <div class="progress-bar bg-pink-200 mb-4">
+                <div class="progress-fill bg-pink-600" style="width: 78%"></div>
+              </div>
+              <div class="text-right text-xl font-bold mb-6">78%</div>
+              
+              <div class="avatar-robot rounded-full w-32 h-32 mx-auto flex items-center justify-center mb-6">
+              <svg class="w-24 h-24 text-pink-800" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from All by undefined - undefined --><path fill="currentColor" d="M9 11a1 1 0 1 0-1-1a1 1 0 0 0 1 1m5.16 1.21a1 1 0 0 0 .71.29a1 1 0 0 0 .71-.29a1 1 0 0 0 0-1.42l-.79-.79l.79-.79a1 1 0 1 0-1.42-1.42l-1.5 1.5a1 1 0 0 0 0 1.42ZM12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m0 18a8 8 0 1 1 8-8a8 8 0 0 1-8 8m2.36-5.77a3.76 3.76 0 0 1-4.72 0a1 1 0 0 0-1.28 1.54a5.68 5.68 0 0 0 7.28 0a1 1 0 1 0-1.28-1.54"/></svg>
+              </div>
+              
+              <div class="flex justify-center space-x-4">
+                <button onclick="window.location = 'weekly.php'" class="bg-pink-600 text-white px-6 py-2 rounded-full hover:bg-pink-700 transition-colors">
+                  Недельный прогресс
+                </button>
+              </div>
+
+            </div>
+            <div class="bg-pink-100 rounded-2xl p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold">Дневной стрик</h3>
+                <span class="text-pink-600 font-bold">🔥 12 дней</span>
+              </div>
+
+              <div class="flex justify-between items-center">
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">П</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">В</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">С</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-green-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">Ч</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">П</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">С</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-green-600"></div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                  <div class="w-10 h-10 rounded-full bg-pink-200 flex items-center justify-center mb-2">
+                    <span class="text-pink-600 font-bold">В</span>
+                  </div>
+                  <div class="w-2 h-2 rounded-full bg-green-600"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Calendar -->
+            <div>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
+      <!-- Mobile dropdown (visible on small screens) -->
+      <div class="w-full mb-4 sm:hidden">
+        <select id="day-select" class="w-full p-2 border rounded-lg bg-white text-gray-900">
+          <option value="mon">Monday, 14</option>
+          <option value="tue">Tuesday, 15</option>
+          <option value="wed">Wednesday, 16</option>
+          <option value="thu">Thursday, 17</option>
+          <option value="fri">Friday, 18</option>
+          <option value="sat">Saturday, 19</option>
+          <option value="sun">Sunday, 20</option>
+        </select>
+      </div>
+      
+      <!-- Days row (hidden on small screens, visible on medium and up) -->
+      <div class="hidden sm:flex sm:space-x-2 md:space-x-4 overflow-x-auto pb-2 w-full">
+        <div class="calendar-day bg-gray-900 text-white rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-800 transition-all" onclick="selectDay(this, 'mon')">
+          <span class="text-[10px]">ПН</span>
+          <span class="font-bold text-[12px]">14</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'tue')">
+          <span class="text-[10px]">ВТ</span>
+          <span class="font-bold text-[12px]">15</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'wed')">
+          <span class="text-[10px]">СР</span>
+          <span class="font-bold text-[12px]">16</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'thu')">
+          <span class="text-[10px]">ЧТ</span>
+          <span class="font-bold text-[12px]">17</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'fri')">
+          <span class="text-[10px]">ПТ</span>
+          <span class="font-bold text-[12px]">18</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'sat')">
+          <span class="text-[10px]">СБ</span>
+          <span class="font-bold text-[12px]">19</span>
+        </div>
+        <div class="calendar-day bg-white text-gray-900 rounded-full w-10 h-10 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all" onclick="selectDay(this, 'sun')">
+          <span class="text-[10px]">ВС</span>
+          <span class="font-bold text-[12px]">20</span>
+        </div>
+      </div>
+    </div>
+
+
+
+      <script>
+    function selectDay(element, day) {
+      // Remove selected class from all days
+      document.querySelectorAll('.calendar-day').forEach(el => {
+        el.classList.remove('bg-gray-900', 'text-white');
+        el.classList.add('bg-white', 'text-gray-900');
+      });
+      
+      // Add selected class to clicked day
+      element.classList.remove('bg-white', 'text-gray-900');
+      element.classList.add('bg-gray-900', 'text-white');
+      
+      // Update the dropdown for mobile view
+      document.getElementById('day-select').value = day;
+      
+      // Here you could load time slots for the selected day
+      console.log('Selected day:', day);
+    }
+    
+    // Handle mobile dropdown change
+    document.getElementById('day-select').addEventListener('change', function() {
+      const day = this.value;
+      const index = Array.from(this.options).findIndex(option => option.value === day);
+      const dayElements = document.querySelectorAll('.calendar-day');
+      if (dayElements[index]) {
+        selectDay(dayElements[index], day);
+      }
+    });
+  </script>
+
+              <!-- Daily Stats -->
+              <div class="hidden mb-4">
+                <div class="flex justify-between items-center mb-4">
+                  <h3 class="font-bold text-lg">Дневная статистика</h3>
+                  <button class="text-gray-500">
+                    <i class="fas fa-ellipsis-h"></i>
+                  </button>
+                </div>
+                
+                <div id="dailyStats" class="transform transition-all duration-500">
+                  <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-xl transform transition-all duration-500 hover:scale-105">
+                      <div class="text-blue-600 text-sm mb-1">Вопросов</div>
+                      <div class="text-2xl font-bold animate-fade-in" id="questionsSolved">0</div>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl transform transition-all duration-500 hover:scale-105">
+                      <div class="text-green-600 text-sm mb-1">Заданий</div>
+                      <div class="text-2xl font-bold animate-fade-in" id="accuracy">0</div>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-xl transform transition-all duration-500 hover:scale-105">
+                      <div class="text-purple-600 text-sm mb-1">Затраченно</div>
+                      <div class="text-2xl font-bold animate-fade-in" id="timeSpent">0ч.</div>
+                    </div>
+                  </div>
+
+                  <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <canvas id="dailyChart" class="w-full h-64"></canvas>
+                  </div>
+                </div>
+
+              </div>
+
+              <script>
+                async function getWeekStats() {
+
+                }
+
+                const dayData = {
+                  mon: {
+                    questionsSolved: 45,
+                    accuracy: 92,
+                    timeSpent: '2.5h',
+                    hourlyData: [5, 8, 12, 10, 6, 4]
+                  },
+                  tue: {
+                    questionsSolved: 38,
+                    accuracy: 88,
+                    timeSpent: '2h',
+                    hourlyData: [4, 6, 10, 12, 4, 2]
+                  },
+                  wed: {
+                    questionsSolved: 52,
+                    accuracy: 95,
+                    timeSpent: '3h',
+                    hourlyData: [6, 10, 14, 12, 8, 2]
+                  },
+                  thu: {
+                    questionsSolved: 41,
+                    accuracy: 89,
+                    timeSpent: '2.2h',
+                    hourlyData: [4, 8, 10, 9, 6, 4]
+                  },
+                  fri: {
+                    questionsSolved: 49,
+                    accuracy: 93,
+                    timeSpent: '2.8h',
+                    hourlyData: [5, 9, 13, 11, 7, 4]
+                  }
+                };
+
+                let currentChart = null;
+
+                function selectDay(element, day) {
+                  // Reset all days to white background
+                  document.querySelectorAll('.calendar-day').forEach(el => {
+                    el.classList.remove('bg-gray-900', 'text-white');
+                    el.classList.add('bg-white', 'text-gray-900');
+                  });
+
+                  // Set selected day to black
+                  element.classList.remove('bg-white', 'text-gray-900');
+                  element.classList.add('bg-gray-900', 'text-white');
+
+                  showDayStats(day);
+                }
+
+                function animateValue(element, start, end, duration) {
+                  let startTimestamp = null;
+                  const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const currentValue = Math.floor(progress * (end - start) + start);
+                    element.textContent = element.id === 'accuracy' ? currentValue : 
+                                        element.id === 'timeSpent' ? currentValue/10 + 'h' : 
+                                        currentValue;
+                    if (progress < 1) {
+                      window.requestAnimationFrame(step);
+                    }
+                  };
+                  window.requestAnimationFrame(step);
+                }
+
+                function showDayStats(day) {
+                  const stats = document.getElementById('dailyStats');
+                  
+                  // Animate stats
+                  animateValue(document.getElementById('questionsSolved'), 0, dayData[day].questionsSolved, 1000);
+                  animateValue(document.getElementById('accuracy'), 0, dayData[day].accuracy, 1000);
+                  animateValue(document.getElementById('timeSpent'), 0, parseFloat(dayData[day].timeSpent)*10, 1000);
+
+                  if (currentChart) {
+                    currentChart.destroy();
+                  }
+
+                  currentChart = new Chart(document.getElementById('dailyChart'), {
+                    type: 'line',
+                    data: {
+                      labels: ['9AM', '10AM', '11AM', '12PM', '1PM', '2PM'],
+                      datasets: [{
+                        label: 'Вопросов в час',
+                        data: dayData[day].hourlyData,
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                      }]
+                    },
+                    options: {
+                      responsive: true,
+                      animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                      },
+                      plugins: {
+                        legend: {
+                          display: false
+                        }
+                      },
+                      scales: {
+                        y: {
+                          beginAtZero: true,
+                          grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                          }
+                        },
+                        x: {
+                          grid: {
+                            display: false
+                          }
+                        }
+                      }
+                    }
+                  });
+                }
+
+                // Show Monday stats by default
+                document.querySelector('.calendar-day').click();
+              </script>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+{include '../../partials/footer.latte'}

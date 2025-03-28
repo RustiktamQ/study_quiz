@@ -1,0 +1,509 @@
+<!-- текущий header -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-learning Dashboard</title>
+  <link rel="stylesheet" href="accord/stylesheet.css">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+    @import url(https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Nunito'!important;
+      font-weight: 900;
+    }
+    .inter {
+      font-family: 'Inter'!important;
+    }
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #e9e9e9;
+    }
+    .progress-fill {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #000;
+    }
+    .card-stats {
+      min-height: 130px;
+    }
+    .avatar-robot {
+      background-color: #ffd7e0;
+    }
+    .calendar-day {
+      width: 40px;
+      height: 40px;
+    }
+    .calendar-item {
+      border-radius: 14px;
+    }
+
+  </style>
+  
+</head>
+<body class="font-sans">
+  <div class="container mx-auto p-4">
+    <div class="bg-white rounded-3xl p-6 border max-w-7xl mx-auto">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-8">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-300 rounded-full flex items-center justify-center mr-4">
+            <a href="{$ROOT_URL}">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-800" width="32" height="32" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.25 9.25V6L8 2.75L1.75 6L8 9.25l3.25-1.5v3.5c0 1-1.5 2-3.25 2s-3.25-1-3.25-2v-3.5"/></svg>
+            </a>  
+          </div>
+          <nav class="hidden xl:flex">
+            <a href="{$ROOT_URL}dashboard/student" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                Панель
+            </a>
+            <a href="{$ROOT_URL}dashboard/student/learn" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg>
+                Изучать
+            </a>
+            <a href="{$ROOT_URL}dashboard/student/teacher" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+                Мой учитель
+            </a>
+            
+            <a href="{$ROOT_URL}dashboard/student/analytics" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M20.5 15.828c-2.501 5.928-10.636 7.656-15.299 3.036C.63 14.334 2.045 6.13 8.057 3.5"/><path d="M17.683 12.5c1.888 0 2.832 0 3.441-.845c.023-.032.06-.088.081-.121c.548-.887.266-1.568-.299-2.93a10.18 10.18 0 0 0-5.51-5.51c-1.362-.565-2.043-.847-2.93-.3c-.033.021-.09.06-.121.082c-.845.61-.845 1.553-.845 3.44v2.111c0 1.92 0 2.88.596 3.477c.597.596 1.557.596 3.476.596z"/></g></svg>
+                Аналитика
+            </a>
+            <a href="{$ROOT_URL}dashboard/student/settings" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                Настройки
+            </a>
+            <a href="#" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+              <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258">
+                <defs>
+                    <radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)">
+                      <stop offset="0%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset=".01%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset="30.022%" stop-color="oklch(0.723 0.219 149.579)"/>
+                      <stop offset="54.552%" stop-color="oklch(0.648 0.2 131.684)"/>
+                      <stop offset="82.537%" stop-color="oklch(0.527 0.154 150.069)"/>
+                      <stop offset="100%" stop-color="oklch(0.448 0.119 151.328)"/>
+                    </radialGradient>
+                    <radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)">
+                      <stop offset="0%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset=".01%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset="30.022%" stop-color="oklch(0.723 0.219 149.579)"/>
+                      <stop offset="54.552%" stop-color="oklch(0.648 0.2 131.684)"/>
+                      <stop offset="82.537%" stop-color="oklch(0.527 0.154 150.069)"/>
+                      <stop offset="100%" stop-color="oklch(0.448 0.119 151.328)"/>
+                    </radialGradient>
+                </defs>
+                <path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/>
+                <path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/>
+              </svg>
+              AI
+            </a>
+          </nav>
+        </div>
+        <div class="flex items-center">
+          <div class="mr-6 text-right hidden md:block">
+            <p class="font-medium">Привет, {$firstname}</p>
+            <div class="w-3 h-0.5 bg-green-500 rounded-full ml-auto"></div>
+          </div>
+
+          <div class="relative">
+            <button id="burgerButton" class="w-10 xl:hidden flex mr-3 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+              <svg class="text-gray-600 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16M4 12h16M4 19h16" color="currentColor"/></svg>
+            </button>
+            
+            <div id="burgerDropdown" class="font-['Inter'] font-normal absolute left-0 mt-2 border z-50 py-2 w-40 bg-white rounded-lg shadow-lg hidden opacity-0 transform -translate-y-2 transition-all duration-300">
+              <a href="{$ROOT_URL}dashboard/student" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                  Панель
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/learn" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg>
+                  Изучать
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/teacher" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+                  Мой учитель
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/analytics" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M20.5 15.828c-2.501 5.928-10.636 7.656-15.299 3.036C.63 14.334 2.045 6.13 8.057 3.5"/><path d="M17.683 12.5c1.888 0 2.832 0 3.441-.845c.023-.032.06-.088.081-.121c.548-.887.266-1.568-.299-2.93a10.18 10.18 0 0 0-5.51-5.51c-1.362-.565-2.043-.847-2.93-.3c-.033.021-.09.06-.121.082c-.845.61-.845 1.553-.845 3.44v2.111c0 1.92 0 2.88.596 3.477c.597.596 1.557.596 3.476.596z"/></g></svg>
+                  Аналитика
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/settings" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                  Настройки
+                </div>
+              </a><hr>
+              <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258"><defs><radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient><radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient></defs><path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/><path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/></svg>
+                AI
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <button class="w-10  mr-3 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+            <svg class="text-gray-600 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M2.53 14.77c-.213 1.394.738 2.361 1.902 2.843c4.463 1.85 10.673 1.85 15.136 0c1.164-.482 2.115-1.45 1.902-2.843c-.13-.857-.777-1.57-1.256-2.267c-.627-.924-.689-1.931-.69-3.003C19.525 5.358 16.157 2 12 2S4.475 5.358 4.475 9.5c0 1.072-.062 2.08-.69 3.003c-.478.697-1.124 1.41-1.255 2.267"/><path d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3"/></g></svg>
+          </button>
+          
+          <div class="relative font-['Inter'] font-normal ">
+            <div id="profileButton" class="w-10 h-10 rounded-full bg-orange-200 overflow-hidden cursor-pointer">
+              <img src="{$picture}" alt="Profile" class="w-full h-full object-cover">
+            </div>
+            
+            <div id="profileDropdown" class="absolute right-0 mt-2 border z-50 w-48 bg-white rounded-lg shadow-lg py-2 hidden opacity-0 transform -translate-y-2 transition-all duration-300">
+              <a href="{$ROOT_URL}dashboard/student/settings" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-3" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                  Настройки
+                </div>
+              </a>
+              <hr class="my-2">
+              <a href="{$ROOT_URL}logout" class="block px-4 py-2 text-red-600 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-3" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.023 5.5a9 9 0 1 0 9.953 0M12 2v8" color="currentColor"/></svg>
+                  Выйти
+                </div>
+              </a>
+            </div>
+          </div>
+
+          
+        </div>
+      </header>
+      <script>
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const burgerButton = document.getElementById('burgerButton');
+        const burgerDropdown = document.getElementById('burgerDropdown');
+        let isProfileDropdownOpen = false;
+        let isBurgerDropdownOpen = false;
+
+        profileButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isProfileDropdownOpen = !isProfileDropdownOpen;
+          
+          if (isProfileDropdownOpen) {
+            // Close burger dropdown if open
+            if (isBurgerDropdownOpen) {
+              closeBurgerDropdown();
+            }
+            
+            profileDropdown.classList.remove('hidden');
+            setTimeout(() => {
+              profileDropdown.classList.remove('opacity-0', '-translate-y-2');
+            }, 50);
+          } else {
+            closeProfileDropdown();
+          }
+        });
+
+        burgerButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isBurgerDropdownOpen = !isBurgerDropdownOpen;
+          
+          if (isBurgerDropdownOpen) {
+            // Close profile dropdown if open
+            if (isProfileDropdownOpen) {
+              closeProfileDropdown();
+            }
+            
+            burgerDropdown.classList.remove('hidden');
+            setTimeout(() => {
+              burgerDropdown.classList.remove('opacity-0', '-translate-y-2');
+            }, 50);
+          } else {
+            closeBurgerDropdown();
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (isProfileDropdownOpen && !profileDropdown.contains(e.target) && e.target !== profileButton) {
+            closeProfileDropdown();
+          }
+          
+          if (isBurgerDropdownOpen && !burgerDropdown.contains(e.target) && e.target !== burgerButton) {
+            closeBurgerDropdown();
+          }
+        });
+
+        function closeProfileDropdown() {
+          isProfileDropdownOpen = false;
+          profileDropdown.classList.add('opacity-0', '-translate-y-2');
+          setTimeout(() => {
+            profileDropdown.classList.add('hidden');
+          }, 300);
+        }
+
+        function closeBurgerDropdown() {
+          isBurgerDropdownOpen = false;
+          burgerDropdown.classList.add('opacity-0', '-translate-y-2');
+          setTimeout(() => {
+            burgerDropdown.classList.add('hidden');
+          }, 300);
+        }
+      </script>
+
+    <style>
+        /* Keep existing styles */
+        .option-button:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .option-button:focus {
+            outline: none;
+            /* Maintain focus style even if disabled for consistency */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+        }
+         .option-button {
+             transition: all 0.2s ease-in-out;
+         }
+        .chat-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .chat-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Add styles for answered state */
+         .correct-answer {
+             border-color: #10B981 !important; /* Tailwind emerald-500 */
+             background-color: #A7F3D0 !important; /* Tailwind emerald-200 */
+             color: #065F46 !important; /* Tailwind emerald-800 */
+             transform: scale(1.02);
+             box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4); /* emerald-500 @ 40% */
+         }
+         .incorrect-answer {
+             border-color: #E5E7EB !important; /* Tailwind gray-200 */
+             background-color: #F9FAFB !important; /* Tailwind gray-50 */
+             color: #9CA3AF !important; /* Tailwind gray-400 */
+             opacity: 0.7;
+         }
+    </style>
+
+<div class="">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8"> 
+
+        <div class="lg:col-span-2">
+            <div class="border-4 border-dashed border-green-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+                <div class="quiz-container max-w-3xl w-full">
+                    <div class="question mb-8 md:mb-10">
+
+                        <div class="mt-6 text-center p-4 mb-8 md:mb-10 bg-green-100 border border-green-300 rounded-lg shadow-inner">
+                        <p class="text-lg font-semibold text-green-800 flex items-center justify-center gap-2">
+
+                            Верно! Отлично! 🎉
+                        </p>
+                    </div>
+                        <div class="options grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+
+                            <button class="option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed" disabled>
+                                3
+                            </button>
+
+                             <button class="option-button correct-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed" disabled>
+                                4
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 text-emerald-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </button>
+
+                             <button class="option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed" disabled>
+                                22
+                            </button>
+
+                            <button class="option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed" disabled>
+                                5
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-8 md:mt-10">
+                         <button class="w-full sm:w-auto px-16 py-3 bg-green-600 text-white font-semibold rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg flex items-center justify-center gap-2">
+                            Следующий вопрос
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col">
+             <div class="border border-gray-200 bg-white rounded-2xl p-4 md:p-6 flex flex-col flex-grow h-full">
+                <div class="flex-shrink-0">
+                    <div class="space-y-4 mb-4">
+                        <div class="flex items-center">
+                            <svg class="mr-2 size-5 md:size-6 my-auto flex-shrink-0" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258">
+                                <defs>
+                                    <radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)">
+                                        <stop offset="0%" stop-color="#1BA1E3"/>
+                                        <stop offset=".01%" stop-color="#1BA1E3"/>
+                                        <stop offset="30.022%" stop-color="#5489D6"/>
+                                        <stop offset="54.552%" stop-color="#9B72CB"/>
+                                        <stop offset="82.537%" stop-color="#D96570"/>
+                                        <stop offset="100%" stop-color="#F49C46"/>
+                                    </radialGradient>
+                                    <radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)">
+                                        <stop offset="0%" stop-color="#1BA1E3"/>
+                                        <stop offset=".01%" stop-color="#1BA1E3"/>
+                                        <stop offset="30.022%" stop-color="#5489D6"/>
+                                        <stop offset="54.552%" stop-color="#9B72CB"/>
+                                        <stop offset="82.537%" stop-color="#D96570"/>
+                                        <stop offset="100%" stop-color="#F49C46"/>
+                                    </radialGradient>
+                                </defs>
+                                <path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/>
+                                <path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/>
+                            </svg>
+                            <h3 class="font-semibold text-base md:text-lg text-gray-800 my-auto">ИИ Ментор</h3>
+                            <div class="font-medium my-auto py-0.5 bg-green-100 text-green-700 border border-green-300 text-xs px-3 rounded-full ml-3">БЕТА ТЕСТ</div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+
+                 <div class="space-y-5 flex-grow overflow-y-auto pr-2 chat-scroll min-h-[200px]">
+                    <div class="ai-response flex gap-x-2 sm:gap-x-3">
+                        <img src="chatgpt.jpg" class="size-6 rounded-full flex-shrink-0 object-cover" alt="AI Avatar">
+                         <div class="bg-gray-100 rounded-lg rounded-tl-none p-3 max-w-[85%]">
+                             <p class="text-sm text-gray-800">
+                             Привет, [Пользователь]! Застряли на этой задаче? Не стесняйтесь спрашивать меня о чем угодно по поводу вопроса или математики в целом! 😊 Помните, что думать об этом - первый шаг!
+                             </p>
+                         </div>
+                     </div>
+
+                     <div class="user-response flex justify-end gap-x-2 sm:gap-x-3">
+                          <div class="bg-blue-500 text-white rounded-lg rounded-br-none p-3 max-w-[85%]">
+                             <p class="text-sm">
+                             Ух, цифры! Не подскажете? Пожалуйста 🙏
+                             </p>
+                          </div>
+                          <img src="img.jpg" class="size-6 rounded-full flex-shrink-0 object-cover" alt="User Avatar">
+                     </div>
+
+                    <div class="ai-response flex gap-x-2 sm:gap-x-3">
+                         <img src="chatgpt.jpg" class="size-6 rounded-full flex-shrink-0 object-cover" alt="AI Avatar">
+                         <div class="bg-gray-100 rounded-lg rounded-tl-none p-3 max-w-[85%]">
+                            <p class="text-sm text-gray-800">
+                            Хорошо, хорошо! Время подсказок! Подумайте о счете на пальцах. Если вы держите 2 пальца на одной руке и еще 2 на другой, сколько пальцев в сумме? Попробуйте! 😉
+                            </p>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div class="mt-4 relative flex-shrink-0">
+                     <input type="text" class="py-2.5 sm:py-3 px-4 pr-12 block w-full border border-gray-300 outline-none transition rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Спроси о чём угодно...">
+                     <button class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1.5 rounded-md bg-green-500 hover:bg-green-600 transition-colors text-white flex items-center justify-center">
+
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                         </svg>
+                     </button>
+                 </div>
+             </div>
+         </div>
+
+    </div>
+
+     <div class="mt-6 lg:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
+
+       <div class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl border border-blue-200 shadow-sm">
+         <div class="text-indigo-500 mb-2">
+
+            <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M13.5 8a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0M8.75 4.5a.75.75 0 0 0-1.5 0V8a.75.75 0 0 0 .3.6l2 1.5a.75.75 0 1 0 .9-1.2l-1.7-1.275z" clip-rule="evenodd"/></svg>
+         </div>
+         <p class="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-wider">Time</p>
+         <p class="text-xl sm:text-2xl font-bold text-gray-800" id="timer">00:05:32</p>
+       </div>
+
+       <div class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl border border-green-200 shadow-sm">
+         <div class="text-green-500 mb-2">
+
+            <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="m9.194 5l.351.873l.94.064l3.197.217l-2.46 2.055l-.722.603l.23.914l.782 3.108l-2.714-1.704L8 10.629l-.798.5l-2.714 1.705l.782-3.108l.23-.914l-.723-.603l-2.46-2.055l3.198-.217l.94-.064l.35-.874L8 2.025zm-7.723-.292l3.943-.268L6.886.773C7.29-.231 8.71-.231 9.114.773l1.472 3.667l3.943.268c1.08.073 1.518 1.424.688 2.118L12.185 9.36l.964 3.832c.264 1.05-.886 1.884-1.802 1.31L8 12.4l-3.347 2.101c-.916.575-2.066-.26-1.802-1.309l.964-3.832L.783 6.826c-.83-.694-.391-2.045.688-2.118" clip-rule="evenodd"/></svg>
+         </div>
+         <p class="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-wider">Score</p>
+         <p class="text-xl sm:text-2xl font-bold text-gray-800">
+           <span id="current-score">85</span><span class="text-base font-normal text-gray-600">/100</span>
+         </p>
+       </div>
+
+       <div class="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-purple-50 to-pink-100 rounded-xl border border-purple-200 shadow-sm">
+         <div class="text-purple-500 mb-2">
+
+            <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M8 13.5a5.5 5.5 0 1 0 0-11a5.5 5.5 0 0 0 0 11M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14M6.44 4.54c.43-.354.994-.565 1.56-.565c1.217 0 2.34.82 2.34 2.14c0 .377-.078.745-.298 1.1c-.208.339-.513.614-.875.867c-.217.153-.325.257-.379.328c-.038.052-.038.07-.038.089a.75.75 0 0 1-1.5 0c0-.794.544-1.286 1.057-1.645c.28-.196.4-.332.458-.426a.54.54 0 0 0 .075-.312c0-.3-.244-.641-.84-.641a1 1 0 0 0-.608.223c-.167.138-.231.287-.231.418a.75.75 0 0 1-1.5 0c0-.674.345-1.22.78-1.577M8 12a1 1 0 1 0 0-2a1 1 0 0 0 0 2" clip-rule="evenodd"/></svg>
+         </div>
+         <p class="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-wider">QUESTIONS</p>
+         <p class="text-xl sm:text-2xl font-bold text-gray-800">
+           <span id="answers-completed">8</span>
+         </p>
+       </div>
+     </div>
+
+</div>
+
+</div>
+<!-- ========== FOOTER ========== -->
+<footer class="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+  <!-- Grid -->
+  <div class="text-center">
+    <div>
+      <a class="flex-none text-xl font-semibold text-black" href="#" aria-label="Brand">Study</a>
+    </div>
+    <!-- End Col -->
+
+    <div class="mt-3">
+      <p class="text-gray-500">We're part of the <a class="text-blue-600 decoration-2 hover:underline focus:outline-hidden focus:underline font-medium" href="https://my.eduleap.org/?s=studydashboard">eduleap.org</a> family.</p>
+      <p class="text-gray-500">
+        © 2025 EduLeap Labs.
+      </p>
+    </div>
+
+    <!-- Social Brands -->
+    <div class="mt-3 space-x-2">
+      <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" href="#">
+        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+        </svg>
+      </a>
+      <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" href="#">
+        <svg class="shrink-0 size-3.5" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+      </a>
+      <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" href="#">
+        <svg class="size-3.5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m11.985 15.408l3.242 3.686c1.2 1.365 1.801 2.048 2.43 1.881c.628-.166.844-1.064 1.275-2.861l2.39-9.968c.665-2.768.997-4.151.259-4.834s-2.017-.175-4.575.84L5.14 8.865c-2.046.813-3.069 1.219-3.134 1.917a1 1 0 0 0 0 .214c.063.699 1.084 1.108 3.128 1.927c.925.371 1.388.557 1.72.912q.056.06.108.124c.306.38.436.88.697 1.876l.489 1.867c.253.97.38 1.456.713 1.522s.622-.336 1.201-1.141zm0 0l-.317-.33c-.362-.378-.543-.566-.543-.8s.18-.423.543-.8l3.573-3.724" color="currentColor"/></svg>
+      </a>
+    </div>
+    <!-- End Social Brands -->
+  </div>
+  <!-- End Grid -->
+</footer>
+<!-- ========== END FOOTER ========== -->
+        
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </body>
+</html>

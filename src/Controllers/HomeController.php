@@ -70,29 +70,130 @@ class HomeController extends BaseController {
 
     }
 
-    public function showDashboard()
+    public function showStudentDashboard()
     {
-        $isAuthorized = isset($_COOKIE['teacher']);
-        $user = R::findOne('teachers', 'email = ?', [$_COOKIE['teacher']['email']]);
+        $this->checkAuthorization();
+        $user = $this->user;
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-        if (isset($_COOKIE['teacher'])){
-            $this->renderPartial('dashboard/dashboard', [
-                'lang' => $this->lang,
-                'APP_NAME' => $_ENV['APP_NAME'],
-                'ROOT_URL' => $root,
-                'domain' => $_ENV['ROOT_URL'],
-                'fullname' => $user->name,
-                'picture' => "https://vk.com/images/wall/deleted_avatar_50.png",
-                'isAuthorized' => $isAuthorized
-            ]);
-        } elseif (isset($_COOKIE['user'])) {
-            header("Location: /learn");
-            exit;
-        } else {
-            header("Location: /auth/signup");
-            exit;
-        }
+
+        $progress = R::findOne('progress', 'student_id = ? AND completed = 0 ORDER BY start_time DESC', [$user->id]);
+        $quiz = R::findOne('quizzes', 'id = ?', [$progress->quiz_id]);
+
+
+        $statistics = R::getRow(
+            'SELECT SUM(completed) AS quizzes_completed, 
+                    SUM(correct_answers) AS answers_completed, 
+                    SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
+             FROM progress 
+             WHERE student_id = ? 
+             GROUP BY student_id',
+            [$user->id]
+        );
+
+        $statistics['time_spent']= $this->secondsToHours($statistics['time_spent']);
+
+        $this->renderPartial('dashboard/student/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'quiz' => $quiz,
+            'progress' => $progress,
+            'statistics' => $statistics
+        ]);
+    }
+
+    public function showStudentTeacher()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $teacher = R::findOne('teachers', 'token = ?', [$user->token]);
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $teacher->join_date = $this->formatDate($teacher->join_date);
+        $this->renderPartial('dashboard/student/teacher', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'teacher' => $teacher
+        ]);
+    }
+
+    public function showStudentLearn()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $categories = R::getAll(
+            'SELECT categories.name, COUNT(*) as quantity FROM quizzes
+            JOIN categories ON categories.id = category_id
+            GROUP BY categories.name',
+        );
+
+        $this->renderPartial('dashboard/student/learn', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'categories' => $categories
+        ]);
+    }
+
+    public function showStudentSettings()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/student/settings', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'user' => $user
+        ]);
+    }
+
+    public function showStudentAnalytics()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/student/analytics', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+        ]);
     }
 
     public function showLearn()
@@ -120,6 +221,8 @@ class HomeController extends BaseController {
                 'APP_NAME' => $_ENV['APP_NAME'],
                 'ROOT_URL' => $root,
                 'fullname' => $user->name,
+            'firstname' => $user->firstname,
+                'firstname' => $user->firstname,
                 'picture' => $picture,
                 'error_message' => 'Вы не ввели токен'
             ]);
@@ -132,17 +235,21 @@ class HomeController extends BaseController {
                 'APP_NAME' => $_ENV['APP_NAME'],
                 'ROOT_URL' => $root,
                 'fullname' => $user->name,
+            'firstname' => $user->firstname,
+                'firstname' => $user->firstname,
                 'picture' => $picture,
                 'error_message' => 'Преподаватель не найден или токен неверный.'
             ]);
             return;
         }    
         if ($user->token_confirmed == 0) {
-            $this->renderPartial('learn/waiting', [
+            $this->renderPartial('confirmation', [
                 'lang' => $this->lang,
                 'APP_NAME' => $_ENV['APP_NAME'],
                 'ROOT_URL' => $root,
                 'fullname' => $user->name,
+            'firstname' => $user->firstname,
+                'firstname' => $user->firstname,
                 'picture' => $picture,
                 'error_message' => 'Токен преподавателя не подтвержден.'
             ]);
@@ -156,6 +263,8 @@ class HomeController extends BaseController {
                 'ROOT_URL' => $root,
                 'domain' => $_ENV['ROOT_URL'],
                 'fullname' => $user->name,
+            'firstname' => $user->firstname,
+                'firstname' => $user->firstname,
                 'picture' => $user->picture,
                 'isAuthorized' => $isAuthorized,
                 'userid' => $user->id,
@@ -217,6 +326,7 @@ class HomeController extends BaseController {
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
+            'firstname' => $user->firstname,
             'picture' => $user->picture,
             'userid' => $user->id,
             'quizid' => $quizid,
@@ -228,6 +338,7 @@ class HomeController extends BaseController {
             'notifications' => $notificationCollection
         ]); 
     }
+
     public function showCompleteQuiz($params)
     {
         $isAuthorized = isset($_COOKIE['user']);
@@ -269,6 +380,7 @@ class HomeController extends BaseController {
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
+            'firstname' => $user->firstname,
             'picture' => $user->picture,
             'isAuthorized' => $isAuthorized,
             'userid' => $user->id,
@@ -380,6 +492,30 @@ class HomeController extends BaseController {
         ]); 
     }
 
+    public function showTeacherDashboard()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $teacher = R::findOne('teachers', 'token = ?', [$user->token]);
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $teacher->join_date = $this->formatDate($teacher->join_date);
+
+        $this->renderPartial('dashboard/teacher/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'teacher' => $teacher
+        ]);
+    }
+
     private function generateNotificationLink(array $notification): string
     {
         $baseUrl = $this->getBaseUrl();
@@ -426,5 +562,19 @@ class HomeController extends BaseController {
             items: $notificationDTOs,
             unreadCount: count(array_filter($notificationDTOs, fn($n) => !$n->isRead))
         );
+    }
+
+    private function secondsToHours($seconds) {
+        $hours = $seconds / 3600;
+        return number_format($hours, 2, '.', '');
+    }
+
+    private function formatDate($date) {
+        $dt = new \DateTime($date);
+        $day = $dt->format('d');
+        $month = $dt->format('F');
+        $year = $dt->format('Y');
+    
+        return "$day $month, $year";
     }
 }
