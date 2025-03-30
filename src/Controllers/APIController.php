@@ -5,27 +5,20 @@ use RedBeanPHP\R;
 class APIController extends BaseController {
     public function getAllQuizzes($params) {
         header('Content-Type: application/json; charset=utf-8');
-        $studentId = $params['student_id'];
-        $quizzes = R::findAll('quizzes');
-        $progress = R::findAll('progress', 'student_id = ?', [$studentId]);
-        $progressMap = [];
-        foreach ($progress as $p) {
-            $progressMap[$p->quiz_id] = [
-                'completed' => (bool)$p->completed,
-                'current_question' => $p->current_question,
-            ];
+
+        $res = R::getAll(
+            'SELECT quizzes.id, quizzes.name as quiz, categories.name as subject, sub_categories.name as category FROM quizzes
+             JOIN categories ON category_id = categories.id 
+             JOIN sub_categories ON sub_category_id = sub_categories.id',
+        );
+
+        if (!$res) {
+            http_response_code(404);
+            echo json_encode(['error' => 'No questions found for this quiz']);
+            return;
         }
-        $result = [];
-        foreach ($quizzes as $quiz) {
-            $quizId = $quiz->id;
-            $result[] = [
-                'id' => $quizId,
-                'name' => $quiz->name,
-                'completed' => $progressMap[$quizId]['completed'] ?? false,
-                'current_question' => $progressMap[$quizId]['current_question'] ?? null,
-            ];
-        }
-        echo json_encode(['quizzes' => $result]);
+
+        echo json_encode($res, JSON_PRETTY_PRINT);
     }
     
     public function startQuiz($params) {
@@ -58,7 +51,7 @@ class APIController extends BaseController {
             $progress->current_question = $startQuestion->question_id;
             $progress->score = 0;
             $progress->completed = 0;
-            $progress->correct_answers = 0;
+            $progress->answered = 0;
             $progress->start_time = date('Y-m-d H:i:s');
             R::store($progress);
             $currentQuestionId = $startQuestion->question_id;
@@ -127,7 +120,7 @@ class APIController extends BaseController {
         $isCorrect = $answer === $question->correct_answer;
 
         if ($isCorrect) {
-            $progress->correct_answers++;
+            $progress->answered++;
             $newScore = $this->calculateScore($progress);
         } else {
             $penalty = $this->calculatePenalty($progress->score);
@@ -145,6 +138,7 @@ class APIController extends BaseController {
         if (is_null($nextQuest) || $progress->score >= 100) {
             $this->notifyTeacher($quizId, $studentId, "teachers");
             $progress->completed = 1;
+            $progress->end_time = date('Y-m-d H:i:s');
             R::store($progress);
             echo json_encode([
                 'score' => $progress->score,
@@ -349,7 +343,7 @@ class APIController extends BaseController {
 
         $statistics = R::getRow(
             'SELECT SUM(completed) AS quizzes_completed, 
-                    SUM(correct_answers) AS answers_completed, 
+                    SUM(answered) AS answers_completed, 
                     SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
             FROM progress 
             WHERE student_id = ? 
@@ -361,7 +355,7 @@ class APIController extends BaseController {
     }
 
     private function calculateScore($progress) {
-        $correctCount = $progress->correct_answers;
+        $correctCount = $progress->answered;
         $correctScores = [
             0 => 0,
             1 => 10,

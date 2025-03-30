@@ -143,11 +143,11 @@ const main = function() {
 
         const answerData = await apiController.answerQuestion(userId, quizId, answer, quizData.question.id, quizTimer.getformatTime());
         quizData.answered++;
-
-        if (answerData.error) {
-            if (answerData.code == 30) {
-                window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
-            }
+        console.log(answerData);
+        if (answerData.code == 30) {
+            localStorage.removeItem(`quiz-${quizId}`);
+            localStorage.removeItem(`timerSec-${quizId}`);
+            location.reload();
         }
 
         if (answerData.status == 1) {

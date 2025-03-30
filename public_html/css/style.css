@@ -107,3 +107,58 @@ html, body {
 .hs-dropdown-menu {
 	transition: opacity 0.3s, margin 0.3s;
 }
+
+@keyframes gradientBG {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+	}
+	.tab-button {
+	transition: all 0.3s ease;
+	border-bottom: 3px solid transparent;
+	}
+	.tab-button.active {
+	border-bottom-color: #6366f1; /* indigo-500 */
+	color: #4338ca; /* indigo-700 */
+	font-weight: 600;
+	}
+	.tab-button:not(.active):hover {
+	border-bottom-color: #a5b4fc; /* indigo-300 */
+	color: #6366f1; /* indigo-500 */
+	}
+	.skill-category-heading {
+	background-image: linear-gradient(to right, #e0e7ff, #c7d2fe, #e0e7ff); /* Light indigo gradient */
+	}
+	.skill-link {
+	transition: all 0.15s ease-in-out;
+	border-left: 4px solid transparent;
+	}
+	.skill-link:hover {
+	background-color: #f0f9ff; /* sky-50 */
+	border-left-color: #38bdf8; /* sky-500 */
+	transform: translateX(5px);
+	color: #0369a1; /* sky-700 */
+	}
+	.skill-link svg {
+	transition: transform 0.2s ease;
+	}
+	.skill-link:hover svg {
+	transform: scale(1.1);
+	}
+	.status-icon {
+	transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+	}
+	.skill-link:hover .status-icon {
+	transform: scale(1.2) rotate(5deg);
+	}
+	.loading-spinner {
+	margin: 40px auto;
+	}
+	#tab-content-area {
+	opacity: 1;
+	transition: opacity 0.3s ease-in-out;
+	}
+	#tab-content-area.loading {
+	opacity: 0.5;
+	min-height: 200px;
+	}

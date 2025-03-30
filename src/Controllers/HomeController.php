@@ -79,12 +79,17 @@ class HomeController extends BaseController {
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
         $progress = R::findOne('progress', 'student_id = ? AND completed = 0 ORDER BY start_time DESC', [$user->id]);
-        $quiz = R::findOne('quizzes', 'id = ?', [$progress->quiz_id]);
-
+        if (!$progress) {
+            $quizId = 0;
+        } else {
+            $quizId = $progress->quiz_id;
+        }
+        
+        $quiz = R::findOne('quizzes', 'id = ?', [$quizId]);
 
         $statistics = R::getRow(
             'SELECT SUM(completed) AS quizzes_completed, 
-                    SUM(correct_answers) AS answers_completed, 
+                    SUM(answered) AS answers_completed, 
                     SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
              FROM progress 
              WHERE student_id = ? 
@@ -139,12 +144,6 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $categories = R::getAll(
-            'SELECT categories.name, COUNT(*) as quantity FROM quizzes
-            JOIN categories ON categories.id = category_id
-            GROUP BY categories.name',
-        );
-
         $this->renderPartial('dashboard/student/learn', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
@@ -152,8 +151,7 @@ class HomeController extends BaseController {
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
             'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'categories' => $categories
+            'picture' => $user->picture
         ]);
     }
 

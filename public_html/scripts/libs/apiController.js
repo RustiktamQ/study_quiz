@@ -37,11 +37,6 @@ export class ApiController {
                     elapsed_time
                 })
             });
-    
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-    
             return await response.json();
         } catch (error) {
             return error.message;
@@ -105,6 +100,25 @@ export class ApiController {
                     user_id,
                     data
                 })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async getAllQuizzes() {
+        try {
+            const response = await fetch(`${window.location.origin}/api/getAllQuizzes`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
     
             if (!response.ok) {
