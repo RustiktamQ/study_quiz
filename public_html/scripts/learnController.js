@@ -25,7 +25,7 @@ function getGradeContent(data) {
             return `
                 <a href="/quiz/${item.id}" class="skill-link flex items-center justify-between py-2 px-3 rounded-md text-gray-700 font-medium text-sm">
                     <span class="flex items-center gap-2">
-                        <span class="font-mono text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded"></span>
+                        <span class="font-mono text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">${item.id}.${item.grade}</span>
                         <span>${item.quiz}</span>
                     </span>
                     <span class="status-icon text-blue-500">
@@ -77,7 +77,12 @@ async function loadGradeContent(grade) {
     }
 
     await new Promise(resolve => setTimeout(resolve, 300 + Math.random() * 400));
-    const data = await apiController.getAllQuizzes();
+    const data = await apiController.getGradeQuizzes(grade);
+
+    if (data.error) {
+        showLoading(false);
+        return;
+    }
 
     const contentHTML = getGradeContent(data);
     skillsContainer.innerHTML = contentHTML;
@@ -94,4 +99,30 @@ tabsContainer.addEventListener('click', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadGradeContent(1);
+});
+
+
+/// search logic
+const searchInput = document.getElementById('skill-search-input');
+function handleSkillSearch() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const skillLinks = document.querySelectorAll('.skill-link');
+
+    skillLinks.forEach(link => {
+        const skillText = link.textContent.toLowerCase();
+        link.style.display = skillText.includes(searchTerm) ? 'flex' : 'none';
+    });
+}
+
+let searchTimeout;
+searchInput.addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => handleSkillSearch(), 300);
+});
+
+document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        searchInput.value = '';
+        handleSkillSearch();
+    });
 });

@@ -38,7 +38,7 @@ $r->addRoute('GET', '/quiz/{id}', ['HomeController', 'showQuiz']);
 $r->addRoute('GET', '/quiz/complete/{id}', ['HomeController', 'showCompleteQuiz']);
 $r->addRoute('POST', '/quiz/start', ['APIController', 'startQuiz']);
 $r->addRoute('POST', '/quiz/answer', ['APIController', 'answerQuestion']);
-$r->addRoute('GET', '/api/getAllQuizzes', ['APIController', 'getAllQuizzes']);
+$r->addRoute('GET', '/api/getAllQuizzes/{grade}', ['APIController', 'getGradeQuizzes']);
 $r->addRoute('GET', '/api/getQuiz/{quiz_id}', ['APIController', 'getQuiz']);
 $r->addRoute('POST', '/api/getQuestion', ['APIController', 'getQuestion']);
 $r->addRoute('POST', '/api/getNextQuestion', ['APIController', 'getNextQuestion']);

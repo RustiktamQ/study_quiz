@@ -112,18 +112,14 @@ export class ApiController {
         }
     }
 
-    async getAllQuizzes() {
+    async getGradeQuizzes(grade) {
         try {
-            const response = await fetch(`${window.location.origin}/api/getAllQuizzes`, {
+            const response = await fetch(`${window.location.origin}/api/getAllQuizzes/${grade}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-    
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
     
             return await response.json();
         } catch (error) {

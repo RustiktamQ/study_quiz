@@ -3,13 +3,21 @@ namespace App\Controllers;
 use RedBeanPHP\R; 
 
 class APIController extends BaseController {
-    public function getAllQuizzes($params) {
+    public function getGradeQuizzes($params) {
         header('Content-Type: application/json; charset=utf-8');
 
+        if (!isset($params['grade'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
         $res = R::getAll(
-            'SELECT quizzes.id, quizzes.name as quiz, categories.name as subject, sub_categories.name as category FROM quizzes
+            'SELECT quizzes.id, quizzes.name as quiz, categories.name as subject, sub_categories.name as category, grade
+             FROM quizzes
              JOIN categories ON category_id = categories.id 
-             JOIN sub_categories ON sub_category_id = sub_categories.id',
+             JOIN sub_categories ON sub_category_id = sub_categories.id
+             WHERE grade = ?', [$params['grade']]
         );
 
         if (!$res) {
