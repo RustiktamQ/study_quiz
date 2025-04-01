@@ -194,86 +194,6 @@ class HomeController extends BaseController {
         ]);
     }
 
-    public function showLearn()
-    {
-        $isAuthorized = isset($_COOKIE['user']);
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
-        
-        if (isset($_COOKIE['user'])) {
-            $user = json_decode($_COOKIE['user'], true);
-            if (isset($user['google_id'])) {
-                $user = R::findOne('users', 'google_id = ?', [$user['google_id']]);
-            }
-        }
-        
-        $picture = $user->picture ?? 'https://vk.com/images/wall/deleted_avatar_50.png';
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-
-        if (is_null($user->token)) {
-            $this->renderPartial('learn/confirm', [
-                'lang' => $this->lang,
-                'APP_NAME' => $_ENV['APP_NAME'],
-                'ROOT_URL' => $root,
-                'fullname' => $user->name,
-            'firstname' => $user->firstname,
-                'firstname' => $user->firstname,
-                'picture' => $picture,
-                'error_message' => 'Вы не ввели токен'
-            ]);
-            return;
-        }
-        $teacher = R::findOne('teachers', 'token = ?', [$user->token]);
-        if (!$teacher) {
-            $this->renderPartial('learn/confirm', [
-                'lang' => $this->lang,
-                'APP_NAME' => $_ENV['APP_NAME'],
-                'ROOT_URL' => $root,
-                'fullname' => $user->name,
-            'firstname' => $user->firstname,
-                'firstname' => $user->firstname,
-                'picture' => $picture,
-                'error_message' => 'Преподаватель не найден или токен неверный.'
-            ]);
-            return;
-        }    
-        if ($user->token_confirmed == 0) {
-            $this->renderPartial('confirmation', [
-                'lang' => $this->lang,
-                'APP_NAME' => $_ENV['APP_NAME'],
-                'ROOT_URL' => $root,
-                'fullname' => $user->name,
-            'firstname' => $user->firstname,
-                'firstname' => $user->firstname,
-                'picture' => $picture,
-                'error_message' => 'Токен преподавателя не подтвержден.'
-            ]);
-            return;
-        }
-        $notificationCollection = $this->getAllNotifs($user->id);
-        if (isset($_COOKIE['user'])){
-            $this->renderPartial('learn/index', [
-                'lang' => $this->lang,
-                'APP_NAME' => $_ENV['APP_NAME'],
-                'ROOT_URL' => $root,
-                'domain' => $_ENV['ROOT_URL'],
-                'fullname' => $user->name,
-            'firstname' => $user->firstname,
-                'firstname' => $user->firstname,
-                'picture' => $user->picture,
-                'isAuthorized' => $isAuthorized,
-                'userid' => $user->id,
-                'notifications' => $notificationCollection
-            ]);
-        } else {
-            header("Location: /auth/signup");
-            exit;
-        }
-    }
-
     public function showQuiz($params)
     {
         $this->checkAuthorization();
@@ -495,12 +415,8 @@ class HomeController extends BaseController {
         $this->checkAuthorization();
         $user = $this->user;
 
-        $teacher = R::findOne('teachers', 'token = ?', [$user->token]);
-
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-
-        $teacher->join_date = $this->formatDate($teacher->join_date);
 
         $this->renderPartial('dashboard/teacher/index', [
             'lang' => $this->lang,
@@ -509,8 +425,7 @@ class HomeController extends BaseController {
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
             'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'teacher' => $teacher
+            'picture' => $user->picture
         ]);
     }
 

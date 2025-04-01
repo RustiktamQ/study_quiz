@@ -9,10 +9,9 @@ $r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel'
 $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 
 // Auth
-$r->addRoute('GET', '/auth/signup', ['AuthController', 'showRegister']);
-$r->addRoute('GET', '/auth/teacher/signup', ['AuthController', 'showRegisterTeacher']);
-$r->addRoute('GET', '/auth/teacher/signin', ['AuthController', 'showLoginTeacher']);
+$r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
+$r->addRoute('GET', '/auth/teacher/signup', ['AuthController', 'showTeacherAuth']);
 
 $r->addRoute('POST', '/api/register-teacher', ['AuthController', 'registerTeacher']);
 $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
@@ -22,16 +21,15 @@ $r->addRoute('POST', '/api/save-profile', ['HomeController', 'saveProfile']);
 $r->addRoute('GET', '/api/check-token-status', ['HomeController', 'checkTokenStatus']);
 $r->addRoute('POST', '/api/settings/update', ['APIController', 'updateStudentData']);
 
-// Dashboards
-$r->addRoute('GET', '/dashboard', ['HomeController', 'showDashboard']);
-$r->addRoute('GET', '/learn', ['HomeController', 'showLearn']);
+// Student dashboard
 $r->addRoute('GET', '/dashboard/student', ['HomeController', 'showStudentDashboard']);
 $r->addRoute('GET', '/dashboard/student/learn', ['HomeController', 'showStudentLearn']);
 $r->addRoute('GET', '/dashboard/student/teacher', ['HomeController', 'showStudentTeacher']);
 $r->addRoute('GET', '/dashboard/student/analytics', ['HomeController', 'showStudentAnalytics']);
 $r->addRoute('GET', '/dashboard/student/settings', ['HomeController', 'showStudentSettings']);
-$r->addRoute('GET', '/dashboard/teacher', ['HomeController', 'showTeacherDashboard']);
 
+// Teacher dashboard
+$r->addRoute('GET', '/dashboard/teacher', ['HomeController', 'showTeacherDashboard']);
 
 // Quizzes
 $r->addRoute('GET', '/quiz/{id}', ['HomeController', 'showQuiz']);

@@ -17,154 +17,60 @@ class AuthController extends BaseController {
         setcookie($name, '', time() - 604800, "/");
     }
 
-    public function showRegister()
+    public function showStudentAuth()
     {
         $isAuthorized = isset($_COOKIE['user']);
-        $user = $isAuthorized ? json_decode($_COOKIE['user'], true) : ['name' => '', 'picture' => ''];
-        $fullName = $user['name'] ?? 'Guest';
-        $firstName = explode(' ', $fullName)[0] ?? '';
+
+        if ($isAuthorized) {
+            header("Location: /dashboard");
+        }
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
         $client = new Google_Client();
         $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
         $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
         $authUrl = $client->createAuthUrl();
-        if ($isAuthorized) {
-            header("Location: /dashboard");
-            exit;
-        } else {
-            $this->renderPartial('register', [
-                'lang' => $this->lang,
-                'uri' => $authUrl,
-                'fullname' => $fullName,
-                'firstname' => $firstName,
-                'picture' => $user['picture'],
-                'isAuthorized' => $isAuthorized,
-                'ROOT_URL' => $root,
-                'APP_NAME' => $_ENV['APP_NAME']
-            ]);
-        }
+
+        $this->renderPartial('auth/studentAuth', [
+            'lang' => $this->lang,
+            'uri' => $authUrl,
+            'ROOT_URL' => $root,
+            'APP_NAME' => $_ENV['APP_NAME']
+        ]);
     }
 
-    public function showRegisterTeacher()
+
+    public function showTeacherAuth()
     {
-        $isAuthorized = isset($_COOKIE['teacher']);
-        $user = $isAuthorized ? json_decode($_COOKIE['teacher'], true) : ['name' => '', 'picture' => ''];
-        $fullName = $user['name'] ?? 'Guest';
-        $firstName = explode(' ', $fullName)[0] ?? '';
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-        $client = new Google_Client();
-        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
-        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
-        $client->addScope('email');
-        $authUrl = $client->createAuthUrl();
-        if ($isAuthorized) {
-            header("Location: /dashboard");
-            exit;
-        } else {
-            $this->renderPartial('dashboard/register', [
-                'lang' => $this->lang,
-                'uri' => $authUrl,
-                'fullname' => $fullName,
-                'firstname' => $firstName,
-                'picture' => $user['picture'],
-                'isAuthorized' => $isAuthorized,
-                'ROOT_URL' => $root,
-                'APP_NAME' => $_ENV['APP_NAME']
-            ]);
-        }
+
+        $this->renderPartial('auth/teacherAuth', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
     }
 
     public function showLoginTeacher()
     {
-        $isAuthorized = isset($_COOKIE['teacher']);
-        $user = $isAuthorized ? json_decode($_COOKIE['teacher'], true) : ['name' => '', 'picture' => ''];
-        $fullName = $user['name'] ?? 'Guest';
-        $firstName = explode(' ', $fullName)[0] ?? '';
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-        $client = new Google_Client();
-        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
-        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
-        $client->addScope('email');
-        $authUrl = $client->createAuthUrl();
-        if ($isAuthorized) {
-            header("Location: /dashboard");
-            exit;
-        } else {
-            $this->renderPartial('dashboard/login', [
-                'lang' => $this->lang,
-                'uri' => $authUrl,
-                'fullname' => $fullName,
-                'firstname' => $firstName,
-                'picture' => $user['picture'],
-                'isAuthorized' => $isAuthorized,
-                'ROOT_URL' => $root,
-                'APP_NAME' => $_ENV['APP_NAME']
-            ]);
-        }
-    }
 
-    public function registerTeacher()
-    {
-        $data = json_decode(file_get_contents("php://input"), true);
-        $firstname = $data['firstname'];
-        $lastname = $data['lastname'];
-        $email = $data['email'];
-        $password = md5($data['password']);
-        if (empty($firstname) || empty($lastname) || empty($email) || empty($password)) {
-            echo json_encode(['success' => false, 'message' => $this->lang['allfie']]);
-            return;
-        }
-        $existingUser = R::findOne('teachers', 'email = ?', [$email]);
-        if ($existingUser) {
-            echo json_encode(['success' => false, 'message' => $this->lang['email_already']]);
-            return;
-        }
-        $teacher = R::dispense('teachers');
-        $teacher->name = $firstname." ".$lastname;
-        $teacher->firstname = $firstname;
-        $teacher->lastname = $lastname;
-        $teacher->email = $email;
-        $teacher->password = $password;
-        $teacher->token = bin2hex(random_bytes(16));
-        R::store($teacher);
-        echo json_encode(['success' => true, 'message' => 'Registration successful.']);
-    }    
+    }  
 
     public function loginTeacher()
     {
-        $data = json_decode(file_get_contents("php://input"), true);
-        $email = $data['email'];
-        $password = $data['password'];
-        if (empty($email) || empty($password)) {
-            echo json_encode(['success' => false, 'message' => $this->lang['require']]);
-            return;
-        }
-        $teacher = R::findOne('teachers', 'email = ?', [$email]);
-        if (!$teacher || !password_verify($password, $teacher->password)) {
-            echo json_encode(['success' => false, 'message' => $this->lang['invalidep']]);
-            return;
-        }
-        $teacherData = [
-            'id' => $teacher->id,
-            'name' => $teacher->name,
-            'email' => $teacher->email,
-            'picture' => $teacher->picture
-        ];
-        $this->setCookie('teacher', json_encode($teacherData), time() + 604800);
-        echo json_encode(['success' => true, 'message' => $this->lang['lsuccess']]);
+
     }
 
     public function loginWithGoogle()
     {
         if (isset($_COOKIE['user'])){
-            header("Location: /learn");
+            header("Location: /dashboard/student");
             exit;
         }
 

@@ -26,7 +26,8 @@ class BaseController {
     
     protected function checkAuthorization() {
         if (!isset($_COOKIE['user'])) {
-            $this->jsonError(401, 'Unauthorized');
+            header('Location: /auth/signup');
+            return;
         }
 
         $userData = json_decode($_COOKIE['user'], true);
