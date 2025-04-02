@@ -429,6 +429,83 @@ class HomeController extends BaseController {
         ]);
     }
 
+    public function showTeacherProfile()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/profile/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showTeacherSettings()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/profile/settings/settings', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showTeacherOrigin()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/origin/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showTeacherStudents()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/students/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+
     private function generateNotificationLink(array $notification): string
     {
         $baseUrl = $this->getBaseUrl();

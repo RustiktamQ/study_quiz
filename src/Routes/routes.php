@@ -30,6 +30,10 @@ $r->addRoute('GET', '/dashboard/student/settings', ['HomeController', 'showStude
 
 // Teacher dashboard
 $r->addRoute('GET', '/dashboard/teacher', ['HomeController', 'showTeacherDashboard']);
+$r->addRoute('GET', '/dashboard/teacher/profile', ['HomeController', 'showTeacherProfile']);
+$r->addRoute('GET', '/dashboard/teacher/settings', ['HomeController', 'showTeacherSettings']);
+$r->addRoute('GET', '/dashboard/teacher/origin', ['HomeController', 'showTeacherOrigin']); // ???
+// $r->addRoute('GET', '/dashboard/teacher/students', ['HomeController', 'showTeacherStudents']);
 
 // Quizzes
 $r->addRoute('GET', '/quiz/{id}', ['HomeController', 'showQuiz']);

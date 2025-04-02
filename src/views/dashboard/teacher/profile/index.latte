@@ -1,15 +1,4 @@
-<?php
-   session_start();
-   if (!isset($_SESSION['user'])) {
-       header('Location: ../../auth/');
-       exit;
-   }
-   
-   $user = $_SESSION['user'];
-   
-   require __DIR__ . "\..\partials\header.php";
-?>
-
+{include "../partials/header.latte"}
 <script>
   window.addEventListener("load", () => { const preloader = document.getElementById("preloader"); const loadingMessage = document.getElementById("loading-message"); clearTimeout(showMessageTimeout); preloader.style.transition = "opacity 0.5s ease"; preloader.style.opacity = "0"; setTimeout(() => { preloader.style.display = "none"; }, 500); }); const showMessageTimeout = setTimeout(() => { const loadingMessage = document.getElementById("loading-message"); loadingMessage.style.opacity = "1"; }, 10000);
 </script>
@@ -20,13 +9,13 @@
    <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
 </div>
 
-<?php include '../partials/sidebar.php'; ?>
+{include "../partials/sidebar.latte"}
 
 <div class="w-full lg:ps-64">
    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
       <ol class="flex items-center whitespace-nowrap">
          <li class="inline-flex items-center">
-            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="<?= ROOT_URL ?>dashboard/">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="{$ROOT_URL}dashboard/teacher">
             Dashboard
             </a>
             <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -88,4 +77,4 @@
    </div>
 </div>
 </div>
-<?php include '/../partials/footer.php'; ?>
+{include "../partials/footer.latte"}

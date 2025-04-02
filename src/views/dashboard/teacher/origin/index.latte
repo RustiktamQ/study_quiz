@@ -1,15 +1,4 @@
-<?php
-session_start();
-if (!isset($_SESSION['user'])) {
-    header('Location: ../../auth/');
-    exit;
-}
-
-$user = $_SESSION['user'];
-
-require __DIR__ . "\..\partials\header.php";
-?>
-
+{include "../partials/header.latte"}
 <script>
     window.addEventListener("load", () => {
         const preloader = document.getElementById("preloader");
@@ -34,7 +23,7 @@ require __DIR__ . "\..\partials\header.php";
     <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
 </div>
 
-<?php include '../partials/sidebar.php'; ?>
+{include "../partials/sidebar.latte"}
 
 <div class="fixed inset-0 flex flex-col items-center justify-center">
     <h1 class="quest text-5xl mb-4">Let's finish your profile.</h1>
@@ -177,4 +166,4 @@ require __DIR__ . "\..\partials\header.php";
 </div>
 <script src="https://cdn.tailwindcss.com/"></script>
 <script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
-<?php include '/../partials/footer.php'; ?>
+{include "../partials/footer.latte"}
