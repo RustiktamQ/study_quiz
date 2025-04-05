@@ -279,6 +279,102 @@ class APIController extends BaseController {
         return;
     }
 
+    public function deleteTeacherAccount($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        $this->validateOwnership($params['user_id']);
+
+        try {
+            $res = R::exec(
+                'DELETE FROM teachers WHERE id = ?',
+                [$this->user['id']]
+            );
+
+            if ($res == 0) {
+                http_response_code(404);
+                echo json_encode(['error' => true, 'message' => 'not found teacher']);
+                return;
+            }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => 'Database error', 'details' => $e->getMessage()]);
+            return;
+        }
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+        return;
+    }
+
+    public function updateTeacherData($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        $this->validateOwnership($params['user_id']);
+
+
+        if (isset($params['data']['lang'])) {
+            try {
+                $res = R::exec(
+                    'UPDATE teachers SET lang = ? WHERE id = ?',
+                    [$params['data']['lang'], $this->user['id']]
+                );
+    
+                if ($res == 0) {
+                    http_response_code(404);
+                    echo json_encode(['error' => true, 'message' => 'not found teacher']);
+                    return;
+                }
+            } catch (PDOException $e) {
+                http_response_code(500);
+                echo json_encode(['error' => true, 'message' => 'Database error', 'details' => $e->getMessage()]);
+                return;
+            }
+        }
+
+        if (isset($params['data']['token'])) {
+            try {
+                $res = R::exec(
+                    'UPDATE teachers SET token = ? WHERE id = ?',
+                    [$params['data']['token'], $this->user['id']]
+                );
+        
+                if ($res == 0) {
+                    http_response_code(404);
+                    echo json_encode(['error' => true, 'message' => 'not found teacher']);
+                    return;
+                }
+            } catch (PDOException $e) {
+                if ($e->getCode() === '23000') {
+                    http_response_code(409);
+                    echo json_encode(['error' => true, 'message' => 'This token is already used']);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(['error' => true, 'message' => 'Database error', 'details' => $e->getMessage()]);
+                }
+                return;
+            }
+        }
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
     public function updateStudentData($params) {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');

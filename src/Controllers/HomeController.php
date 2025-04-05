@@ -203,7 +203,7 @@ class HomeController extends BaseController {
         $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
         
         if(!$quiz){
-            header("Location: /learn");
+            header("Location: /dashboard/student/learn");
             exit; 
         }
 
@@ -259,13 +259,9 @@ class HomeController extends BaseController {
 
     public function showCompleteQuiz($params)
     {
-        $isAuthorized = isset($_COOKIE['user']);
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
+        $this->checkAuthorization();
         $quizid = $params['id'];
-        $userData = json_decode($_COOKIE['user'], true);
+        $userData = $this->user;
         $user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
 
         if (!$user) {

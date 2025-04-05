@@ -44,12 +44,17 @@ class AuthController extends BaseController {
     }
 
 
-    public function showTeacherAuth()
+    public function showTeacherRegister()
     {
+        if (isset($_COOKIE['user'])){
+            header("Location: /dashboard/teacher");
+            exit;
+        }
+
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('auth/teacherAuth', [
+        $this->renderPartial('auth/teacherRegister', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -57,9 +62,34 @@ class AuthController extends BaseController {
         ]);
     }
 
-    public function showLoginTeacher()
-    {
+    public function registerTeacher($params)
+    {        
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
 
+
+        if (!isset($params['user_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+
+        $userData = [
+            'id' => '21',
+            'name' => 'qwe w',
+            'email' => 'email',
+            'lang' => 'ru',
+            'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c',
+            'isStudent' => false,
+            'school' => 'school',
+            'specialization' => 'specialization'
+        ];
+
+        $this->setCookie('user', json_encode($userData), time() + 604800);
+        header('Location: /dashboard/teacher');
+        exit;
     }  
 
     public function loginTeacher()
@@ -104,10 +134,11 @@ class AuthController extends BaseController {
                 'google_id' => '114869489688930855296',
                 'name' => 'qwe w',
                 'email' => 'rramilperm@gmail.com',
-                'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c'
+                'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c',
+                'isStudent' => true
             ];
             $this->setCookie('user', json_encode($userData), time() + 604800);
-            header('Location: /learn');
+            header('Location: /');
             exit;
         //}
 

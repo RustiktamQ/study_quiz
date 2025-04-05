@@ -22,22 +22,24 @@ function isStarted(quizId) {
     return (localStorage.getItem(`quiz-${quizId}`) != null || 
     localStorage.getItem(`quiz-${quizId}`) != undefined);
 }
-
+ 
 const main = function() {
+    const options = document.querySelectorAll('.option-button');
+    const submitBtn = document.querySelector('.quiz-container button[type="submit"]');
+    let selectedOption = null;
+
     if (!isStarted(quizId)) {
         document.getElementById("quiz-inner-container").style.filter = "blur(5px)"; 
         document.getElementById("start-quiz").style.display = "block"; 
+        options.forEach(button => {
+            button.disabled = true;
+        });
     }
 
     const savedTimer = localStorage.getItem(`timerSec-${quizId}`)
     if (savedTimer > 1) {
         quizTimer.startTimer(quizId, savedTimer);
     }
-
-    const options = document.querySelectorAll('.option-button');
-    const submitBtn = document.querySelector('.quiz-container button[type="submit"]');
-
-    let selectedOption = null;
 
     options.forEach(button => {
         button.addEventListener('click', () => {
@@ -86,6 +88,9 @@ const main = function() {
         quizRender.render(quizData);
         quizTimer.startTimer(quizId);
         localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
+        options.forEach(button => {
+            button.disabled = false;
+        });
     })
 
     // next btn callback
@@ -104,6 +109,7 @@ const main = function() {
 
         messBox.classList.add('hidden');
         options.forEach(button => {
+            button.removeAttribute('selected');
             button.disabled = false;
             button.classList = 'answer-btn option-button w-full p-4 md:p-5 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-blue-400 hover:text-blue-600 bg-white focus:border-blue-500 focus:text-blue-700 focus:bg-blue-50 flex items-center justify-center text-lg md:text-xl font-medium';
         });
@@ -143,7 +149,7 @@ const main = function() {
 
         const answerData = await apiController.answerQuestion(userId, quizId, answer, quizData.question.id, quizTimer.getformatTime());
         quizData.answered++;
-        console.log(answerData);
+
         if (answerData.code == 30) {
             localStorage.removeItem(`quiz-${quizId}`);
             localStorage.removeItem(`timerSec-${quizId}`);

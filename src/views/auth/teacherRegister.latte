@@ -2,7 +2,7 @@
 <div class="bg-white">
   <div class="px-6 lg:px-8">
     <div class="mx-auto max-w-2xl py-16">
-        <div class="border rounded-xl p-10 ">
+        <form method="POST" action="/api/register-teacher" class="border rounded-xl p-10 ">
             <div class="mb-8">
                 <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
                 <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
@@ -44,29 +44,35 @@
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full mr-4">
                 <label for="input-label" class="block text-sm font-medium mb-2">First name <span class="text-red-500">*</span></label>
-                <input type="email" id="input-label" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="John">
+                <input required type="text" id="input-firstName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="John">
                 </div>
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Last name <span class="text-red-500">*</span></label>
-                <input type="email" id="input-label" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Doe">
+                <input required type="text" id="input-lastName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Doe">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
-                <input type="email" id="input-label" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
+                <input required type="text" id="input-token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
+                </div>
+            </div>
+            <div class="flex items-center justify-center mt-8">
+                <div class="w-full">
+                <label for="input-label" class="block text-sm font-medium mb-2">Email<span class="text-red-500">*</span></label>
+                <input required type="email" id="input-email" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="example@gmail.com">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">School name or organization</label>
-                <input type="email" id="input-label" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
+                <input required type="text" id="input-school" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
                 </div>
             </div>
-            <a type="button" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15" href="/auth">
+            <button type="submit" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
                 Finish registration
-            </a>
-        </div>
+            </button>
+        </form>
     </div>
   </div>
 </div>

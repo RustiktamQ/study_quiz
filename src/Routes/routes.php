@@ -11,7 +11,7 @@ $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 // Auth
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
-$r->addRoute('GET', '/auth/teacher/signup', ['AuthController', 'showTeacherAuth']);
+$r->addRoute('GET', '/auth/teacher/register', ['AuthController', 'showTeacherRegister']);
 
 $r->addRoute('POST', '/api/register-teacher', ['AuthController', 'registerTeacher']);
 $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
@@ -20,6 +20,8 @@ $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
 $r->addRoute('POST', '/api/save-profile', ['HomeController', 'saveProfile']);
 $r->addRoute('GET', '/api/check-token-status', ['HomeController', 'checkTokenStatus']);
 $r->addRoute('POST', '/api/settings/update', ['APIController', 'updateStudentData']);
+$r->addRoute('POST', '/api/settings/teacher/update', ['APIController', 'updateTeacherData']);
+$r->addRoute('POST', '/api/settings/teacher/delete', ['APIController', 'deleteTeacherAccount']);
 
 // Student dashboard
 $r->addRoute('GET', '/dashboard/student', ['HomeController', 'showStudentDashboard']);
