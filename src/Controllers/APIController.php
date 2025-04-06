@@ -321,7 +321,7 @@ class APIController extends BaseController {
 
         if (!isset($params['user_id'])) {
             http_response_code(400);
-            echo json_encode(['error' => 'Missing required parameters']);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
             return;
         }
 
@@ -359,14 +359,9 @@ class APIController extends BaseController {
                     echo json_encode(['error' => true, 'message' => 'not found teacher']);
                     return;
                 }
-            } catch (PDOException $e) {
-                if ($e->getCode() === '23000') {
-                    http_response_code(409);
-                    echo json_encode(['error' => true, 'message' => 'This token is already used']);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['error' => true, 'message' => 'Database error', 'details' => $e->getMessage()]);
-                }
+            } catch (\Exception $e) {
+                http_response_code(500);
+                echo json_encode(['error' => true, 'message' => 'This token is already used']);
                 return;
             }
         }
@@ -424,7 +419,54 @@ class APIController extends BaseController {
         http_response_code(200);
         echo json_encode(['success' => true]);
     }
-    
+
+    public function promtToAI($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['student_id']) || !isset($params['prompt'])) {
+            http_response_code(400);
+            var_dump($params);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        $this->validateOwnership($params['user_id']);
+
+        $url = $_ENV['AI_API_URL'] . $_ENV['AI_API_KEY'];
+
+        $data = [
+            "contents" => [
+                [
+                    "parts" => [
+                        ["text" => $params['prompt']]
+                    ]
+                ]
+            ]
+        ];
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => curl_error($ch)]);
+        } else {
+            echo json_encode(['success' => true, 'message' => $response]);
+        }
+
+        curl_close($ch);
+    }
+
 
     // TODO
     public function getDayStats($params) {

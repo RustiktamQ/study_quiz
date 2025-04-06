@@ -31,13 +31,34 @@ class BaseController {
         }
 
         $userData = json_decode($_COOKIE['user'], true);
-        if (!$userData || !isset($userData['google_id'])) {
-            $this->jsonError(401, 'Invalid session data');
+
+        if ($userData['isStudent']) {
+            if (!$userData || (!isset($userData['google_id']))) {
+                header('Location: /auth/signup');
+            }
+    
+            $this->user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+            if (!$this->user) {
+                header('Location: /auth/signup');
+            }
+        }
+    }
+
+    protected function checkTeacherAuthorization() {
+        if (!isset($_COOKIE['user'])) {
+            header('Location: /auth/teacher/login');
+            return;
         }
 
-        $this->user = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+        $userData = json_decode($_COOKIE['user'], true);
+
+        if ($userData['isStudent']) {
+            header('Location: /auth/teacher/login');
+        }
+
+        $this->user = R::findOne('teachers', 'id = ?', [$userData['id']]);
         if (!$this->user) {
-            $this->jsonError(403, 'User not found');
+            header('Location: /auth/teacher/login');
         }
     }
 

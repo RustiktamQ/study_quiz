@@ -408,7 +408,7 @@ class HomeController extends BaseController {
 
     public function showTeacherDashboard()
     {
-        $this->checkAuthorization();
+        $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -427,7 +427,7 @@ class HomeController extends BaseController {
 
     public function showTeacherProfile()
     {
-        $this->checkAuthorization();
+        $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -446,7 +446,7 @@ class HomeController extends BaseController {
 
     public function showTeacherSettings()
     {
-        $this->checkAuthorization();
+        $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -459,13 +459,14 @@ class HomeController extends BaseController {
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
             'firstname' => $user->firstname,
-            'picture' => $user->picture
+            'picture' => $user->picture,
+            'token' => $user->token
         ]);
     }
 
     public function showTeacherOrigin()
     {
-        $this->checkAuthorization();
+        $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -484,7 +485,7 @@ class HomeController extends BaseController {
 
     public function showTeacherStudents()
     {
-        $this->checkAuthorization();
+        $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';

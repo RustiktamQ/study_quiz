@@ -2,7 +2,7 @@
 <div class="bg-white">
   <div class="px-6 lg:px-8">
     <div class="mx-auto max-w-2xl py-16">
-        <form method="POST" action="/api/register-teacher" class="border rounded-xl p-10 ">
+        <div class="border rounded-xl p-10 ">
             <div class="mb-8">
                 <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
                 <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
@@ -44,38 +44,89 @@
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full mr-4">
                 <label for="input-label" class="block text-sm font-medium mb-2">First name <span class="text-red-500">*</span></label>
-                <input required type="text" id="input-firstName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="John">
+                <input required type="text" id="firstName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="John">
                 </div>
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Last name <span class="text-red-500">*</span></label>
-                <input required type="text" id="input-lastName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Doe">
+                <input required type="text" id="lastName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Doe">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
-                <input required type="text" id="input-token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
+                <input required type="text" id="token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Email<span class="text-red-500">*</span></label>
-                <input required type="email" id="input-email" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="example@gmail.com">
+                <input required type="email" id="email" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="example@gmail.com">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">School name or organization</label>
-                <input required type="text" id="input-school" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
+                <input required type="text" id="school" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
                 </div>
             </div>
-            <button type="submit" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
+            <button id="registerBtn" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
                 Finish registration
             </button>
-        </form>
+        </div>
     </div>
   </div>
 </div>
-<script src="./node_modules/lodash/lodash.min.js"></script>
-<script src="./node_modules/dropzone/dist/dropzone-min.js"></script>
+{* <script src="/node_modules/lodash/lodash.min.js"></script>
+<script src="/node_modules/dropzone/dist/dropzone-min.js"></script> *}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+   async function registerTeacher(first_name, last_name, token, email, school) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/register-teacher`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    first_name,
+                    last_name,
+                    token, email,
+                    school
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+        const res = await registerTeacher(
+            firstName.value,
+            lastName.value,
+            token.value,
+            email.value,
+            school.value
+        );
+
+      if (res.success) {
+        window.location.href = '/dashboard/teacher';
+      } else if (res.error) {
+         Toastify({
+            text: res.message,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+               background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+            },
+         }).showToast();
+      }
+    });
+</script>
 {include "../partials/footer.latte"}

@@ -62,39 +62,123 @@ class AuthController extends BaseController {
         ]);
     }
 
+    public function showTeacherlogin()
+    {
+        if (isset($_COOKIE['user'])){
+            header("Location: /dashboard/teacher");
+            exit;
+        }
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('auth/teacherLogin', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+
     public function registerTeacher($params)
     {        
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
 
-
-        if (!isset($params['user_id'])) {
+        if (
+            !isset($params['first_name']) || strlen($params['first_name']) < 1 ||
+            !isset($params['last_name']) || strlen($params['first_name']) < 1 ||
+            !isset($params['token']) || strlen($params['first_name']) < 1 ||
+            !isset($params['email']) || strlen($params['first_name']) < 1 ||
+            !isset($params['school']) || strlen($params['first_name']) < 1
+        ) {
             http_response_code(400);
-            echo json_encode(['error' => 'Missing required parameters']);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
             return;
         }
 
+        try {
+            $res = R::exec(
+                'INSERT INTO `teachers`
+                (`name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `token`, `join_date`, `school`)
+                 VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [
+                    $params['first_name'] . " " . $params['first_name'],
+                    "https://vk.com/images/wall/deleted_avatar_50.png",
+                    $params['first_name'],
+                    $params['first_name'],
+                    $params['email'],
+                    'ru',
+                    $params['token'],
+                    date('Y-m-d'),
+                    $params['school']
+                ]
+            );
+
+            if ($res == 0) {
+                http_response_code(404);
+                echo json_encode(['error' => true, 'message' => 'register fail']);
+                return;
+            }
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => 'This token is already used']);
+            return;
+        }
+
+        $teacher = R::findOne('teachers', 'token = ?', [$params['token']]);
 
         $userData = [
-            'id' => '21',
-            'name' => 'qwe w',
-            'email' => 'email',
-            'lang' => 'ru',
-            'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c',
+            'id' => $teacher->id,
+            'name' => $teacher->name,
+            'email' => $teacher->email,
+            'lang' => $teacher->lang,
+            'picture' => $teacher->picture,
             'isStudent' => false,
-            'school' => 'school',
-            'specialization' => 'specialization'
+            'school' => $teacher->school
         ];
 
         $this->setCookie('user', json_encode($userData), time() + 604800);
-        header('Location: /dashboard/teacher');
-        exit;
+        http_response_code(200);
+        echo json_encode(['success' => true]);
     }  
 
-    public function loginTeacher()
+    public function loginTeacher($params)
     {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
 
+        if (
+            !isset($params['email']) || strlen($params['email']) < 1
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+
+        $teacher = R::findOne('teachers', 'email = ?', [$params['email']]);
+
+        if ($teacher) {
+            $userData = [
+                'id' => $teacher->id,
+                'name' => $teacher->name,
+                'email' => $teacher->email,
+                'lang' => $teacher->lang,
+                'picture' => $teacher->picture,
+                'isStudent' => false,
+                'school' => $teacher->school
+            ];
+    
+            $this->setCookie('user', json_encode($userData), time() + 604800);
+            http_response_code(200);
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => true, 'message' => 'user not found']);
+        }
     }
 
     public function loginWithGoogle()

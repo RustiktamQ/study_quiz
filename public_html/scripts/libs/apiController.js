@@ -126,4 +126,23 @@ export class ApiController {
             return error.message;
         }
     }
+
+    async promtToAI(user_id, prompt) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/ai/prompt`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    prompt
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
 }

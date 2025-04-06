@@ -12,6 +12,7 @@ $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
 $r->addRoute('GET', '/auth/teacher/register', ['AuthController', 'showTeacherRegister']);
+$r->addRoute('GET', '/auth/teacher/login', ['AuthController', 'showTeacherlogin']);
 
 $r->addRoute('POST', '/api/register-teacher', ['AuthController', 'registerTeacher']);
 $r->addRoute('POST', '/api/login-teacher', ['AuthController', 'loginTeacher']);
@@ -48,6 +49,9 @@ $r->addRoute('POST', '/api/getQuestion', ['APIController', 'getQuestion']);
 $r->addRoute('POST', '/api/getNextQuestion', ['APIController', 'getNextQuestion']);
 $r->addRoute('POST', '/api/getStatistics', ['APIController', 'getStatistics']);
 $r->addRoute('POST', '/api/resetQuiz', ['APIController', 'resetQuiz']);
+
+// AI
+$r->addRoute('POST', '/api/ai/prompt', ['APIController', 'promtToAI']);
 
 $r->addRoute('GET', '/logout', function() {
     if (isset($_COOKIE['user'])) {
