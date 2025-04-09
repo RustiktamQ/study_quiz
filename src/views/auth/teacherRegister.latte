@@ -7,60 +7,10 @@
                 <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
                 <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
             </div>
-            <div data-hs-file-upload='{
-                "url": "/upload",
-                "acceptedFiles": "image/*",
-                "maxFiles": 1,
-                "singleton": true
-                }'>
-                <template data-hs-file-upload-preview="">
-                    <div class="size-20">
-                    <img class="w-full object-contain rounded-full" data-dz-thumbnail="">
-                    </div>
-                </template>
-
-                <div class="flex flex-wrap items-center gap-3 sm:gap-5">
-                    <div class="group" data-hs-file-upload-previews="" data-hs-file-upload-pseudo-trigger="">
-                    <span class="group-has-[div]:hidden transition flex shrink-0 justify-center items-center size-20 border-2 border-dotted border-gray-300 text-gray-400 cursor-pointer rounded-full hover:bg-gray-50">
-                        <svg class="shrink-0 size-7" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3"/><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M17.97 20c-.16-2.892-1.045-5-5.97-5s-5.81 2.108-5.97 5"/></g></svg>
-                    </span>
-                    </div>
-
-                    <div class="grow">
-                    <div class="flex items-center gap-x-2">
-                        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-xs font-medium rounded-lg border border-transparent bg-green-500 transition text-white hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none" data-hs-file-upload-trigger="">
-                        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                            <polyline points="17 8 12 3 7 8"></polyline>
-                            <line x1="12" x2="12" y1="3" y2="15"></line>
-                        </svg>
-                        Upload photo
-                        </button>
-                        <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-xs transition font-semibold rounded-lg border border-gray-200 bg-white text-gray-500 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" data-hs-file-upload-clear="">Delete</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center justify-center mt-8">
-                <div class="w-full mr-4">
-                <label for="input-label" class="block text-sm font-medium mb-2">First name <span class="text-red-500">*</span></label>
-                <input required type="text" id="firstName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="John">
-                </div>
-                <div class="w-full">
-                <label for="input-label" class="block text-sm font-medium mb-2">Last name <span class="text-red-500">*</span></label>
-                <input required type="text" id="lastName" class="py-2.5 px-4 block w-full shadow-sm transition outline-none border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Doe">
-                </div>
-            </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
                 <label for="input-label" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
                 <input required type="text" id="token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
-                </div>
-            </div>
-            <div class="flex items-center justify-center mt-8">
-                <div class="w-full">
-                <label for="input-label" class="block text-sm font-medium mb-2">Email<span class="text-red-500">*</span></label>
-                <input required type="email" id="email" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="example@gmail.com">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">

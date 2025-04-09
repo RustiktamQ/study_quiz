@@ -425,7 +425,7 @@ class APIController extends BaseController {
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
 
-        if (!isset($params['student_id']) || !isset($params['prompt'])) {
+        if (!isset($params['user_id']) || !isset($params['prompt'])) {
             http_response_code(400);
             var_dump($params);
             echo json_encode(['error' => 'Missing required parameters']);

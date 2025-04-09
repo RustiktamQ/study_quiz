@@ -17,7 +17,7 @@ class AuthController extends BaseController {
         setcookie($name, '', time() - 604800, "/");
     }
 
-    public function showStudentAuth()
+    public function showauth()
     {
         $isAuthorized = isset($_COOKIE['user']);
 
@@ -35,7 +35,7 @@ class AuthController extends BaseController {
         $client->addScope('email');
         $authUrl = $client->createAuthUrl();
 
-        $this->renderPartial('auth/studentAuth', [
+        $this->renderPartial('auth/auth', [
             'lang' => $this->lang,
             'uri' => $authUrl,
             'ROOT_URL' => $root,
@@ -46,27 +46,42 @@ class AuthController extends BaseController {
 
     public function showTeacherRegister()
     {
-        if (isset($_COOKIE['user'])){
-            header("Location: /dashboard/teacher");
-            exit;
+        if (isset($_COOKIE['user'])) {
+            $userData = json_decode($_COOKIE['user'], true);
+
+            if ($userData['isStudent'] == false) {
+                header('Location: /dashboard/teacher');
+                return;
+            }
         }
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('auth/teacherRegister', [
+        $client = new Google_Client();
+        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        $client->addScope('email');
+        $authUrl = $client->createAuthUrl();
+
+        $this->renderPartial('auth/auth', [
             'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
+            'uri' => $authUrl,
             'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL']
+            'APP_NAME' => $_ENV['APP_NAME']
         ]);
     }
 
     public function showTeacherlogin()
     {
-        if (isset($_COOKIE['user'])){
-            header("Location: /dashboard/teacher");
-            exit;
+        if (isset($_COOKIE['user'])) {
+            $userData = json_decode($_COOKIE['user'], true);
+
+            if ($userData['isStudent'] == false) {
+                header('Location: /dashboard/teacher');
+                return;
+            }
         }
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -184,7 +199,12 @@ class AuthController extends BaseController {
     public function loginWithGoogle()
     {
         if (isset($_COOKIE['user'])){
-            header("Location: /dashboard/student");
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+            } else {
+                header("Location: /dashboard/teacher");
+            }
             exit;
         }
 

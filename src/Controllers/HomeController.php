@@ -78,7 +78,7 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $progress = R::findOne('progress', 'student_id = ? AND completed = 0 ORDER BY start_time DESC', [$user->id]);
+        $progress = R::findOne('progress', 'student_id = ? AND completed = 0 ORDER BY start_time ASC', [$user->id]);
         if (!$progress) {
             $quizId = 0;
         } else {

@@ -46,19 +46,20 @@ class BaseController {
 
     protected function checkTeacherAuthorization() {
         if (!isset($_COOKIE['user'])) {
-            header('Location: /auth/teacher/login');
+            header('Location: /auth/teacher/auth');
             return;
         }
 
         $userData = json_decode($_COOKIE['user'], true);
 
         if ($userData['isStudent']) {
-            header('Location: /auth/teacher/login');
+            header('Location: /auth/teacher/auth');
+            return;
         }
 
         $this->user = R::findOne('teachers', 'id = ?', [$userData['id']]);
         if (!$this->user) {
-            header('Location: /auth/teacher/login');
+            header('Location: /auth/teacher/auth');
         }
     }
 

@@ -88,7 +88,7 @@
         }
 
         function devLogin() {
-        window.location.href = "http://studylocal/auth/callback";
+        window.location.href = "http://studylocal/auth/callback/teacher";
         }
 
         const btn = document.getElementById('googleSignInBtn');
@@ -101,9 +101,6 @@
                     origin: { y: 0.6 },
                     colors: ['#80DEEA', '#FFB74D', '#F57C00', '#a8edea', '#fed6e3', '#4CAF50', '#1976D2']
                  });
-
-                // авторизуй юзера нахуй!
-                console.log("Google Sign-In Initiated");
 
                 btn.disabled = true;
                 btn.innerHTML = `
