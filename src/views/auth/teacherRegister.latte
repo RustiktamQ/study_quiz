@@ -31,7 +31,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script n:syntax=off>
-   async function registerTeacher(first_name, last_name, token, email, school) {
+   async function registerTeacher(user_id, token, school) {
         try {
             const response = await fetch(`${window.location.origin}/api/register-teacher`, {
                 method: "POST",
@@ -39,9 +39,8 @@
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    first_name,
-                    last_name,
-                    token, email,
+                    user_id,
+                    token,
                     school
                 })
             });
@@ -52,16 +51,27 @@
         }
    }
 
+    function getUserData() {
+      return JSON.parse(
+      decodeURIComponent(
+          document.cookie.split('; ')
+          .find(row => row.startsWith('user='))
+          ?.split('=')[1] || '{}'
+          )   
+      );
+    }
+
+    const user_id = getUserData().id;
+
     document.getElementById('registerBtn').addEventListener('click', async () => {
         const res = await registerTeacher(
-            firstName.value,
-            lastName.value,
+            user_id,
             token.value,
-            email.value,
             school.value
         );
 
       if (res.success) {
+        
         window.location.href = '/dashboard/teacher';
       } else if (res.error) {
          Toastify({

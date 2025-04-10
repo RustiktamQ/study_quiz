@@ -49,5 +49,5 @@ document.getElementById('repeatBtn').addEventListener('click', async () => {
 });
 
 document.getElementById('otherQuizzesBtn').addEventListener('click', async () => {
-  window.location.href = `${window.location.origin}/learn`;
+  window.location.href = `${window.location.origin}/dashboard/student/learn`;
 });

@@ -57,17 +57,31 @@ const main = function() {
     });
 
     const positivePhrases = [
-        "Awesome!",
-        "Great job!",
-        "Perfect!",
-        "Excellent!",
-        "Well done!",
-        "Correct!",
-        "You rock!",
-        "Bravo!",
-        "Fantastic!",
-        "Spot on!"
+        "Отлично! 🎉",
+        "Хорошая работа! 👍",
+        "Идеально! ✅",
+        "Превосходно! 🌟",
+        "Молодец! 👏",
+        "Верно! ✔️",
+        "Ты крут! 💪",
+        "Браво! 🥳",
+        "Фантастика! ✨",
+        "Точно в цель! 🎯"
     ];
+    
+    const negativePhrases = [
+        "Не совсем так... 🤔",
+        "Почти, но нет. 🙃",
+        "Нужно постараться ещё. 💭",
+        "Попробуй снова. 🔄",
+        "Не угадал(а). ❌",
+        "Это неверно. 🚫",
+        "Чуть-чуть мимо. 🫤",
+        "Ошибочка вышла. 😅",
+        "Не то... 🤷‍♂️",
+        "Промах. 🎯❌"
+    ];
+    
 
     const quizBox = document.getElementById('quizBox');
     const nextBtn = document.getElementById('nextQuestion');
@@ -75,8 +89,8 @@ const main = function() {
     const messBox = document.getElementById('messBox');
     const mess = document.getElementById('mess');
     
-    function getRandomPhrase() {
-        return positivePhrases[Math.floor(Math.random() * positivePhrases.length)];
+    function getRandomPhrase(phrases) {
+        return phrases[Math.floor(Math.random() * phrases.length)];
     }
 
     // quiz start callback
@@ -173,7 +187,7 @@ const main = function() {
             messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-green-100 border border-green-300 rounded-lg shadow-inner';
             mess.classList = 'text-lg font-semibold green-green-800 flex items-center justify-center gap-2';
 
-            mess.innerText = getRandomPhrase();
+            mess.innerText = getRandomPhrase(positivePhrases);
 
             options.forEach(button => {
                 if (button.hasAttribute('selected')) {
@@ -199,7 +213,7 @@ const main = function() {
             messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-red-100 border border-red-300 rounded-lg shadow-inner';
             mess.classList = 'text-lg font-semibold red-green-800 flex items-center justify-center gap-2';
 
-            mess.innerText = 'bad';
+            mess.innerText = getRandomPhrase(negativePhrases);
 
             options.forEach(button => {
                 if (button.hasAttribute('selected')) {

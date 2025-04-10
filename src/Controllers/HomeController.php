@@ -296,12 +296,11 @@ class HomeController extends BaseController {
             'fullname' => $user->name,
             'firstname' => $user->firstname,
             'picture' => $user->picture,
-            'isAuthorized' => $isAuthorized,
             'userid' => $user->id,
             'quizid' => $quizid,
             'name' => $quiz->name,
             'score' => $progress->score,
-            'correct_answers' => $progress->correct_answers,
+            'correct_answers' => $progress->answered,
             'elapsed_time' => $progress->elapsed_time,
             'notifications' => $notificationCollection
         ]);   
@@ -559,9 +558,19 @@ class HomeController extends BaseController {
     private function formatDate($date) {
         $dt = new \DateTime($date);
         $day = $dt->format('d');
-        $month = $dt->format('F');
+        $monthNum = (int)$dt->format('m');
         $year = $dt->format('Y');
+    
+        $months = [
+            1 => 'января', 2 => 'февраля', 3 => 'марта',
+            4 => 'апреля', 5 => 'мая', 6 => 'июня',
+            7 => 'июля', 8 => 'августа', 9 => 'сентября',
+            10 => 'октября', 11 => 'ноября', 12 => 'декабря'
+        ];
+    
+        $month = $months[$monthNum];
     
         return "$day $month, $year";
     }
+      
 }

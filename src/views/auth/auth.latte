@@ -87,8 +87,12 @@
             window.location.href = {$uri};
         }
 
-        function devLogin() {
-        window.location.href = "http://studylocal/auth/callback/teacher";
+        function devLogin(isTeacherAuth) {
+            if (isTeacherAuth) {
+                window.location.href = "http://studylocal/auth/callback/teacher";
+            } else {
+                window.location.href = "http://studylocal/auth/callback";
+            }
         }
 
         const btn = document.getElementById('googleSignInBtn');
@@ -109,7 +113,7 @@
                  btn.classList.add('bg-green-500', 'text-white');
                  btn.classList.remove('hover:bg-blue-50');
 
-                devLogin();
+                devLogin({$isTeacherAuth});
             });
         }
     </script>
