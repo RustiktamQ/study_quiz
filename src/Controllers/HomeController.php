@@ -490,7 +490,41 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
+        $teacher = R::findOne('teachers', 'id = ?', [$user['id']]);
+        $students = R::getAll('
+        SELECT u.*, p.*, t.*
+        FROM users u
+        JOIN progress p ON u.id = p.student_id
+        JOIN teachers t ON t.token = u.token
+        WHERE p.start_time = (
+            SELECT MAX(p2.start_time)
+            FROM progress p2
+            WHERE p2.student_id = u.id
+        ) AND u.token = ?
+    ', [$teacher['token']]);
+    
+
         $this->renderPartial('dashboard/teacher/students/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'students' => $students
+        ]);
+    }
+
+    public function showTeacherStudentsAdd()
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/students/manage/add', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -501,6 +535,46 @@ class HomeController extends BaseController {
         ]);
     }
 
+    public function showTeacherStudentsEdit()
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('dashboard/teacher/students/manage/edit', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showTeacherStudentsInvite()
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $inviteCode = R::findOne('teachers', 'id = ?', [$user['id']])->invite_code;
+
+        $this->renderPartial('dashboard/teacher/students/manage/invite', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture,
+            'invite_code' => $inviteCode
+        ]);
+    }
 
     private function generateNotificationLink(array $notification): string
     {
