@@ -126,3 +126,14 @@ document.querySelectorAll('.tab-button').forEach(btn => {
         handleSkillSearch();
     });
 });
+
+const tabs = document.getElementsByClassName('tab-button');
+tabs[0].classList.add('text-green-500', 'border-b-2', 'border-green-500', 'font-semibold');
+Array.from(tabs).forEach(btn => {
+    btn.addEventListener('click', function () {
+        Array.from(tabs).forEach(btn => {
+            btn.classList.remove('text-green-500', 'border-b-2', 'border-green-500', 'font-semibold');
+        })
+        this.classList.add('text-green-500', 'border-b-2', 'border-green-500', 'font-semibold');
+    });
+});
