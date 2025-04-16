@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.2:3306
--- Время создания: Апр 10 2025 г., 00:31
+-- Время создания: Апр 16 2025 г., 22:45
 -- Версия сервера: 10.1.48-MariaDB
 -- Версия PHP: 8.1.8
 
@@ -248,7 +248,7 @@ CREATE TABLE `teachers` (
   `email` varchar(125) NOT NULL,
   `lang` varchar(255) DEFAULT NULL,
   `token` varchar(100) NOT NULL,
-  `token_confirmed` int(11) NOT NULL DEFAULT '0',
+  `invite_code` varchar(100) DEFAULT NULL,
   `join_date` date NOT NULL,
   `school` varchar(128) NOT NULL,
   `specialization` varchar(255) NOT NULL
@@ -258,11 +258,11 @@ CREATE TABLE `teachers` (
 -- Дамп данных таблицы `teachers`
 --
 
-INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `token`, `token_confirmed`, `join_date`, `school`, `specialization`) VALUES
-(1, 'John Doe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'John', 'Doe', 'teacher', 'ru', '123', 0, '2025-03-11', 'Seitzhan School', 'Математика и Физика'),
-(3, 'Name Surname', 'https://vk.com/images/wall/deleted_avatar_50.png', 'Name', 'Surname', 'test@testmail.io', 'ru', 'd303e5f985dd550f91bd067e3580821c', 0, '1900-01-01', 'MGU', 'Биология'),
-(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', 'testToken', 0, '2025-04-05', 'science', ''),
-(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', '3214123', 0, '2025-04-08', 'qweqwewqe', '');
+INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `token`, `invite_code`, `join_date`, `school`, `specialization`) VALUES
+(1, 'John Doe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'John', 'Doe', 'teacher', 'ru', 'testToken2', 'sIV3QJ55fN', '2025-03-11', '', 'Математика и Физика'),
+(3, 'Name Surname', 'https://vk.com/images/wall/deleted_avatar_50.png', 'Name', 'Surname', 'test@testmail.io', 'ru', 'd303e5f985dd550f91bd067e3580821c', NULL, '1900-01-01', 'MGU', 'Биология'),
+(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', 'testToken', NULL, '2025-04-05', 'science', ''),
+(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', '3214123', NULL, '2025-04-08', 'qweqwewqe', '');
 
 -- --------------------------------------------------------
 
@@ -279,16 +279,17 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `picture` text,
   `token` varchar(255) DEFAULT NULL,
-  `token_confirmed` varchar(255) NOT NULL DEFAULT '0',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `token_confirmed` varchar(1) DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `grade` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `created_at`) VALUES
-(21, '114869489688930855296', '1q1 zxc', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'd303e5f985dd550f91bd067e3580821c', '1', '2025-02-24 15:35:47');
+INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `created_at`, `grade`) VALUES
+(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'testToken2', '1', '2025-02-24 15:35:47', 6);
 
 --
 -- Индексы сохранённых таблиц
@@ -354,7 +355,8 @@ ALTER TABLE `sub_categories`
 ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `token` (`token`),
-  ADD UNIQUE KEY `email_uniq` (`email`);
+  ADD UNIQUE KEY `email_uniq` (`email`),
+  ADD UNIQUE KEY `invite_code` (`invite_code`);
 
 --
 -- Индексы таблицы `users`

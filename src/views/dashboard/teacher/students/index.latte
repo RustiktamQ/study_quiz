@@ -94,7 +94,7 @@
                                         <tr>
                                             <td class="size-px whitespace-nowrap">
                                                 <label class="ps-6 py-3 flex">
-                                                    <input type="checkbox" id="student-checkbox-{$student->id}" class="...">
+                                                    <input type="checkbox" id="student-checkbox-{$student['id']}" class="...">
                                                     <span class="sr-only">Checkbox</span>
                                                 </label>
                                             </td>
@@ -121,7 +121,7 @@
                                                 <span class="text-sm text-gray-500">{$student['time_spent']}</span>
                                             </td>
                                             <td class="px-6 py-1.5 text-end">
-                                                <a href="edit?id={$student->id}" class="inline-flex items-center gap-x-1 text-sm text-green-600 decoration-2 hover:underline font-medium">
+                                                <a href="/dashboard/teacher/students/edit/{$student['id']}" class="inline-flex items-center gap-x-1 text-sm text-green-600 decoration-2 hover:underline font-medium">
                                                     Edit
                                                 </a>
                                             </td>

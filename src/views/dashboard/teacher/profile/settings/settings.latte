@@ -459,8 +459,6 @@
       const token = document.getElementById('chooseToken').value;
       const res = await updateTeacherData(userId, {token});
 
-      console.log(res);
-
       if (res.success) {
             Toastify({
               text: "Success",

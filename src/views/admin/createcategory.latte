@@ -1,0 +1,49 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Page Title -->
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Create New Category
+            </h1>
+            <p class="text-sm text-gray-500">Fill in the details for the new question category.</p>
+        </div>
+        <!-- End Page Title -->
+
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">New Category Details</h2>
+            <form method="POST" action="#">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="sm:col-span-2">
+                        <label for="category-name" class="block text-sm font-medium mb-2">Category Name</label>
+                        <input type="text" id="category-name" name="category_name" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter category name...">
+                    </div>
+
+                     <div class="sm:col-span-2">
+                        <label for="category-description" class="block text-sm font-medium mb-2">Description (Optional)</label>
+                        <textarea id="category-description" name="category_description" rows="4" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter a brief description..."></textarea>
+                     </div>
+                         </select>
+                    </div>
+
+                </div>
+
+                 <div class="mt-6 flex justify-end gap-x-2 border-t pt-4">
+                     <a href="list_categories.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Cancel
+                    </a>
+                    <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{include './partials/footer.latte'}
