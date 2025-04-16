@@ -41,6 +41,10 @@ class BaseController {
             if (!$this->user) {
                 header('Location: /auth/signup');
             }
+
+            if ($this->user['token_confirmed'] == 0 && $_SERVER['REQUEST_URI'] != '/confirmation') {
+                header('Location: /confirmation');
+            }
         }
     }
 

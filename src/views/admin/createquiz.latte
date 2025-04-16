@@ -1,0 +1,62 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Page Title -->
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Create New Quiz
+            </h1>
+            <p class="text-sm text-gray-500">Enter the basic details for the new quiz. Questions can be added after creation.</p>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- Create Quiz Form -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+             <form method="POST" action="#">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="sm:col-span-2">
+                        <label for="quiz-title" class="block text-sm font-medium mb-2">Quiz Title</label>
+                        <input type="text" id="quiz-title" name="quiz_title" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g., Chapter 3 Vocabulary">
+                    </div>
+
+                     <!-- category -->
+                    <div>
+                         <label for="quiz-status" class="block text-sm font-medium mb-2">Category</label>
+                         <select id="quiz-status" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                             <option value="Math" selected>Math</option>
+                             <option value="English">English</option>
+                             <option value="Kazakh">Kazakh</option>
+                         </select>
+                    </div>
+
+                     <div class="sm:col-span-2">
+                        <label for="quiz-description" class="block text-sm font-medium mb-2">Description (Optional)</label>
+                        <textarea id="quiz-description" name="quiz_description" rows="4" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Enter a brief description or instructions for the quiz..."></textarea>
+                     </div>
+
+                 </div> <!-- End grid -->
+
+                 <!-- Action Buttons -->
+                 <div class="mt-6 flex justify-end gap-x-2">
+                    <a href="list_quizzes.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Cancel
+                    </a>
+                    <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                         <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create Quiz & Add Questions
+                    </button>
+                </div>
+             </form>
+        </div>
+        <!-- End Create Quiz Form -->
+
+    </div>
+</div>
+
+<!-- Include JS -->
+
+{include './partials/footer.latte'}

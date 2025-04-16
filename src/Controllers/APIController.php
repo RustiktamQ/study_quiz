@@ -370,6 +370,49 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
+    public function updateStudentDataT($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+    
+        if (
+            !isset($params['user_id']) ||
+            !isset($params['teacher_id']) ||
+            !isset($params['data']) ||
+            !isset($params['data']['student_name']) ||
+            !isset($params['data']['student_grade']) 
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+
+        $this->validateOwnership($params['teacher_id']);
+
+        $student = R::findOne('users', 'id = ?', [$params['user_id']]);      
+
+        if (!$student) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Student not found']);
+            return;
+        }
+
+        $check = R::findOne('teachers', 'token = ?', [$student->token]);
+
+        if (!$check) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Access denied']);
+            return;
+        }
+    
+        R::exec(
+            'UPDATE users SET name = ?, grade = ? WHERE id = ?',
+            [$params['data']['student_name'], $params['data']['student_grade'], $params['user_id']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
     public function updateStudentData($params) {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
@@ -467,6 +510,67 @@ class APIController extends BaseController {
         curl_close($ch);
     }
 
+    public function unlink($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id']) || !isset($params['teacher_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['teacher_id']);
+
+        R::exec(
+            'UPDATE users SET token = ?, token_confirmed = ? WHERE id = ?',
+            [NULL, 0, $params['user_id']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function codeIsFree($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['teacher_id']) || !isset($params['code'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['teacher_id']);
+
+        $student = R::findOne('teachers', 'invite_code = ?', [$params['code']]);
+        if ($student) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => 'Code is already exist']);
+            return;
+        }
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function setCode($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['teacher_id']) || !isset($params['code'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['teacher_id']);
+
+        R::exec(
+            'UPDATE teachers SET invite_code = ? WHERE id = ?',
+            [$params['code'], $params['teacher_id']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
 
     // TODO
     public function getDayStats($params) {

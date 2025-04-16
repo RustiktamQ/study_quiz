@@ -340,6 +340,7 @@ class HomeController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
+    // ADMIN PANEL
     public function showAdminPanel() {
         if (isset($_COOKIE['admin'])) {
             $admin = json_decode($_COOKIE['admin'], true);
@@ -405,6 +406,178 @@ class HomeController extends BaseController {
         ]); 
     }
 
+    public function showAdminUsers()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/users', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminBannedUsers()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/bannedusers', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminQuizzes()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/quizzes', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminQuizzesCreate()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/createquiz', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminQuizzesManage()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/managequiz', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminCategories()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/categories', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminCategoriesCreate()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/createcategory', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminGrades()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/grades', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    public function showAdminGradesCreate()
+    {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/creategrade', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    // TEACHER DASHBOARD
     public function showTeacherDashboard()
     {
         $this->checkTeacherAuthorization();
@@ -492,10 +665,11 @@ class HomeController extends BaseController {
 
         $teacher = R::findOne('teachers', 'id = ?', [$user['id']]);
         $students = R::getAll('
-        SELECT u.*, p.*, t.*
+SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapsed_time as `time_spent`
         FROM users u
         JOIN progress p ON u.id = p.student_id
         JOIN teachers t ON t.token = u.token
+        JOIN quizzes q ON q.id = p.quiz_id
         WHERE p.start_time = (
             SELECT MAX(p2.start_time)
             FROM progress p2
@@ -535,13 +709,16 @@ class HomeController extends BaseController {
         ]);
     }
 
-    public function showTeacherStudentsEdit()
+    public function showTeacherStudentsEdit($params)
     {
         $this->checkTeacherAuthorization();
         $user = $this->user;
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $studentId = $params['id'];
+        $student = R::findOne('users', 'id = ?', [$studentId]);
 
         $this->renderPartial('dashboard/teacher/students/manage/edit', [
             'lang' => $this->lang,
@@ -550,7 +727,8 @@ class HomeController extends BaseController {
             'domain' => $_ENV['ROOT_URL'],
             'fullname' => $user->name,
             'firstname' => $user->firstname,
-            'picture' => $user->picture
+            'picture' => $user->picture,
+            'student' => $student
         ]);
     }
 
@@ -576,8 +754,26 @@ class HomeController extends BaseController {
         ]);
     }
 
-    private function generateNotificationLink(array $notification): string
+    public function showConfirmation()
     {
+        $this->checkAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('confirmation', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'fullname' => $user->name,
+            'firstname' => $user->firstname,
+            'picture' => $user->picture
+        ]);
+    }
+
+    private function generateNotificationLink(array $notification) {
         $baseUrl = $this->getBaseUrl();
         
         return match($notification['address_type']) {
@@ -587,8 +783,7 @@ class HomeController extends BaseController {
         };
     }
 
-    private function getBaseUrl(): string
-    {
+    private function getBaseUrl() {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') 
             ? 'https' 
             : 'http';

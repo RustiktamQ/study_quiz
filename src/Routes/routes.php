@@ -2,28 +2,43 @@
 // Main
 $r->addRoute('GET', '/', ['HomeController', 'index']);
 $r->addRoute('GET', '/lang/{lang}', ['LanguageController', 'switchLanguage']);
+$r->addRoute('GET', '/confirmation', ['HomeController', 'showConfirmation']);
 
 // Admin
 $r->addRoute('GET', '/adminPanel', ['HomeController', 'showAdminPanel']);
 $r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
+$r->addRoute('GET', '/adminPanel/users', ['HomeController', 'showAdminUsers']);
+$r->addRoute('GET', '/adminPanel/users/banned', ['HomeController', 'showAdminBannedUsers']);
+$r->addRoute('GET', '/adminPanel/quizzes', ['HomeController', 'showAdminQuizzes']);
+$r->addRoute('GET', '/adminPanel/quizzes/create', ['HomeController', 'showAdminQuizzesCreate']);
+$r->addRoute('GET', '/adminPanel/quizzes/manage', ['HomeController', 'showAdminQuizzesManage']);
+$r->addRoute('GET', '/adminPanel/categories', ['HomeController', 'showAdminCategories']);
+$r->addRoute('GET', '/adminPanel/categories/create', ['HomeController', 'showAdminCategoriesCreate']);
+$r->addRoute('GET', '/adminPanel/grades', ['HomeController', 'showAdminGrades']);
+$r->addRoute('GET', '/adminPanel/grades/create', ['HomeController', 'showAdminGradesCreate']);
+
 $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 
 // Auth
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
-
 $r->addRoute('GET', '/auth/callback/teacher', ['AuthController', 'teacherAuthWithGoogle']);
 $r->addRoute('GET', '/auth/teacher/auth', ['AuthController', 'showTeacherAuth']);
 $r->addRoute('GET', '/auth/teacher/register/complete', ['AuthController', 'showTeacherRegister']);
+
 $r->addRoute('POST', '/api/register-teacher', ['AuthController', 'teacherRegister']);
 
-
-// Profile
+// API
 $r->addRoute('POST', '/api/save-profile', ['HomeController', 'saveProfile']);
 $r->addRoute('GET', '/api/check-token-status', ['HomeController', 'checkTokenStatus']);
 $r->addRoute('POST', '/api/settings/update', ['APIController', 'updateStudentData']);
 $r->addRoute('POST', '/api/settings/teacher/update', ['APIController', 'updateTeacherData']);
 $r->addRoute('POST', '/api/settings/teacher/delete', ['APIController', 'deleteTeacherAccount']);
+$r->addRoute('POST', '/api/teacher/student/update', ['APIController', 'updateStudentDataT']);
+$r->addRoute('POST', '/api/teacher/student/unlink', ['APIController', 'unlink']);
+$r->addRoute('POST', '/api/teacher/check/code', ['APIController', 'codeIsFree']);
+$r->addRoute('POST', '/api/teacher/set/code', ['APIController', 'setCode']);
+$r->addRoute('POST', '/api/student/join/{code}', ['APIController', 'setCode']);
 
 // Student dashboard
 $r->addRoute('GET', '/dashboard/student', ['HomeController', 'showStudentDashboard']);
@@ -39,7 +54,7 @@ $r->addRoute('GET', '/dashboard/teacher/settings', ['HomeController', 'showTeach
 $r->addRoute('GET', '/dashboard/teacher/origin', ['HomeController', 'showTeacherOrigin']); // ???
 $r->addRoute('GET', '/dashboard/teacher/students', ['HomeController', 'showTeacherStudents']);
 $r->addRoute('GET', '/dashboard/teacher/students/add', ['HomeController', 'showTeacherStudentsAdd']);
-$r->addRoute('GET', '/dashboard/teacher/students/edit', ['HomeController', 'showTeacherStudentsEdit']);
+$r->addRoute('GET', '/dashboard/teacher/students/edit/{id}', ['HomeController', 'showTeacherStudentsEdit']);
 $r->addRoute('GET', '/dashboard/teacher/students/invite', ['HomeController', 'showTeacherStudentsInvite']);
 
 // Quizzes
