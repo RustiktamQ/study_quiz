@@ -1,12 +1,32 @@
+<<<<<<< HEAD
     {include './partials/header.latte'}
     {include './partials/sidebar.latte'}
+=======
+<?php
+include './partials/header.php';
+include './partials/sidebar.php';
+
+// --- PHP Logic Placeholder ---
+// Handle potential form submission feedback (e.g., errors, success messages)
+// $errors = $_SESSION['errors'] ?? [];
+// $old_input = $_SESSION['old_input'] ?? [];
+// unset($_SESSION['errors'], $_SESSION['old_input']); // Flash messages
+// --- End PHP Logic Placeholder ---
+
+?>
+
+>>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
 <div class="w-full max-w-7xl lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
 
         <!-- Page Title -->
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">
+<<<<<<< HEAD
                 Edit Teacher ({$teacher['name']})
+=======
+                Edit Teacher ({TEACHER_NAME})
+>>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
             </h1>
             <p class="text-sm text-gray-500">Edit exsisting teacher.</p>
         </div>

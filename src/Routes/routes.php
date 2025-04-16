@@ -8,8 +8,11 @@ $r->addRoute('GET', '/confirmation', ['HomeController', 'showConfirmation']);
 $r->addRoute('GET', '/adminPanel', ['HomeController', 'showAdminPanel']);
 $r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
 $r->addRoute('GET', '/adminPanel/users', ['HomeController', 'showAdminUsers']);
+<<<<<<< HEAD
 $r->addRoute('GET', '/adminPanel/user/edit/{id}', ['HomeController', 'showAdminUsersEdit']);
 $r->addRoute('GET', '/adminPanel/teacher/edit/{id}', ['HomeController', 'showAdminTeachersEdit']);
+=======
+>>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
 $r->addRoute('GET', '/adminPanel/users/banned', ['HomeController', 'showAdminBannedUsers']);
 $r->addRoute('GET', '/adminPanel/quizzes', ['HomeController', 'showAdminQuizzes']);
 $r->addRoute('GET', '/adminPanel/quizzes/create', ['HomeController', 'showAdminQuizzesCreate']);
