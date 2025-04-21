@@ -1,31 +1,24 @@
-    {include './partials/header.latte'}
-    {include './partials/sidebar.latte'}
+{include './partials/header.latte'}
+{include './partials/sidebar.latte'}
 
 <div class="w-full max-w-[1800px] lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-
-        <!-- Page Title -->
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-semibold text-gray-800">
-                    Quiz Management
-                </h1>
+                <h1 class="text-2xl font-semibold text-gray-800">Quiz Management</h1>
                 <p class="text-sm text-gray-500">View, create, and manage quizzes.</p>
             </div>
-             <div class="flex space-x-4">
-             <div class="max-w-sm space-y-3">
-                <input type="text" class="border py-2 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Search for quizzes">
+            <div class="flex space-x-4">
+                <div class="max-w-sm space-y-3">
+                    <input type="text" class="border py-2 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Search for quizzes">
                 </div>
-                <a href="create_quiz.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                <a href="/adminPanel/quizzes/create" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                     Create New Quiz
                 </a>
-                
             </div>
         </div>
-        <!-- End Page Title -->
 
-        <!-- Quiz Table -->
         <div class="flex flex-col">
             <div class="-m-1.5 overflow-x-auto">
                 <div class="p-1.5 min-w-full inline-block align-middle">
@@ -33,105 +26,102 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">ID</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Title</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Subject</th>
-                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Questions</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">category</th>
-                                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Created</th>
-                                    <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Actions</th>
+                                    <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">ID</th>
+                                    <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Title</th>
+                                    <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Subject</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Questions</th>
+                                    <th class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Category</th>
+                                    <th class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <!-- Static Example Row 1 -->
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">QZ001</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Introduction to Algebra</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Mathematics</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">15</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">Math</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Oct 20, 2023</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                                        <a href="managequiz.php" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
-                                            Manage
-                                        </a>
-                                        <button type="button" class="ml-4 delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-
-                                <!-- Example: Row shown when no quizzes exist -->
-                                <!--
-                                <tr>
-                                    <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">No quizzes found. Create one!</td>
-                                </tr>
-                                -->
+                                {if $quizzes}
+                                    {foreach $quizzes as $quiz}
+                                        <tr>
+                                            <td class="quizId px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{$quiz['id']}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{$quiz['title']}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{$quiz['subject']}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 text-center">{$quiz['questions']}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{$quiz['category']}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                                                <a href="/adminPanel/quizzes/manage/{$quiz['id']}" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800">Manage</a>
+                                                <button class="deleteBtn ml-4 delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800">Delete</button>
+                                            </td>
+                                        </tr>
+                                    {/foreach}
+                                {else}
+                                    <tr>
+                                        <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">No quizzes found. Create one!</td>
+                                    </tr>
+                                {/if}
                             </tbody>
                         </table>
                     </div>
-                    <!-- Optional: Add Pagination -->
                 </div>
             </div>
         </div>
-        <!-- End Quiz Table -->
 
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+{include './partials/footer.latte'}
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
 
-<script>
-
-    // --- Delete Confirmation Modal ---
-    const deleteConfirmModal = document.getElementById('delete-confirm-modal');
-    const deleteConfirmBackdrop = document.getElementById('delete-confirm-backdrop');
-    const deleteQuestionButtons = document.querySelectorAll('.delete-question-button');
-    const closeDeleteConfirmButton = document.getElementById('close-delete-confirm-modal-button'); // Added close button
-    const cancelDeleteButton = document.getElementById('cancel-delete-button');
-    const confirmDeleteButton = document.getElementById('confirm-delete-button');
-    const deleteQuestionIdInput = document.getElementById('delete-question-id-input');
-    const questionsListContainer = document.getElementById('questions-list'); // Container for questions
-
-    const openDeleteModal = (questionId) => {
-       deleteQuestionIdInput.value = questionId; // Store the ID
-       openModal(deleteConfirmModal, deleteConfirmBackdrop);
-    };
-    const closeDeleteModal = () => closeModal(deleteConfirmModal, deleteConfirmBackdrop);
-
-    deleteQuestionButtons.forEach(button => {
-       button.addEventListener('click', (e) => {
-           const questionContainer = e.target.closest('[data-question-id]');
-           const questionId = questionContainer ? questionContainer.dataset.questionId : null;
-           if (questionId) {
-                openDeleteModal(questionId);
-           } else {
-               console.error("Could not find question ID for delete button.");
-           }
-       });
-    });
-    // Add listener for the new close button on the delete modal
-    if (closeDeleteConfirmButton) closeDeleteConfirmButton.addEventListener('click', closeDeleteModal);
-    if (cancelDeleteButton) cancelDeleteButton.addEventListener('click', closeDeleteModal);
-    if (confirmDeleteButton) confirmDeleteButton.addEventListener('click', () => {
-        const questionIdToDelete = deleteQuestionIdInput.value;
-        console.log(`Confirmed deletion for question ID: ${questionIdToDelete} (Frontend Only)`);
-
-        // --- Frontend Deletion (Example) ---
-        const questionElementToRemove = questionsListContainer.querySelector(`.question-item[data-question-id="${questionIdToDelete}"]`);
-        if (questionElementToRemove) {
-            questionElementToRemove.remove();
-            console.log(`Removed question ${questionIdToDelete} from the list.`);
-            // TODO: Renumber questions if needed
-        } else {
-             console.warn(`Could not find question ${questionIdToDelete} in the list to remove.`);
+    async function deleteQuiz(quizId, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/quizzes/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizId,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
         }
-        // TODO: Make API call to backend to actually delete
-        // --- End Frontend Deletion ---
+    }
 
-        closeDeleteModal();
+    const token = getAdmin().token;
+
+    const deleteBtn = document.getElementsByClassName('deleteBtn');
+    const quizId = document.getElementsByClassName('quizId');
+    
+    Array.from(deleteBtn).forEach((btn, i) => {
+        btn.addEventListener('click', async () => {
+            const res = await deleteQuiz(quizId[i].textContent, token);
+
+            if (res.success) {
+                location.reload();
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+        });
     });
 
 </script>
-
-<!-- Include JS -->
-
-{include './partials/footer.latte'}

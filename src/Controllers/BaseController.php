@@ -67,14 +67,29 @@ class BaseController {
         }
     }
 
+    protected function checkAdminAutorization() {
+        if (!isset($_COOKIE['admin'])) {
+            header('Location: /auth/adminPanel');
+            return;
+        }
+    }
+
     protected function jsonError($code, $message) {
         http_response_code($code);
-        echo json_encode(['error' => $message, 'code' => $code]);
+        echo json_encode(['error' => true, 'message' => $message]);
         exit;
     }
 
     protected function validateOwnership($userId) {
         if ($this->user['id'] != $userId) {
+            $this->jsonError(403, 'Access denied');
+        }
+    }
+
+    protected function validateAdmin($token) {
+        $admin = R::findOne('admins', 'token = ?', [$token]);
+
+        if (!$admin) {
             $this->jsonError(403, 'Access denied');
         }
     }

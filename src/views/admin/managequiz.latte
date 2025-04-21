@@ -36,28 +36,37 @@
               <textarea id="add-question-text" name="question_text" placeholder="Enter the question..." rows="3" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
           </div>
 
-          <!-- Multiple Choice Section -->
+          <!-- Multiple Choice Section ADD-->
           <div id="add-mc-section" class="space-y-3 border-t pt-4">
               <h4 class="text-sm font-medium text-gray-600">Multiple Choice Options:</h4>
                <p class="text-xs text-gray-500 -mt-2">Select the radio button for the correct answer. At least two options are required.</p>
               <div id="add-mc-options-container" class="space-y-2">
                   <!-- Option 1 (Example) -->
                   <div class="flex items-center gap-x-3 mc-option-row">
-                      <input type="radio" name="add_correct_answer" value="0" class="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
-                      <input type="text" name="add_mc_option[]" placeholder="Option 1" class="py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
+                      <input type="text" name="add_mc_option[]" placeholder="option 1" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
                       <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
+                  
                   <!-- Option 2 (Example) -->
                   <div class="flex items-center gap-x-3 mc-option-row">
-                      <input type="radio" name="add_correct_answer" value="1" class="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
-                      <input type="text" name="add_mc_option[]" placeholder="Option 2" class="py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 2" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
                        <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
+
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
+                      <input type="text" name="add_mc_option[]" placeholder="Option 3" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+                      <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
+
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
+                      <input type="text" name="add_mc_option[]" placeholder="Option 4" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+                      <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
               </div>
-              <button type="button" id="add-mc-option-button" class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium rounded-md border border-gray-300 bg-white text-gray-600 hover:bg-gray-50">
-                  <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                  Add Option
-              </button>
           </div>
 
           <!-- Optional Explanation Field -->
@@ -125,10 +134,6 @@
                <div id="edit-mc-options-container" class="space-y-2">
                    <!-- Options will be populated by JS -->
                </div>
-               <button type="button" id="edit-mc-option-button" class="py-1 px-2 inline-flex items-center gap-x-1 text-xs font-medium rounded-md border border-gray-300 bg-white text-gray-600 hover:bg-gray-50">
-                  <svg class="flex-shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                   Add Option
-               </button>
            </div>
 
             <!-- Optional Explanation Field -->
@@ -197,7 +202,7 @@
         <!-- Page Title -->
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">
-                Manage Quiz: <span class="text-blue-600">Introduction to Algebra</span> <!-- Static Example Title -->
+                Manage Quiz: <span class="text-blue-600">{$quiz['name']}</span> <!-- Static Example Title -->
             </h1>
             <p class="text-sm text-gray-500">Edit quiz details and manage its questions.</p>
         </div>
@@ -206,47 +211,75 @@
         <!-- Edit Quiz Details Form -->
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
             <h2 class="text-lg font-semibold text-gray-700 mb-4">Quiz Details</h2>
-            <form method="POST" action="#"> <!-- Action points to "#" or placeholder processing script -->
+            <div> <!-- Action points to "#" or placeholder processing script -->
                 <input type="hidden" name="quiz_id" value="QZ001"> <!-- Static Example Quiz ID -->
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <!-- Quiz Title -->
                     <div class="sm:col-span-2">
                         <label for="quiz-title" class="block text-sm font-medium mb-2">Quiz Title</label>
-                        <input type="text" id="quiz-title" name="quiz_title" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" value="Introduction to Algebra"> <!-- Static example value -->
+                        <input type="text" id="title" name="quiz_title" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" value="{$quiz['name']}"> <!-- Static example value -->
                     </div>
 
                      <!-- Subject/Topic -->
                      <div>
                          <label for="quiz-status" class="block text-sm font-medium mb-2">Category</label>
-                         <select id="quiz-status" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
-                             <option value="Math" selected>Math</option>
-                             <option value="English">English</option>
-                             <option value="Kazakh">Kazakh</option>
+                         <select id="category" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                            {foreach $categories as $category}
+                                {if $category['name'] == $quiz['category']}
+                                    <option selected value="{$category['id']}">{$category['name']}</option>
+                                {else}
+                                    <option value="{$category['id']}">{$category['name']}</option>
+                                {/if}
+                            {/foreach}
                          </select>
                     </div>
 
-                     <!-- Description -->
-                     <div class="sm:col-span-2">
-                        <label for="quiz-description" class="block text-sm font-medium mb-2">Description (Optional)</label>
-                        <textarea id="quiz-description" name="quiz_description" rows="4" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter a brief description...">A quick quiz covering basic algebraic concepts.</textarea> <!-- Static example value -->
-                     </div>
+                    <div>
+                         <label for="quiz-status" class="block text-sm font-medium mb-2">Sub Category</label>
+                         <select id="subCategory" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                            {foreach $subCategories as $sub}
+                                {if $sub['name'] == $quiz['subCategory']}
+                                    <option selected value="{$sub['id']}">{$sub['name']}</option>
+                                {else}
+                                    <option value="{$sub['id']}">{$sub['name']}</option>
+                                {/if}
+                            {/foreach}
+                         </select>
+                    </div>
+
+                    <div>
+                        <label for="grade" class="text-sm font-medium mb-2">Grade</label>
+                        <select id="grade" name="grade" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option n:attr="selected => $quiz['grade'] == 0" value="0">Дошкольный</option>
+                            <option n:attr="selected => $quiz['grade'] == 1" value="1">Детский сад</option>
+                            <option n:attr="selected => $quiz['grade'] == 2" value="2">Первый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 3" value="3">Второй класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 4" value="4">Третий класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 5" value="5">Четвертый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 6" value="6">Пятый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 7" value="7">Шестой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 8" value="8">Седьмой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 9" value="9">Восьмой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 10" value="10">Старшая школа</option>
+                        </select>
+                    </div>
 
                 </div> <!-- End grid -->
 
                  <!-- Form Action Buttons -->
                  <div class="mt-6 flex justify-end gap-x-2 border-t pt-4">
-                     <button type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-red-600 hover:bg-red-100 disabled:opacity-50 disabled:pointer-events-none">
+                     <button id="deleteBtn" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-red-600 hover:bg-red-100 disabled:opacity-50 disabled:pointer-events-none">
                          Delete Quiz
                     </button>
-                     <a href="list_quizzes.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                     <a href="/adminPanel/quizzes" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
                         Cancel
                     </a>
-                    <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <button id="saveQuizBtn" type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
                         Save Quiz Details
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
         <!-- End Edit Quiz Details Form -->
 
@@ -254,7 +287,7 @@
         <!-- Manage Questions Section -->
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 mt-6">
              <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold text-gray-700">Questions (3)</h2> <!-- Updated Static Example Count -->
+                <h2 class="text-lg font-semibold text-gray-700">Questions ({count($questions)})</h2> <!-- Updated Static Example Count -->
                 <button id="add-question-button" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
                     <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
                     Add New Question
@@ -264,38 +297,23 @@
             <!-- List of Questions -->
             <div id="questions-list" class="space-y-3">
                 <!-- Static Example Question 1 -->
-                <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="Q001" data-question-type="multiple-choice">
-                    <div>
-                        <p class="text-sm font-medium text-gray-800">1. What is 2 + x = 5?</p>
-                        <p class="text-xs text-gray-500">Type: Multiple Choice</p>
-                    </div>
-                    <div class="flex gap-x-2">
-                         <button type="button" class="edit-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
-                             Edit
-                        </button>
-                         <button type="button" class="delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
-                             Delete
-                         </button>
-                    </div>
-                </div>
-                 <!-- Static Example Question 2 (Removed - was fill-in-blank) -->
-                 <!-- Static Example Question 3 (Removed - was true/false) -->
 
-                 <!-- Add more MC questions or empty state here -->
-                 <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="Q004" data-question-type="multiple-choice">
-                    <div>
-                        <p class="text-sm font-medium text-gray-800">2. Which expression equals 10?</p>
-                        <p class="text-xs text-gray-500">Type: Multiple Choice</p>
+                {foreach $questions as $question}
+                    <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="Q004" data-question-type="multiple-choice">
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">{$question['id']}. {$question['question_text']}</p>
+                            <p class="text-xs text-gray-500">Type: Multiple Choice</p>
+                        </div>
+                        <div class="flex gap-x-2">
+                            <button type="button" class="edit-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                                Edit
+                            </button>
+                            <button type="button" class="delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
+                                Delete
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex gap-x-2">
-                         <button type="button" class="edit-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
-                             Edit
-                        </button>
-                         <button type="button" class="delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
-                             Delete
-                         </button>
-                    </div>
-                </div>
+                {/foreach}
 
                 <!-- Example Empty State (Uncomment if needed) -->
                 <!--
@@ -312,8 +330,9 @@
 
     </div>
 </div>
-
-<script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
 document.addEventListener('DOMContentLoaded', () => {
    // --- General Modal Handling ---
    const openModal = (modal, backdrop) => {
@@ -388,10 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const openAddModal = () => {
        addQuestionForm.reset(); // Clear form on open
        // Reset MC options to default 2
-       addMcOptionsContainer.innerHTML = '';
-       addMcOption('add', '', false, 0); // Add first option
-       addMcOption('add', '', false, 1); // Add second option
-       updateRemoveButtonVisibility('add'); // Ensure first two remove buttons are hidden
        openModal(addQuestionModal, addQuestionBackdrop);
    };
    const closeAddModal = () => closeModal(addQuestionModal, addQuestionBackdrop);
@@ -421,7 +436,6 @@ document.addEventListener('DOMContentLoaded', () => {
    const editQuestionForm = document.getElementById('edit-question-form');
    // REMOVED: editQuestionTypeSelect
    const editMcSection = document.getElementById('edit-mc-section');
-   const editMcOptionsContainer = document.getElementById('edit-mc-options-container');
    const editMcOptionButton = document.getElementById('edit-mc-option-button');
    const editQuestionIdInput = document.getElementById('edit-question-id');
    const editQuestionTextInput = document.getElementById('edit-question-text');
@@ -431,10 +445,9 @@ document.addEventListener('DOMContentLoaded', () => {
    const openEditModal = (questionId) => {
         console.log("Editing Question ID:", questionId);
         editQuestionForm.reset(); // Reset form first
-        editMcOptionsContainer.innerHTML = ''; // Clear previous MC options
 
         // --- Placeholder Data (Replace with actual data fetching) ---
-        // Filtered for Multiple Choice Examples
+        // Filtered for Multiple Choice Examples LL
         let questionData = {};
         if (questionId === 'Q001') {
             questionData = {
@@ -590,8 +603,8 @@ document.addEventListener('DOMContentLoaded', () => {
         radio.type = 'radio';
         radio.name = `${prefix}_correct_answer`;
         radio.value = currentIndex;
-        radio.className = 'shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500';
-        radio.required = true; // An answer must be selected
+        radio.className = 'radio shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500';
+        radio.required = true;
         if (checked) {
             radio.checked = true;
         }
@@ -624,30 +637,183 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update visibility after adding
         updateRemoveButtonVisibility(prefix);
     };
+});
 
-    // Listener for "Add Option" in ADD modal
-    if (addMcOptionButton) {
-        addMcOptionButton.addEventListener('click', () => addMcOption('add'));
-    }
-     // Listener for "Add Option" in EDIT modal
-    if (editMcOptionButton) {
-        editMcOptionButton.addEventListener('click', () => addMcOption('edit'));
+    function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
     }
 
-    // Initial setup for remove buttons on existing options in Add Modal HTML
-    updateRemoveButtonVisibility('add'); // Run initially for the default 2 options
-    document.querySelectorAll('#add-mc-options-container .remove-mc-option').forEach(button => {
-        button.addEventListener('click', (e) => { // Ensure listeners are attached even for HTML ones
-            e.target.closest('.mc-option-row').remove();
-            updateRemoveButtonVisibility('add');
+    function getQuizId() {
+        const currentUrl = window.location.pathname;
+        const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        return quizId;
+    }
+
+    async function deleteQuiz(quizId, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/quizzes/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizId,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function saveQuiz(id, title, category, subCategory, grade, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/quizzes/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    title,
+                    category,
+                    subCategory,
+                    grade,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+        async function addQuestion(quizId, text, options, correct, explanation, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizId,
+                    text,
+                    options,
+                    correct,
+                    explanation,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+
+    const token = getAdmin().token;
+
+    deleteBtn.addEventListener('click', async () => {
+            const res = await deleteQuiz(getQuizId(), token);
+
+            if (res.success) {
+                location.href = '/adminPanel/quizzes';
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+    });
+
+    saveQuizBtn.addEventListener('click', async () => {
+            const res = await saveQuiz(getQuizId(), title.value, category.value, subCategory.value, grade.value, token);
+
+            if (res.success) {
+				Toastify({
+                    text: "Success",
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                            background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+                        },
+				}).showToast();
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+    });
+
+    const radios = document.getElementsByClassName('radio-add');
+
+    Array.from(radios).forEach(e => {
+        e.addEventListener('click', () => {
+            e.checked = true;
         });
     });
 
+    document.getElementById('save-add-question-button').addEventListener('click', async () => {
+        const qText = document.getElementById('add-question-text').value;
+        const options = document.getElementsByClassName('option');
+        const exp = document.getElementById('add-question-explanation').value;
+        let correctIndex;
 
-}); // End DOMContentLoaded
+        for(let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                correctIndex = i;
+            }
+        }
+        const arrOptions = Array.from(options).map(x => x.value);
+        const res = await addQuestion(getQuizId(), qText, arrOptions, arrOptions[correctIndex], exp, token);
+
+        if (res.success) {
+            location.reaload();
+        } else if (res.error) {
+            Toastify({
+                text: res.message,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                },
+            }).showToast();
+        }
+    });
 </script>
-
-<!-- Include JS -->
-<!--  --> <!-- Assumed included elsewhere -->
-
 {include './partials/footer.latte'}

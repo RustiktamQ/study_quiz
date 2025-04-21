@@ -12,10 +12,6 @@ export class ApiController {
                 })
             });
     
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-    
             return await response.json();
         } catch (error) {
             return error.message;;
@@ -56,9 +52,7 @@ export class ApiController {
                 })
             });
     
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
+
     
             return await response.json();
         } catch (error) {
@@ -79,9 +73,7 @@ export class ApiController {
                 })
             });
     
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
+
     
             return await response.json();
         } catch (error) {
@@ -101,10 +93,6 @@ export class ApiController {
                     data
                 })
             });
-    
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
     
             return await response.json();
         } catch (error) {

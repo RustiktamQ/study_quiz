@@ -6,25 +6,29 @@ $r->addRoute('GET', '/confirmation', ['HomeController', 'showConfirmation']);
 
 // Admin
 $r->addRoute('GET', '/adminPanel', ['HomeController', 'showAdminPanel']);
-$r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
 $r->addRoute('GET', '/adminPanel/users', ['HomeController', 'showAdminUsers']);
-<<<<<<< HEAD
 $r->addRoute('GET', '/adminPanel/user/edit/{id}', ['HomeController', 'showAdminUsersEdit']);
 $r->addRoute('GET', '/adminPanel/teacher/edit/{id}', ['HomeController', 'showAdminTeachersEdit']);
-=======
->>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
 $r->addRoute('GET', '/adminPanel/users/banned', ['HomeController', 'showAdminBannedUsers']);
 $r->addRoute('GET', '/adminPanel/quizzes', ['HomeController', 'showAdminQuizzes']);
 $r->addRoute('GET', '/adminPanel/quizzes/create', ['HomeController', 'showAdminQuizzesCreate']);
-$r->addRoute('GET', '/adminPanel/quizzes/manage', ['HomeController', 'showAdminQuizzesManage']);
+$r->addRoute('GET', '/adminPanel/quizzes/manage/{id}', ['HomeController', 'showAdminQuizzesManage']);
 $r->addRoute('GET', '/adminPanel/categories', ['HomeController', 'showAdminCategories']);
 $r->addRoute('GET', '/adminPanel/categories/create', ['HomeController', 'showAdminCategoriesCreate']);
 $r->addRoute('GET', '/adminPanel/grades', ['HomeController', 'showAdminGrades']);
 $r->addRoute('GET', '/adminPanel/grades/create', ['HomeController', 'showAdminGradesCreate']);
 
+// Admin API
+$r->addRoute('POST', '/api/admin/create/quiz', ['APIController', 'adminCreateQuiz']);
+$r->addRoute('POST', '/adminPanel/quizzes/delete', ['APIController', 'deleteAdminQuizzes']);
+$r->addRoute('POST', '/adminPanel/quizzes/edit', ['APIController', 'editAdminQuizzes']);
+$r->addRoute('POST', '/adminPanel/questions/add', ['APIController', 'addAdminQuestions']);
+
+
 $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 
 // Auth
+$r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
 $r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
 $r->addRoute('GET', '/auth/callback/teacher', ['AuthController', 'teacherAuthWithGoogle']);

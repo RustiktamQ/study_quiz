@@ -572,36 +572,121 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
-    // TODO
-    public function getDayStats($params) {
+    public function adminCreateQuiz($params) {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
-        
-        if (!isset($params['student_id']) || !isset($params['day'])) {
+
+        if (
+            !isset($params['name']) || strlen($params['name']) === 0 ||
+            !isset($params['category']) ||
+            !isset($params['subCategory']) ||
+            !isset($params['grade']) ||
+            !isset($params['token'])
+        ) {
             http_response_code(400);
-            var_dump($params);
-            echo json_encode(['error' => 'Missing required parameters']);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
             return;
         }
+        
+        $this->validateAdmin($params['token']);
 
-        $this->validateOwnership($params['user_id']);
-        $userId = $params['user_id'];
-        $day = $params['day'];
+        R::exec(
+            'INSERT INTO `quizzes`(`name`, `category_id`, `sub_category_id`, `grade`) 
+            VALUES (?, ?, ?, ?)',
+            [$params['name'], $params['category'], $params['subCategory'], $params['grade']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
 
-        $date = '2024-03-18';
+    public function deleteAdminQuizzes($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
 
-        $statistics = R::getRow(
-            'SELECT SUM(completed) AS quizzes_completed, 
-                    SUM(answered) AS answers_completed, 
-                    SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
-            FROM progress 
-            WHERE student_id = ? 
-            AND DATE(created_at) = ? 
-            GROUP BY student_id',
-            [$user->id, $date]
+        if (
+            !isset($params['quizId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'DELETE FROM `quizzes` WHERE id = ?',
+            [$params['quizId']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function editAdminQuizzes($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['id']) ||
+            !isset($params['title']) ||
+            !isset($params['category']) ||
+            !isset($params['subCategory']) ||
+            !isset($params['grade']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'UPDATE `quizzes` SET `name`= ?, `category_id`= ?, `sub_category_id`= ?, `grade`= ? WHERE id = ?',
+            [$params['title'], $params['category'], $params['subCategory'], $params['grade'], $params['id']]
+        );
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function addAdminQuestions($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['quizId']) ||
+            !isset($params['text']) ||
+            !isset($params['options']) ||
+            !isset($params['correct']) ||
+            !isset($params['explanation']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'INSERT INTO `questions`(`question_text`, `correct_answer`, `options`, `explanation`) VALUES (?, ?, ?, ?)',
+            [$params['text'], $params['correct'], json_encode($params['options']), $params['explanation']]
         );
 
+        $question = R::findOne('questions', 
+        'question_text = ? AND
+        correct_answer = ? AND
+        options = ? AND
+        explanation = ?', [$params['text'], $params['correct'], json_encode($params['options']), $params['explanation']]);
+
+        R::exec(
+            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
+            [$params['quizId'], $question->id]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
     }
 
     private function calculateScore($progress) {

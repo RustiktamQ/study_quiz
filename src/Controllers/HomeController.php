@@ -406,6 +406,247 @@ class HomeController extends BaseController {
         ]); 
     }
 
+    public function showAdminUsers()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $students = R::getAll('SELECT * FROM users');
+        $teachers = R::getAll('SELECT * FROM teachers');
+
+        foreach ($students as &$student) {
+            $student['role'] = 'student';
+        }
+        foreach ($teachers as &$teacher) {
+            $teacher['role'] = 'teacher';
+        }
+        $users = array_merge($students, $teachers);
+
+        $this->renderPartial('admin/users', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'users' => $users
+        ]);
+    }
+
+    public function showAdminUsersEdit($params)
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $student = R::findOne('users', 'id = ?', [$params['id']]);
+
+        $this->renderPartial('admin/edituser', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+    public function showAdminTeachersEdit($params)
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $teacher = R::findOne('teachers', 'id = ?', [$params['id']]);
+
+        $this->renderPartial('admin/editteacher', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'teacher' => $teacher
+        ]);
+    }
+
+    public function showAdminBannedUsers()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/bannedusers', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+    public function showAdminQuizzes()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $quizzes = R::getAll('
+        SELECT 
+        quizzes.id, 
+        quizzes.name AS `title`, 
+        categories.name AS `subject`, 
+        sub_categories.name AS `category`, 
+        COUNT(questions_quizzes.question_id) AS `questions`
+        FROM quizzes
+        JOIN categories ON quizzes.category_id = categories.id
+        JOIN sub_categories ON quizzes.sub_category_id = sub_categories.id
+        LEFT JOIN questions_quizzes ON quizzes.id = questions_quizzes.quiz_id
+        GROUP BY quizzes.id, quizzes.name, categories.name, sub_categories.name');
+
+        $this->renderPartial('admin/quizzes', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'quizzes' => $quizzes
+        ]);
+    }
+
+    public function showAdminQuizzesCreate()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $categories = R::getAll('SELECT * FROM categories');
+        $subCategories = R::getAll('SELECT * FROM sub_categories');
+
+        $this->renderPartial('admin/createquiz', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'categories' => $categories,
+            'subCategories' => $subCategories
+        ]);
+    }
+
+    public function showAdminQuizzesManage($params)
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $quizId = $params['id'];
+
+        $quiz = R::getAll('
+            SELECT quizzes.name, categories.name as `category`, sub_categories.name as `subCategory`, quizzes.grade
+            FROM quizzes
+            JOIN categories ON categories.id = category_id
+            JOIN sub_categories ON sub_categories.id = sub_category_id
+            WHERE quizzes.id = ?
+        ', [$quizId]);
+
+        if (!$quiz) {
+            header('Location: /adminPanel/quizzes');
+            return;
+        }
+
+        $questions = R::getAll('
+        SELECT questions.id, questions.question_text, questions.correct_answer, questions.options, questions.explanation 
+        FROM `questions_quizzes`
+        JOIN questions ON questions.id = question_id
+        WHERE quiz_id = ?
+        ', [$quizId]);
+
+        $categories = R::getAll('SELECT * FROM categories');
+        $subCategories = R::getAll('SELECT * FROM sub_categories');
+
+        $this->renderPartial('admin/managequiz', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'quiz' => $quiz[0],
+            'questions' => $questions,
+            'categories' =>  $categories,
+            'subCategories' => $subCategories
+        ]);
+    }
+
+    public function showAdminCategories()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/categories', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+    public function showAdminCategoriesCreate()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/createcategory', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+    public function showAdminGrades()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/grades', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
+    public function showAdminGradesCreate()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/creategrade', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL']
+        ]);
+    }
+
     public function showTeacherDashboard()
     {
         $this->checkTeacherAuthorization();
@@ -589,6 +830,12 @@ SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapse
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $checkConfirm = R::findOne('users', 'id = ?', [$user['id']]);
+
+        if ($checkConfirm['token_confirmed'] == 1) {
+            header('Location: /');
+        }
 
         $this->renderPartial('confirmation', [
             'lang' => $this->lang,
