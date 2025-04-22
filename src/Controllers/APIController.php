@@ -689,6 +689,58 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
+    public function editAdminQuestions($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['quizId']) ||
+            !isset($params['text']) ||
+            !isset($params['options']) ||
+            !isset($params['correct']) ||
+            !isset($params['explanation']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
+            [$params['quizId'], $question->id]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function addAdminCategory    ($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['quizId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
+            [$params['quizId'], $question->id]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
     private function calculateScore($progress) {
         $correctCount = $progress->answered;
         $correctScores = [
