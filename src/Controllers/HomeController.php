@@ -349,20 +349,8 @@ class HomeController extends BaseController {
                 if($user) {
                     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
                     $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-                    
-                    $currentHour = date('H');
-                    $greeting = 'Welcome!';
-                    if ($currentHour >= 6 && $currentHour < 12) {
-                        $greeting = "Good morning";
-                    } elseif ($currentHour >= 12 && $currentHour < 18) {
-                        $greeting = "Good afternoon";
-                    } elseif ($currentHour >= 18 && $currentHour < 21) {
-                        $greeting = "Good evening";
-                    } elseif ($currentHour >= 21 && $currentHour < 24) {
-                        $greeting = "Good night";
-                    } else {
-                        $greeting = "Good night";
-                    }
+
+                    $totalUsers = R::getAll('')
                     
                     $this->renderPartial('admin/index', [
                         'lang' => $this->lang,
@@ -370,8 +358,7 @@ class HomeController extends BaseController {
                         'ROOT_URL' => $root,
                         'domain' => $_ENV['ROOT_URL'],
                         'fullname' => $user->email,
-                        'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png',
-                        'greeting' => $greeting
+                        'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png'
                     ]);
                     exit;
                 }

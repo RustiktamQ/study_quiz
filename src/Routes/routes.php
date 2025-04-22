@@ -23,6 +23,12 @@ $r->addRoute('POST', '/api/admin/create/quiz', ['APIController', 'adminCreateQui
 $r->addRoute('POST', '/adminPanel/quizzes/delete', ['APIController', 'deleteAdminQuizzes']);
 $r->addRoute('POST', '/adminPanel/quizzes/edit', ['APIController', 'editAdminQuizzes']);
 $r->addRoute('POST', '/adminPanel/questions/add', ['APIController', 'addAdminQuestions']);
+$r->addRoute('POST', '/adminPanel/category/add', ['APIController', 'addAdminCategory']);
+$r->addRoute('POST', '/adminPanel/category/edit', ['APIController', 'editAdminCategory']);
+$r->addRoute('POST', '/adminPanel/category/delete', ['APIController', 'deleteAdminCategory']);
+$r->addRoute('POST', '/adminPanel/subCategory/add', ['APIController', 'addAdminSubCategory']);
+$r->addRoute('POST', '/adminPanel/subCategory/edit', ['APIController', 'editAdminSubCategory']);
+$r->addRoute('POST', '/adminPanel/subCategory/delete', ['APIController', 'deleteAdminSubCategory']);
 
 
 $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);

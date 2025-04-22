@@ -717,13 +717,13 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
-    public function addAdminCategory    ($params) {
+    public function addAdminCategory($params) {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
 
         if (
-            !isset($params['quizId']) ||
+            !isset($params['name']) ||
             !isset($params['token'])
         ) {
             http_response_code(400);
@@ -733,8 +733,130 @@ class APIController extends BaseController {
         $this->validateAdmin($params['token']);
 
         R::exec(
-            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
-            [$params['quizId'], $question->id]
+            'INSERT INTO `categories`(`name`) VALUES (?)',
+            [$params['name']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function editAdminCategory($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['name']) ||
+            !isset($params['catId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'UPDATE `categories` SET `name`= ? WHERE `id`= ?',
+            [$params['name'], $params['id']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function deleteAdminCategory($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['catId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'DELETE FROM `categories` WHERE id = ?',
+            [$params['id']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function addAdminSubCategory($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['name']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'INSERT INTO `sub_categories` (`name`) VALUES (?)',
+            [$params['name']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function editAdminSubCategory($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['name']) ||
+            !isset($params['catId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'UPDATE `sub_categories` SET `name`= ? WHERE `id`= ?',
+            [$params['name'], $params['id']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function deleteAdminSubCategory($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['catId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'DELETE FROM `sub_categories` WHERE id = ?',
+            [$params['id']]
         );
 
         http_response_code(200);
