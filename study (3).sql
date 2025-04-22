@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.2:3306
--- Время создания: Апр 16 2025 г., 22:45
+-- Время создания: Апр 22 2025 г., 10:10
 -- Версия сервера: 10.1.48-MariaDB
 -- Версия PHP: 8.1.8
 
@@ -119,7 +119,7 @@ CREATE TABLE `progress` (
 
 INSERT INTO `progress` (`id`, `student_id`, `quiz_id`, `current_question`, `score`, `completed`, `start_time`, `end_time`, `answered`, `elapsed_time`, `shuffled_questions`, `current_question_index`) VALUES
 (98, 21, 3, 8, 19, 0, '2025-04-05 12:20:47', '0000-00-00 00:00:00', 2, '00:00:10', '[\"8\",\"9\",\"7\"]', 0),
-(99, 21, 1, 1, 0, 0, '2025-04-06 16:08:04', '0000-00-00 00:00:00', 0, '00:00:00', '', 0),
+(99, 21, 1, 3, 19, 0, '2025-04-06 16:08:04', '0000-00-00 00:00:00', 2, '00:33:35', '', 0),
 (100, 21, 2, 5, 10, 0, '2025-04-08 19:49:51', '0000-00-00 00:00:00', 1, '00:03:10', '', 0);
 
 -- --------------------------------------------------------
@@ -156,7 +156,12 @@ INSERT INTO `questions` (`id`, `question_text`, `correct_answer`, `options`, `ex
 (13, 'What is 20 divided by 4?', '5', '[\"4\", \"5\", \"6\", \"7\"]', 'Dividing 20 by 4 gives 5.'),
 (14, 'If you have 8 apples and share them equally among 4 friends, how many apples does each friend get?', '2', '[\"1\", \"2\", \"3\", \"4\"]', '8 divided by 4 equals 2 apples per friend.'),
 (15, 'What is the value of the digit 3 in the number 352?', '30', '[\"3\", \"30\", \"300\", \"350\"]', 'The digit 3 is in the tens place, representing 30.'),
-(16, 'How many inches are in one foot?', '12', '[\"10\", \"11\", \"12\", \"13\"]', 'One foot is equal to 12 inches.');
+(16, 'How many inches are in one foot?', '12', '[\"10\", \"11\", \"12\", \"13\"]', 'One foot is equal to 12 inches.'),
+(17, 'Тестовый вопрос', 'Array', 'Правильный ответ', 'Бла бла'),
+(18, '1', '[\"q1\",\"q2\",\"q3\",\"q5\"]', 'q3', 'wwww'),
+(19, '1', '[\"1\",\"1\",\"1\",\"1\"]', '1', '1'),
+(20, 'Текст вопроса', 'Правильный ответ', '[\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 1\",\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 2\",\"\\u041f\\u0440\\u0430\\u0432\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439 \\u043e\\u0442\\u0432\\u0435\\u0442\",\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 4\"]', 'Обьяснение'),
+(21, 'ВОПРОС', '3', '[\"1\",\"2\",\"3\",\"4\"]', 'Детали');
 
 -- --------------------------------------------------------
 
@@ -190,7 +195,8 @@ INSERT INTO `questions_quizzes` (`id`, `quiz_id`, `question_id`) VALUES
 (13, 1, 13),
 (14, 1, 14),
 (15, 1, 15),
-(16, 1, 16);
+(16, 1, 16),
+(17, 6, 21);
 
 -- --------------------------------------------------------
 
@@ -213,7 +219,8 @@ CREATE TABLE `quizzes` (
 INSERT INTO `quizzes` (`id`, `name`, `category_id`, `sub_category_id`, `grade`) VALUES
 (1, '3rd Grade Math Basics', 5, 1, 1),
 (2, 'Advanced Multiplication', 5, 1, 2),
-(3, 'Place Value Mastery', 5, 1, 2);
+(3, 'Place Value Mastery', 5, 1, 2),
+(6, 'zxc', 7, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -259,7 +266,7 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `token`, `invite_code`, `join_date`, `school`, `specialization`) VALUES
-(1, 'John Doe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'John', 'Doe', 'teacher', 'ru', 'testToken2', 'sIV3QJ55fN', '2025-03-11', '', 'Математика и Физика'),
+(1, 'John Doe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'John', 'Doe', 'teacher', 'ru', '', 'ekLKSHF9cw', '2025-03-11', '', 'Математика и Физика'),
 (3, 'Name Surname', 'https://vk.com/images/wall/deleted_avatar_50.png', 'Name', 'Surname', 'test@testmail.io', 'ru', 'd303e5f985dd550f91bd067e3580821c', NULL, '1900-01-01', 'MGU', 'Биология'),
 (35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', 'testToken', NULL, '2025-04-05', 'science', ''),
 (37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', '3214123', NULL, '2025-04-08', 'qweqwewqe', '');
@@ -280,7 +287,7 @@ CREATE TABLE `users` (
   `picture` text,
   `token` varchar(255) DEFAULT NULL,
   `token_confirmed` varchar(1) DEFAULT '0',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `join_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `grade` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -288,8 +295,8 @@ CREATE TABLE `users` (
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `created_at`, `grade`) VALUES
-(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'testToken2', '1', '2025-02-24 15:35:47', 6);
+INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `join_date`, `grade`) VALUES
+(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '1', '2025-02-24 15:35:47', 6);
 
 --
 -- Индексы сохранённых таблиц
@@ -396,19 +403,19 @@ ALTER TABLE `progress`
 -- AUTO_INCREMENT для таблицы `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `questions_quizzes`
 --
 ALTER TABLE `questions_quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT для таблицы `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `sub_categories`
