@@ -118,7 +118,7 @@ class HomeController extends BaseController {
         $this->checkAuthorization();
         $user = $this->user;
 
-        $teacher = R::findOne('teachers', 'token = ?', [$user->token]);
+        $teacher = R::findOne('teachers', 'invite_code = ?', [$user->token]);
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
@@ -315,7 +315,7 @@ class HomeController extends BaseController {
             echo json_encode(['success' => false, 'message' => 'All fields are required.']);
             return;
         }
-        $teacher = R::findOne('teachers', 'token = ?', [$token]);
+        $teacher = R::findOne('teachers', 'invite_code = ?', [$token]);
         if (!$teacher){
             echo json_encode(['success' => false, 'message' => 'Enter the correct token']);
             return;
@@ -350,7 +350,10 @@ class HomeController extends BaseController {
                     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
                     $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-                    $totalUsers = R::getAll('')
+                    $totalUsers = R::getAll('SELECT
+                        (SELECT COUNT(*) FROM users) +
+                        (SELECT COUNT(*) FROM teachers) AS total_users;
+                    ')[0];
                     
                     $this->renderPartial('admin/index', [
                         'lang' => $this->lang,
@@ -358,7 +361,8 @@ class HomeController extends BaseController {
                         'ROOT_URL' => $root,
                         'domain' => $_ENV['ROOT_URL'],
                         'fullname' => $user->email,
-                        'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png'
+                        'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png',
+                        'totalUsers' => $totalUsers['total_users']
                     ]);
                     exit;
                 }
@@ -435,7 +439,8 @@ class HomeController extends BaseController {
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL']
+            'domain' => $_ENV['ROOT_URL'],
+            'student' => $student
         ]);
     }
 
@@ -466,11 +471,16 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
+        $bannedUsers = R::getAll('
+        SELECT users.id, users.name, users.email, users.join_date, banned_date, reason, expire_date FROM `ban_list`
+        JOIN users ON user_id = users.id');
+
         $this->renderPartial('admin/bannedusers', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL']
+            'domain' => $_ENV['ROOT_URL'],
+            'bannedUsers' => $bannedUsers
         ]);
     }
 
@@ -578,11 +588,17 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
+        $categories = R::getAll('
+        SELECT categories.id, categories.name, COUNT(quizzes.category_id) as `count` FROM categories
+        LEFT JOIN quizzes ON quizzes.category_id = categories.id
+        GROUP BY categories.name');
+
         $this->renderPartial('admin/categories', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL']
+            'domain' => $_ENV['ROOT_URL'],
+            'categories' => $categories
         ]);
     }
 
@@ -602,7 +618,7 @@ class HomeController extends BaseController {
         ]);
     }
 
-    public function showAdminGrades()
+    public function showAdminCategoriesEdit($params)
     {
         $this->checkAdminAutorization();
         $user = $this->user;
@@ -610,15 +626,20 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('admin/grades', [
+        $categoryId = $params['id'];
+
+        $category = R::findOne('categories', 'id = ?', [$categoryId]);
+
+        $this->renderPartial('admin/editcategory', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL']
+            'domain' => $_ENV['ROOT_URL'],
+            'category' => $category
         ]);
     }
 
-    public function showAdminGradesCreate()
+    public function showAdminSubCategories()
     {
         $this->checkAdminAutorization();
         $user = $this->user;
@@ -626,13 +647,54 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('admin/creategrade', [
+        $subCategories = R::getAll('SELECT * FROM sub_categories');
+
+        $this->renderPartial('admin/subcategory', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'subCategories' => $subCategories
+        ]);
+    }
+
+    public function showAdminSubCategoriesCreate()
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('admin/createsubcategory', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL']
         ]);
     }
+
+    public function showAdminSubCategoriesEdit($params)
+    {
+        $this->checkAdminAutorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $categoryId = $params['id'];
+
+        $category = R::findOne('sub_categories', 'id = ?', [$categoryId]);
+
+        $this->renderPartial('admin/editsubcategory', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'subCategory' => $category
+        ]);
+    }
+
 
     public function showTeacherDashboard()
     {
@@ -688,7 +750,7 @@ class HomeController extends BaseController {
             'fullname' => $user->name,
             'firstname' => $user->firstname,
             'picture' => $user->picture,
-            'token' => $user->token
+            'token' => $user->invite_code
         ]);
     }
 
@@ -724,14 +786,14 @@ class HomeController extends BaseController {
 SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapsed_time as `time_spent`
         FROM users u
         JOIN progress p ON u.id = p.student_id
-        JOIN teachers t ON t.token = u.token
+        JOIN teachers t ON t.invite_code = u.token
         JOIN quizzes q ON q.id = p.quiz_id
         WHERE p.start_time = (
             SELECT MAX(p2.start_time)
             FROM progress p2
             WHERE p2.student_id = u.id
         ) AND u.token = ?
-    ', [$teacher['token']]);
+    ', [$teacher['invite_code']]);
     
 
         $this->renderPartial('dashboard/teacher/students/index', [

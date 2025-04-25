@@ -41,9 +41,15 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{$user['name']}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{$user['email']}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">
-                                         <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                        {if $user['role'] == 'student'}
+                                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
                                             {$user['role']}
                                         </span>
+                                        {else}
+                                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-purple-200 text-purple-800">
+                                            {$user['role']}
+                                        </span>
+                                        {/if}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{$user['join_date']}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
@@ -51,14 +57,14 @@
                                         <a href="/adminPanel/user/edit/{$user['id']}" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
                                             Edit
                                         </a>
+                                        <a href="#" class="banBtn inline-flex items-center gap-x-2 ml-4 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
+                                            BAN
+                                        </a>
                                         {else}
                                         <a href="/adminPanel/teacher/edit/{$user['id']}" class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
                                             Edit
                                         </a>
                                         {/if}
-                                        <a href="#" class="inline-flex items-center gap-x-2 ml-4 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
-                                            BAN
-                                        </a>
                                     </td>
                                 </tr>
                             {/foreach}
@@ -81,6 +87,59 @@
     </div>
 </div>
 
+<script n:syntax=off>
+   function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const token = getAdmin().token;
+
+    document.querySelectorAll('.banBtn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const row = btn.closest('tr');
+            const userId = row.querySelector('td:first-child').textContent.trim();
+
+            const reason = prompt(`Enter ban reason for user #${userId}:`);
+            if (!reason) return alert('Ban cancelled');
+
+            try {
+                const res = await fetch('/api/admin/user/ban', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id: userId,
+                        reason,
+                        token
+                    })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert('User successfully banned!');
+                    row.remove();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Request failed');
+            }
+        });
+    });
+});
+</script>
 
 
 {include './partials/footer.latte'}

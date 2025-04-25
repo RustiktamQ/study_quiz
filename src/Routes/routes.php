@@ -15,21 +15,28 @@ $r->addRoute('GET', '/adminPanel/quizzes/create', ['HomeController', 'showAdminQ
 $r->addRoute('GET', '/adminPanel/quizzes/manage/{id}', ['HomeController', 'showAdminQuizzesManage']);
 $r->addRoute('GET', '/adminPanel/categories', ['HomeController', 'showAdminCategories']);
 $r->addRoute('GET', '/adminPanel/categories/create', ['HomeController', 'showAdminCategoriesCreate']);
-$r->addRoute('GET', '/adminPanel/grades', ['HomeController', 'showAdminGrades']);
-$r->addRoute('GET', '/adminPanel/grades/create', ['HomeController', 'showAdminGradesCreate']);
+$r->addRoute('GET', '/adminPanel/categories/edit/{id}', ['HomeController', 'showAdminCategoriesEdit']);
+$r->addRoute('GET', '/adminPanel/subCategories', ['HomeController', 'showAdminSubCategories']);
+$r->addRoute('GET', '/adminPanel/subCategories/create', ['HomeController', 'showAdminSubCategoriesCreate']);
+$r->addRoute('GET', '/adminPanel/subCategories/edit/{id}', ['HomeController', 'showAdminSubCategoriesEdit']);
 
 // Admin API
 $r->addRoute('POST', '/api/admin/create/quiz', ['APIController', 'adminCreateQuiz']);
 $r->addRoute('POST', '/adminPanel/quizzes/delete', ['APIController', 'deleteAdminQuizzes']);
 $r->addRoute('POST', '/adminPanel/quizzes/edit', ['APIController', 'editAdminQuizzes']);
 $r->addRoute('POST', '/adminPanel/questions/add', ['APIController', 'addAdminQuestions']);
+$r->addRoute('POST', '/adminPanel/questions/edit', ['APIController', 'editAdminQuestions']);
+$r->addRoute('POST', '/adminPanel/questions/delete', ['APIController', 'deleteAdminQuestions']);
 $r->addRoute('POST', '/adminPanel/category/add', ['APIController', 'addAdminCategory']);
 $r->addRoute('POST', '/adminPanel/category/edit', ['APIController', 'editAdminCategory']);
 $r->addRoute('POST', '/adminPanel/category/delete', ['APIController', 'deleteAdminCategory']);
 $r->addRoute('POST', '/adminPanel/subCategory/add', ['APIController', 'addAdminSubCategory']);
 $r->addRoute('POST', '/adminPanel/subCategory/edit', ['APIController', 'editAdminSubCategory']);
 $r->addRoute('POST', '/adminPanel/subCategory/delete', ['APIController', 'deleteAdminSubCategory']);
-
+$r->addRoute('POST', '/api/admin/user/edit', ['APIController', 'editAdminUser']);
+$r->addRoute('POST', '/api/admin/teacher/edit', ['APIController', 'editAdminTeacher']);
+$r->addRoute('POST', '/api/admin/user/ban', ['APIController', 'banAdminUser']);
+$r->addRoute('POST', '/api/admin/user/pardon', ['APIController', 'pardon']);
 
 $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 

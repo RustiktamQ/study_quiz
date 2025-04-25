@@ -185,12 +185,12 @@
       <div class="space-y-4 flex flex-col items-center">
          <div class="w-full max-w-xs">
             <label for="ban-user-id" class="block text-sm font-medium mb-2 text-gray-700 text-center">User ID:</label>
-            <input type="text" id="ban-user-id" name="ban-user-id" placeholder="Enter user ID..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+            <input type="text" id="banUserId" name="ban-user-id" placeholder="Enter user ID..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
          </div>
 
          <div class="w-full max-w-xs">
             <label for="ban-reason" class="block text-sm font-medium mb-2 text-gray-700 text-center">Reason:</label>
-            <textarea id="ban-reason" name="ban-reason" placeholder="Enter reason for banning..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            <textarea id="banReason" name="ban-reason" placeholder="Enter reason for banning..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
          </div>
 
          <!-- Action Button -->
@@ -208,8 +208,40 @@ document.addEventListener('DOMContentLoaded', () => {
    const banBackdrop = document.getElementById('ban-modal-backdrop');
    const closeBanModalButton = document.getElementById('close-ban-modal-button');
    const banModalActionButton = document.getElementById('ban-modal-action-button');
-   const banUserIdInput = document.getElementById('ban-user-id');
-   const banReasonInput = document.getElementById('ban-reason');
+   const banUserIdInput = document.getElementById('banUserId');
+   const banReasonInput = document.getElementById('banReason');
+
+   function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    async function banUser(id, reason, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/user/ban`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    reason,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const token = getAdmin().token;
 
    const openBanModal = () => {
       if (!banModal || !banBackdrop) return;
@@ -239,14 +271,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (event.key === 'Escape') closeBanModal();
    };
 
-   const handleBanAction = () => {
+   const handleBanAction = async () => {
       const userId = banUserIdInput.value.trim();
       const reason = banReasonInput.value.trim();
       if (!userId || !reason) {
          alert('Please provide both User ID and a reason for banning.');
          return;
       }
-      alert(`User with ID ${userId} has been banned for: ${reason}`);
+
+      const res = await banUser(userId, reason, token);
+      console.log(res);
+      if (res.success) {
+         alert(`User with ID ${userId} has been banned for: ${reason}`);
+      } else {
+         alert(res.message);
+      }
       closeBanModal();
    };
 
@@ -352,16 +391,16 @@ document.addEventListener('DOMContentLoaded', () => {
                <div class="hidden md:block">
                   <div class="flex flex-col gap-y-4 ml-4 gap-x-0 mt-5 md:flex-row md:justify-center md:items-center md:gap-y-0 md:gap-x-7 md:mt-0">
                      <div>
-                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}">Statistics</a>
+                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}adminPanel">Statistics</a>
                      </div>
                      <div>
-                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}quizzes/">Create Quiz</a>
+                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}adminPanel/quizzes/create">Create Quiz</a>
                      </div>
                      <div>
                         <button class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" id="open-ban-modal-trigger">Quick Ban</button>
                      </div>
                      <div>
-                        <button class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" id="open-modal-trigger">Quick notification</button>
+                        <button disabled class="hidden inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" id="open-modal-trigger">Quick notification</button>
                      </div>
                   </div>
                </div>

@@ -191,7 +191,8 @@ class APIController extends BaseController {
         echo json_encode([
             'question_text' => $question-> question_text,
             'correct_answer' => $question-> correct_answer,
-            'options' => $question -> options
+            'options' => $question -> options,
+            'explanation' => $question -> explanation
         ]);
         return;
     }
@@ -572,6 +573,77 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
+
+
+    public function editAdminTeacher($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['id']) ||
+            !isset($params['name']) ||
+            !isset($params['email']) ||
+            !isset($params['invite_code']) ||
+            !isset($params['school']) ||
+            !isset($params['specialization']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'UPDATE `teachers` SET `name`=?, `email`=?, `invite_code`=?, `school`=?, `specialization`=? WHERE id = ?',
+            [$params['name'], $params['email'], $params['invite_code'], $params['school'], $params['specialization'], $params['id']]
+        );
+        
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function editAdminUser($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+    
+        if (
+            !isset($params['id']) ||
+            !isset($params['name']) ||
+            !isset($params['email']) ||
+            !isset($params['token']) ||
+            !isset($params['grade']) ||
+            !isset($params['adminToken'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+    
+        $this->validateAdmin($params['adminToken']);
+    
+        R::exec(
+            'UPDATE `users` SET `name`=?, `email`=?, `token`=?,`grade`=? WHERE id = ?',
+            [
+                $params['name'],
+                $params['email'],
+                $params['token'],
+                $params['grade'],
+                $params['id']
+            ]
+        );
+    
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }    
+
+    public function banUser($params) {
+
+    }
+
     public function adminCreateQuiz($params) {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
@@ -695,7 +767,7 @@ class APIController extends BaseController {
         $params = json_decode($input, true);
 
         if (
-            !isset($params['quizId']) ||
+            !isset($params['questionId']) ||
             !isset($params['text']) ||
             !isset($params['options']) ||
             !isset($params['correct']) ||
@@ -709,8 +781,32 @@ class APIController extends BaseController {
         $this->validateAdmin($params['token']);
 
         R::exec(
-            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
-            [$params['quizId'], $question->id]
+            'UPDATE `questions` SET `question_text`= ?, `correct_answer`=?, `options`=?, `explanation`= ? WHERE `id`= ?',
+            [$params['text'], $params['correct'], $params['options'], $params['explanation'], $params['questionId']]
+        );
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function deleteAdminQuestions($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (
+            !isset($params['questionId']) ||
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateAdmin($params['token']);
+
+        R::exec(
+            'DELETE FROM `questions` WHERE id = ?',
+            [$params['questionId']]
         );
 
         http_response_code(200);
@@ -759,7 +855,7 @@ class APIController extends BaseController {
 
         R::exec(
             'UPDATE `categories` SET `name`= ? WHERE `id`= ?',
-            [$params['name'], $params['id']]
+            [$params['name'], $params['catId']]
         );
 
         http_response_code(200);
@@ -781,9 +877,16 @@ class APIController extends BaseController {
         }
         $this->validateAdmin($params['token']);
 
+        $quizzes = R::find('quizzes', ' category_id = ? ', [$params['catId']]);
+        if ($quizzes) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => 'Cannot delete category while it used in quiz']);
+            return;
+        }
+
         R::exec(
             'DELETE FROM `categories` WHERE id = ?',
-            [$params['id']]
+            [$params['catId']]
         );
 
         http_response_code(200);
@@ -832,7 +935,7 @@ class APIController extends BaseController {
 
         R::exec(
             'UPDATE `sub_categories` SET `name`= ? WHERE `id`= ?',
-            [$params['name'], $params['id']]
+            [$params['name'], $params['catId']]
         );
 
         http_response_code(200);
@@ -854,14 +957,92 @@ class APIController extends BaseController {
         }
         $this->validateAdmin($params['token']);
 
+        $quizzes = R::find('quizzes', ' sub_categories = ? ', [$params['catId']]);
+        if ($quizzes) {
+            http_response_code(500);
+            echo json_encode(['error' => true, 'message' => 'Cannot delete subCategory while it used in quiz']);
+            return;
+        }
+
         R::exec(
             'DELETE FROM `sub_categories` WHERE id = ?',
-            [$params['id']]
+            [$params['catId']]
         );
 
         http_response_code(200);
         echo json_encode(['success' => true]);
     }
+
+    public function banAdminUser($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+    
+        if (
+            !isset($params['id']) || 
+            !isset($params['reason']) || 
+            !isset($params['token'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+    
+        $this->validateAdmin($params['token']);
+
+        $userId = $params['id'];
+        $reason = $params['reason'];
+
+        $user = R::findOne('users', 'id = ?', [$userId]);
+
+        if (!$user) {
+            http_response_code(404);
+            echo json_encode(['error' => true, 'message' => 'User not found']);
+            return;
+        }
+    
+        $bannedDate = date('Y-m-d H:i:s');
+        $expireDate = date('Y-m-d H:i:s', strtotime('+30 days'));
+    
+        R::exec(
+            'INSERT INTO ban_list (user_id, reason, banned_date, expire_date) VALUES (?, ?, ?, ?)',
+            [$userId, $reason, $bannedDate, $expireDate]
+        );
+    
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'User banned successfully']);
+    }
+    
+    public function pardon($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+    
+        if (!isset($params['id']) || !isset($params['token'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+    
+        $this->validateAdmin($params['token']);
+    
+        $userId = $params['id'];
+        $user = R::findOne('users', 'id = ?', [$userId]);
+    
+        if (!$user) {
+            http_response_code(404);
+            echo json_encode(['error' => true, 'message' => 'User not found']);
+            return;
+        }
+    
+        R::exec(
+            'DELETE FROM `ban_list` WHERE user_id = ?',
+            [$userId]
+        );
+    
+        http_response_code(200);
+        echo json_encode(['success' => true, 'message' => 'User pardoned successfully']);
+    }    
 
     private function calculateScore($progress) {
         $correctCount = $progress->answered;

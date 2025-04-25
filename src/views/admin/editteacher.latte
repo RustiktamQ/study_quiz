@@ -1,32 +1,12 @@
-<<<<<<< HEAD
     {include './partials/header.latte'}
     {include './partials/sidebar.latte'}
-=======
-<?php
-include './partials/header.php';
-include './partials/sidebar.php';
-
-// --- PHP Logic Placeholder ---
-// Handle potential form submission feedback (e.g., errors, success messages)
-// $errors = $_SESSION['errors'] ?? [];
-// $old_input = $_SESSION['old_input'] ?? [];
-// unset($_SESSION['errors'], $_SESSION['old_input']); // Flash messages
-// --- End PHP Logic Placeholder ---
-
-?>
-
->>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
 <div class="w-full max-w-7xl lg:ps-64">
     <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
 
         <!-- Page Title -->
         <div>
             <h1 class="text-2xl font-semibold text-gray-800">
-<<<<<<< HEAD
                 Edit Teacher ({$teacher['name']})
-=======
-                Edit Teacher ({TEACHER_NAME})
->>>>>>> 0fcfdb60e89ef120c3afcff945a5432b0a7a0463
             </h1>
             <p class="text-sm text-gray-500">Edit exsisting teacher.</p>
         </div>
@@ -34,7 +14,7 @@ include './partials/sidebar.php';
 
         <!-- Add Teacher Form -->
         <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
-             <form method="POST" action="process_add_teacher.php"> <!-- Replace with your processing script -->
+             <div> <!-- Replace with your processing script -->
                  <!-- Optional: Add CSRF token here -->
                 <input type="hidden" name="role" value="Teacher"> <!-- Set the role -->
 
@@ -42,57 +22,126 @@ include './partials/sidebar.php';
                     <!-- Full Name -->
                     <div>
                         <label for="fullname" class="block text-sm font-medium mb-2">Full Name</label>
-                        <input type="text" id="fullname" name="fullname" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g., Jane Doe">
+                        <input value="{$teacher['name']}" type="text" id="fullname" name="fullname" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
                         <!-- Display validation error if any -->
                     </div>
 
                      <!-- Email -->
                     <div>
                         <label for="email" class="block text-sm font-medium mb-2">Email Address</label>
-                        <input type="email" id="email" name="email" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g., jane.doe@example.com">
+                        <input value="{$teacher['email']}" type="email" id="email" name="email" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
                          <!-- Display validation error if any -->
                     </div>
 
                      <!-- Password -->
                     <div>
-                        <label for="password" class="block text-sm font-medium mb-2">Password</label>
-                        <input type="password" id="password" name="password" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Enter a secure password">
-                         <p class="text-xs text-gray-500 mt-1">Minimum 8 characters recommended.</p>
+                        <label for="password" class="block text-sm font-medium mb-2">School</label>
+                        <input value="{$teacher['school']}" id="school" name="password" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
                         <!-- Display validation error if any -->
                     </div>
 
                     <!-- Confirm Password -->
                      <div>
-                        <label for="password_confirmation" class="block text-sm font-medium mb-2">Confirm Password</label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="Re-enter password">
+                        <label for="password_confirmation" class="block text-sm font-medium mb-2">Invite code</label>
+                        <input value="{$teacher['invite_code']}" id="inviteCode" name="password_confirmation" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
                          <!-- Display validation error if any -->
                     </div>
 
                      <!-- Optional: Subject -->
                     <div class="sm:col-span-2">
-                        <label for="subject" class="block text-sm font-medium mb-2">Subject(s) Taught (Optional)</label>
-                        <input type="text" id="subject" name="subject" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g., Mathematics, Physics">
+                        <label for="subject" class="block text-sm font-medium mb-2">Specialization</label>
+                        <input value="{$teacher['specialization']}" type="text" id="specialization" name="subject" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
                     </div>
 
                  </div> <!-- End grid -->
 
                  <!-- Submit Button -->
                  <div class="mt-6 flex justify-end gap-x-2">
-                    <a href="list_users.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border transition border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                    <a href="/adminPanel/users" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border transition border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
                         Cancel
                     </a>
                     <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border transition border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
-                        Create Teacher Account
+                        Edit Teacher Account
                     </button>
                 </div>
-             </form>
+             </div>
         </div>
         <!-- End Add Teacher Form -->
 
     </div>
 </div>
 
-<!-- Include JS -->
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('admin='))?.split('=')[1] || '{}'
+            )
+        );
+    }
+
+    function getTeacherId() {
+        const currentUrl = window.location.pathname;
+        const teacherId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        return teacherId;
+    }
+
+    async function editTeacher(id, token) {
+        const name = document.getElementById('fullname').value;
+        const email = document.getElementById('email').value;
+        const invite_code = document.getElementById('inviteCode').value;
+        const school = document.getElementById('school').value;
+        const specialization = document.getElementById('specialization').value;
+
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/teacher/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    name,
+                    email,
+                    invite_code,
+                    school,
+                    specialization,
+                    token
+                })
+            });
+
+            const res = await response.json();
+
+            if (res.success) {
+                window.location.href = '/adminPanel/users';
+            } else {
+                throw new Error(res.message || 'Something went wrong');
+            }
+        } catch (error) {
+            Toastify({
+                text: error.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }
+            }).showToast();
+        }
+    }
+
+    const token = getAdmin().token;
+    const teacherId = getTeacherId();
+
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        editTeacher(teacherId, token);
+    });
+</script>
 
 
-<?php include './partials/footer.php' ?>
+
+{include './partials/footer.latte'}

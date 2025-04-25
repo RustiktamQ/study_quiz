@@ -299,7 +299,7 @@
                 <!-- Static Example Question 1 -->
 
                 {foreach $questions as $question}
-                    <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="Q004" data-question-type="multiple-choice">
+                    <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="{$question['id']}" data-question-type="multiple-choice">
                         <div>
                             <p class="text-sm font-medium text-gray-800">{$question['id']}. {$question['question_text']}</p>
                             <p class="text-xs text-gray-500">Type: Multiple Choice</p>
@@ -391,6 +391,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', handleBackdropClick);
     */
 
+    async function getQuestion(question_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/getQuestion`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;;
+        }
+    }
+
 
    // --- Add Question Modal ---
    const addQuestionModal = document.getElementById('add-question-modal');
@@ -419,10 +437,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Add Question Form Submitted (Frontend Only)');
         // Add logic here to gather form data (it's always multiple choice)
         const formData = new FormData(addQuestionForm);
-        console.log("Data to save (Add):");
-        for (let [key, value] of formData.entries()) {
-             console.log(`${key}: ${value}`);
-        }
         // TODO: Send data to backend, then update UI
         closeAddModal();
    });
@@ -440,42 +454,25 @@ document.addEventListener('DOMContentLoaded', () => {
    const editQuestionIdInput = document.getElementById('edit-question-id');
    const editQuestionTextInput = document.getElementById('edit-question-text');
    const editQuestionExplanationInput = document.getElementById('edit-question-explanation');
+    const qwe = document.getElementById('edit-mc-options-container');
 
 
-   const openEditModal = (questionId) => {
-        console.log("Editing Question ID:", questionId);
+   const openEditModal = async (questionId) => {
         editQuestionForm.reset(); // Reset form first
-
-        // --- Placeholder Data (Replace with actual data fetching) ---
-        // Filtered for Multiple Choice Examples LL
-        let questionData = {};
-        if (questionId === 'Q001') {
-            questionData = {
-                id: 'Q001', type: 'multiple-choice', text: 'What is 2 + x = 5?', explanation: 'Subtract 2 from both sides.',
-                options: [ { text: 'x = 1', correct: false }, { text: 'x = 3', correct: true }, { text: 'x = 7', correct: false } ]
-            };
-        } else if (questionId === 'Q004') {
-            questionData = {
-                id: 'Q004', type: 'multiple-choice', text: 'Which expression equals 10?', explanation: '5 * 2 equals 10.',
-                options: [ { text: '4 + 5', correct: false }, { text: '12 - 3', correct: false }, { text: '5 * 2', correct: true } ]
-            };
-        }
-        // REMOVED: Handling for non-MC types
-        else {
-             console.error("No MULTIPLE CHOICE data found for question ID:", questionId);
-             return; // Don't open if no data or wrong type
-        }
-        // --- End Placeholder Data ---
+        qwe.innerHTML = '';
+        localStorage.setItem("tempEdit", questionId);
+        
+        const questionData = await getQuestion(questionId);
 
         // Populate common fields
-        editQuestionIdInput.value = questionData.id;
-        editQuestionTextInput.value = questionData.text;
+        editQuestionIdInput.value = questionId;
+        editQuestionTextInput.value = questionData.question_text;
         editQuestionExplanationInput.value = questionData.explanation || '';
 
         // Populate MC options
         if (questionData.options && questionData.options.length > 0) {
-             questionData.options.forEach((opt, index) => {
-                 addMcOption('edit', opt.text, opt.correct, index);
+             JSON.parse(questionData.options).forEach((opt, index) => {
+                addMcOption('edit', opt, questionData.correct_answer, index);
              });
              updateRemoveButtonVisibility('edit'); // Update visibility after populating
         } else {
@@ -491,16 +488,15 @@ document.addEventListener('DOMContentLoaded', () => {
    const closeEditModal = () => closeModal(editQuestionModal, editQuestionBackdrop);
 
    editQuestionButtons.forEach(button => {
-       button.addEventListener('click', (e) => {
+       button.addEventListener('click', async (e) => {
            const questionContainer = e.target.closest('[data-question-id]');
            const questionId = questionContainer ? questionContainer.dataset.questionId : null;
            if (questionId) {
                // Check if the question type is appropriate (though filtering happens in openEditModal now)
                const questionType = questionContainer ? questionContainer.dataset.questionType : null;
                if (questionType === 'multiple-choice') {
-                    openEditModal(questionId);
+                    await openEditModal(questionId);
                } else {
-                   console.warn(`Edit clicked on non-multiple-choice question (ID: ${questionId}, Type: ${questionType}). Ignoring.`);
                    // Optionally show a message to the user
                    // alert("Editing is only supported for Multiple Choice questions currently.");
                }
@@ -513,12 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
    if (cancelEditQuestionButton) cancelEditQuestionButton.addEventListener('click', closeEditModal);
     if (editQuestionForm) editQuestionForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log('Edit Question Form Submitted (Frontend Only)');
         const formData = new FormData(editQuestionForm);
-        console.log("Data to save (Edit):");
-        for (let [key, value] of formData.entries()) {
-             console.log(`${key}: ${value}`);
-        }
         // TODO: Send data to backend, then update UI
         closeEditModal();
    });
@@ -533,6 +524,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmDeleteButton = document.getElementById('confirm-delete-button');
     const deleteQuestionIdInput = document.getElementById('delete-question-id-input');
     const questionsListContainer = document.getElementById('questions-list'); // Container for questions
+
+    function getToken() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        ).token;
+    }
 
     const openDeleteModal = (questionId) => {
        deleteQuestionIdInput.value = questionId; // Store the ID
@@ -554,18 +555,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add listener for the new close button on the delete modal
     if (closeDeleteConfirmButton) closeDeleteConfirmButton.addEventListener('click', closeDeleteModal);
     if (cancelDeleteButton) cancelDeleteButton.addEventListener('click', closeDeleteModal);
-    if (confirmDeleteButton) confirmDeleteButton.addEventListener('click', () => {
+    if (confirmDeleteButton) confirmDeleteButton.addEventListener('click', async () => {
         const questionIdToDelete = deleteQuestionIdInput.value;
-        console.log(`Confirmed deletion for question ID: ${questionIdToDelete} (Frontend Only)`);
 
         // --- Frontend Deletion (Example) ---
-        const questionElementToRemove = questionsListContainer.querySelector(`.question-item[data-question-id="${questionIdToDelete}"]`);
+        const questionElementToRemove = questionsListContainer.querySelector(`.question-item[data-question-id="`+questionIdToDelete+`"]`);
         if (questionElementToRemove) {
-            questionElementToRemove.remove();
-            console.log(`Removed question ${questionIdToDelete} from the list.`);
-            // TODO: Renumber questions if needed
-        } else {
-             console.warn(`Could not find question ${questionIdToDelete} in the list to remove.`);
+            const res = await deleteQuestion(questionIdToDelete, getToken());
+            if (res.success) questionElementToRemove.remove();
+            if (res.error) alert(res.message);
         }
         // TODO: Make API call to backend to actually delete
         // --- End Frontend Deletion ---
@@ -577,7 +575,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    // Helper to make remove buttons visible/invisible based on count
     const updateRemoveButtonVisibility = (prefix) => {
-        const container = document.getElementById(`${prefix}-mc-options-container`);
+        const container = document.getElementById(prefix+`-mc-options-container`);
         if (!container) return;
         const optionRows = container.querySelectorAll('.mc-option-row');
         optionRows.forEach((row, index) => {
@@ -590,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const addMcOption = (prefix, value = '', checked = false, index = -1) => {
-        const container = document.getElementById(`${prefix}-mc-options-container`);
+        const container = document.getElementById(prefix+`-mc-options-container`);
         if (!container) return;
 
         const optionCount = container.children.length;
@@ -601,19 +599,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const radio = document.createElement('input');
         radio.type = 'radio';
-        radio.name = `${prefix}_correct_answer`;
         radio.value = currentIndex;
-        radio.className = 'radio shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500';
+        radio.className = 'radiosEdit shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500';
         radio.required = true;
-        if (checked) {
+        if (value == checked) {
             radio.checked = true;
         }
 
         const input = document.createElement('input');
         input.type = 'text';
-        input.name = `${prefix}_mc_option[]`;
-        input.placeholder = `Option ${currentIndex + 1}`;
-        input.className = 'py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500';
+        input.placeholder = `Option ` + currentIndex+1;
+        input.className = 'editOption py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500';
         input.value = value;
         input.required = true; // Options text should not be empty
 
@@ -638,7 +634,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updateRemoveButtonVisibility(prefix);
     };
 });
-
+</script>
+<script n:syntax=off>
     function getAdmin() {
         return JSON.parse(
         decodeURIComponent(
@@ -697,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-        async function addQuestion(quizId, text, options, correct, explanation, token) {
+    async function addQuestion(quizId, text, options, correct, explanation, token) {
         try {
             const response = await fetch(`${window.location.origin}/adminPanel/questions/add`, {
                 method: "POST",
@@ -720,6 +717,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    async function editQuestion(questionId, text, options, correct, explanation, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    questionId,
+                    text,
+                    options,
+                    correct,
+                    explanation,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function deleteQuestion(questionId, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    questionId,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
 
     const token = getAdmin().token;
 
@@ -815,5 +853,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }).showToast();
         }
     });
+
+    document.getElementById('save-edit-question-button').addEventListener('click', async (e) => {
+        const qText = document.getElementById('edit-question-text').value;
+        const options = document.getElementsByClassName('editOption');
+        const exp = document.getElementById('edit-question-explanation').value;
+        const questionId = localStorage.getItem("tempEdit");
+        const radiosEdit = document.getElementsByClassName('radiosEdit');
+
+        let correctIndex;
+
+        for(let i = 0; i < radiosEdit.length; i++) {
+            if (radiosEdit[i].checked) {
+                correctIndex = i;
+            }
+        }
+        const arrOptions = Array.from(options).map(x => x.value);
+        const res = await editQuestion(questionId, qText, arrOptions, arrOptions[correctIndex], exp, token);
+
+        if (res.success) {
+            location.reaload();
+        } else if (res.error) {
+            Toastify({
+                text: res.message,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                },
+            }).showToast();
+        }
+    })
 </script>
 {include './partials/footer.latte'}
