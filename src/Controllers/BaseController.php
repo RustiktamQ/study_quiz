@@ -11,7 +11,19 @@ class BaseController {
         $this->user =  json_decode($_COOKIE['user'] ?? '{}', true);
     }
 
-    private function loadLanguage() {
+    protected function setCookie($name, $value, $expire = 0) {
+        setcookie($name, $value, $expire, "/");
+    }
+
+    protected function getCookie($name) {
+        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : null;
+    }
+
+    protected function deleteCookie($name) {
+        setcookie($name, '', time() - 604800, "/");
+    }
+
+    protected function loadLanguage() {
         session_start();
         $defaultLang = 'en';
         $selectedLang = $_SESSION['lang'] ?? $defaultLang;
@@ -42,8 +54,12 @@ class BaseController {
                 header('Location: /auth/signup');
             }
 
-            if ($this->user['token_confirmed'] == 0 && $_SERVER['REQUEST_URI'] != '/confirmation') {
-                header('Location: /confirmation');
+            if ($this->user['token_confirmed'] == 0 || $this->user['token_confirmed'] == -1) {
+                if ($userData['register'] == true) {
+                    header('Location: /auth/student/complete');
+                } else if ($_SERVER['REQUEST_URI'] != '/confirmation') {
+                    header('Location: /confirmation');
+                }
             }
         }
     }

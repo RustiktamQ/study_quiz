@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.2:3306
--- Время создания: Апр 22 2025 г., 10:10
+-- Время создания: Апр 28 2025 г., 11:55
 -- Версия сервера: 10.1.48-MariaDB
 -- Версия PHP: 8.1.8
 
@@ -44,6 +44,20 @@ INSERT INTO `admins` (`id`, `email`, `password`, `token`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `ban_list`
+--
+
+CREATE TABLE `ban_list` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `reason` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `banned_date` date NOT NULL,
+  `expire_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `categories`
 --
 
@@ -58,7 +72,6 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`id`, `name`) VALUES
 (5, 'Математика'),
-(6, 'Физика'),
 (7, 'Английский'),
 (8, 'Казахский язык');
 
@@ -73,24 +86,25 @@ CREATE TABLE `notifications` (
   `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address_type` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address_id` int(11) NOT NULL,
+  `home_id` int(11) NOT NULL,
   `created_at` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `checked` tinyint(1) NOT NULL
+  `type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Дамп данных таблицы `notifications`
 --
 
-INSERT INTO `notifications` (`id`, `message`, `address_type`, `address_id`, `created_at`, `checked`) VALUES
-(1, 'Student qwe w has completed the test \'Place Value Mastery\'', 'teachers', 3, '2025-03-10 14:05:22', 0),
-(2, 'Student qwe w has completed the test \'Place Value Mastery\'', 'student', 21, '10.03.2025', 0),
-(4, 'test2', 'student', 21, '11.03.2025', 1),
-(5, 'Student qwe w has completed the quiz \'3rd Grade Math Basics\'', 'teachers', 3, '2025-03-18 11:53:14', 0),
-(6, 'Student qwe w has completed the quiz \'Advanced Multiplication\'', 'teachers', 3, '2025-03-18 11:57:47', 0),
-(7, 'Student 1q1 zxc has completed the quiz \'3rd Grade Math Basics\'', 'teachers', 3, '2025-03-27 13:33:32', 0),
-(8, 'Student 1q1 zxc has completed the quiz \'3rd Grade Math Basics\'', 'teachers', 3, '2025-03-27 13:34:31', 0),
-(9, 'Student 1q1 zxc has completed the quiz \'3rd Grade Math Basics\'', 'teachers', 3, '2025-03-27 13:39:33', 0),
-(10, 'Student 1q1 zxc has completed the quiz \'3rd Grade Math Basics\'', 'teachers', 3, '2025-03-28 21:33:33', 0);
+INSERT INTO `notifications` (`id`, `message`, `address_type`, `address_id`, `home_id`, `created_at`, `type`) VALUES
+(11, 'ожидает потверждения', 'teacher', 3, 21, '2026-04-27 16:49:57', 'запрос'),
+(12, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(13, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(14, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(15, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(16, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(17, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(18, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос'),
+(19, 'ожидает потверждения', 'teacher', 3, 21, '2025-04-27 16:49:57', 'запрос');
 
 -- --------------------------------------------------------
 
@@ -120,7 +134,9 @@ CREATE TABLE `progress` (
 INSERT INTO `progress` (`id`, `student_id`, `quiz_id`, `current_question`, `score`, `completed`, `start_time`, `end_time`, `answered`, `elapsed_time`, `shuffled_questions`, `current_question_index`) VALUES
 (98, 21, 3, 8, 19, 0, '2025-04-05 12:20:47', '0000-00-00 00:00:00', 2, '00:00:10', '[\"8\",\"9\",\"7\"]', 0),
 (99, 21, 1, 3, 19, 0, '2025-04-06 16:08:04', '0000-00-00 00:00:00', 2, '00:33:35', '', 0),
-(100, 21, 2, 5, 10, 0, '2025-04-08 19:49:51', '0000-00-00 00:00:00', 1, '00:03:10', '', 0);
+(100, 21, 2, 5, 10, 0, '2025-04-08 19:49:51', '0000-00-00 00:00:00', 1, '00:03:10', '', 0),
+(101, 21, 7, 23, 0, 0, '2025-04-23 18:27:34', '0000-00-00 00:00:00', 0, '00:00:00', '', 0),
+(102, 21, 8, 25, 22, 0, '2025-04-23 18:31:47', '0000-00-00 00:00:00', 3, '00:00:32', '[\"25\",\"26\"]', 0);
 
 -- --------------------------------------------------------
 
@@ -161,7 +177,9 @@ INSERT INTO `questions` (`id`, `question_text`, `correct_answer`, `options`, `ex
 (18, '1', '[\"q1\",\"q2\",\"q3\",\"q5\"]', 'q3', 'wwww'),
 (19, '1', '[\"1\",\"1\",\"1\",\"1\"]', '1', '1'),
 (20, 'Текст вопроса', 'Правильный ответ', '[\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 1\",\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 2\",\"\\u041f\\u0440\\u0430\\u0432\\u0438\\u043b\\u044c\\u043d\\u044b\\u0439 \\u043e\\u0442\\u0432\\u0435\\u0442\",\"\\u0412\\u0430\\u0440\\u0438\\u0430\\u043d\\u0442 4\"]', 'Обьяснение'),
-(21, 'ВОПРОС', '3', '[\"1\",\"2\",\"3\",\"4\"]', 'Детали');
+(22, 'www', 'q', '[\"q\",\"q\",\"q\",\"q\"]', 'eqwe'),
+(25, 'Как переводится Apple', 'Яблоко', '[\"\\u0425\\u0437\",\"2\",\"\\u042f\\u0431\\u043b\\u043e\\u043a\\u043e\",\"\\u0433\\u0440\\u0443\\u0448\\u0430\"]', 'вфывфы'),
+(26, 'Столица Англии', 'Лондон', '[\"\\u041f\\u0430\\u0440\\u0438\\u0436\",\"\\u041c\\u043e\\u0441\\u043a\\u0432\\u0430\",\"\\u0424\\u0440\\u0430\\u043d\\u0446\\u0438\\u044f\",\"\\u041b\\u043e\\u043d\\u0434\\u043e\\u043d\"]', 'фывфыв');
 
 -- --------------------------------------------------------
 
@@ -196,7 +214,9 @@ INSERT INTO `questions_quizzes` (`id`, `quiz_id`, `question_id`) VALUES
 (14, 1, 14),
 (15, 1, 15),
 (16, 1, 16),
-(17, 6, 21);
+(18, 6, 22),
+(21, 8, 25),
+(22, 8, 26);
 
 -- --------------------------------------------------------
 
@@ -220,7 +240,9 @@ INSERT INTO `quizzes` (`id`, `name`, `category_id`, `sub_category_id`, `grade`) 
 (1, '3rd Grade Math Basics', 5, 1, 1),
 (2, 'Advanced Multiplication', 5, 1, 2),
 (3, 'Place Value Mastery', 5, 1, 2),
-(6, 'zxc', 7, 1, 10);
+(6, 'zxc', 7, 1, 10),
+(7, 'Литература Пушкин', 8, 3, 4),
+(8, 'Простой квиз', 7, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -238,7 +260,8 @@ CREATE TABLE `sub_categories` (
 --
 
 INSERT INTO `sub_categories` (`id`, `name`) VALUES
-(1, 'Core Concepts');
+(1, 'Core Concepts'),
+(3, 'Advanced level');
 
 -- --------------------------------------------------------
 
@@ -254,7 +277,6 @@ CREATE TABLE `teachers` (
   `lastname` varchar(255) DEFAULT NULL,
   `email` varchar(125) NOT NULL,
   `lang` varchar(255) DEFAULT NULL,
-  `token` varchar(100) NOT NULL,
   `invite_code` varchar(100) DEFAULT NULL,
   `join_date` date NOT NULL,
   `school` varchar(128) NOT NULL,
@@ -265,11 +287,10 @@ CREATE TABLE `teachers` (
 -- Дамп данных таблицы `teachers`
 --
 
-INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `token`, `invite_code`, `join_date`, `school`, `specialization`) VALUES
-(1, 'John Doe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'John', 'Doe', 'teacher', 'ru', '', 'ekLKSHF9cw', '2025-03-11', '', 'Математика и Физика'),
-(3, 'Name Surname', 'https://vk.com/images/wall/deleted_avatar_50.png', 'Name', 'Surname', 'test@testmail.io', 'ru', 'd303e5f985dd550f91bd067e3580821c', NULL, '1900-01-01', 'MGU', 'Биология'),
-(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', 'testToken', NULL, '2025-04-05', 'science', ''),
-(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', '3214123', NULL, '2025-04-08', 'qweqwewqe', '');
+INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `invite_code`, `join_date`, `school`, `specialization`) VALUES
+(3, 'Name Surname', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'Name', 'Surname', 'test@testmail.io', 'ru', 'X5LQCURFPG', '1900-01-01', 'asd', 'Биология'),
+(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', NULL, '2025-04-05', 'science', ''),
+(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', NULL, '2025-04-08', 'qweqwewqe', '');
 
 -- --------------------------------------------------------
 
@@ -286,7 +307,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `picture` text,
   `token` varchar(255) DEFAULT NULL,
-  `token_confirmed` varchar(1) DEFAULT '0',
+  `token_confirmed` varchar(2) DEFAULT '0',
   `join_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `grade` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -296,7 +317,15 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `join_date`, `grade`) VALUES
-(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '1', '2025-02-24 15:35:47', 6);
+(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
+(22, '114869489688930855296', '1', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
+(23, '114869489688930855296', '2', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(24, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(25, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(26, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
+(27, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(28, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(29, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8);
 
 --
 -- Индексы сохранённых таблиц
@@ -306,6 +335,12 @@ INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`
 -- Индексы таблицы `admins`
 --
 ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `ban_list`
+--
+ALTER TABLE `ban_list`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -340,7 +375,7 @@ ALTER TABLE `questions`
 ALTER TABLE `questions_quizzes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `FK_QQ_quizze` (`quiz_id`),
-  ADD KEY `FK_QQ_question_id` (`question_id`);
+  ADD KEY `FK_QQ_question_id_cascade` (`question_id`);
 
 --
 -- Индексы таблицы `quizzes`
@@ -361,7 +396,6 @@ ALTER TABLE `sub_categories`
 --
 ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `token` (`token`),
   ADD UNIQUE KEY `email_uniq` (`email`),
   ADD UNIQUE KEY `invite_code` (`invite_code`);
 
@@ -382,6 +416,12 @@ ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT для таблицы `ban_list`
+--
+ALTER TABLE `ban_list`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `categories`
 --
 ALTER TABLE `categories`
@@ -391,37 +431,37 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT для таблицы `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT для таблицы `progress`
 --
 ALTER TABLE `progress`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT для таблицы `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT для таблицы `questions_quizzes`
 --
 ALTER TABLE `questions_quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT для таблицы `sub_categories`
 --
 ALTER TABLE `sub_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `teachers`
@@ -433,7 +473,7 @@ ALTER TABLE `teachers`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -450,7 +490,7 @@ ALTER TABLE `progress`
 -- Ограничения внешнего ключа таблицы `questions_quizzes`
 --
 ALTER TABLE `questions_quizzes`
-  ADD CONSTRAINT `FK_QQ_question_id` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`),
+  ADD CONSTRAINT `FK_QQ_question_id_cascade` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_QQ_quizze` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes` (`id`);
 
 --

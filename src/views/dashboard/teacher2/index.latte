@@ -1,0 +1,403 @@
+{include 'partials/header.latte'}
+<!-- ===== Page Wrapper Start ===== -->
+<div class="flex h-screen overflow-hidden bg-gray-100">
+	<!-- ===== Content Area Start ===== -->
+	<div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
+		<!-- ===== Main Content Start ===== -->
+		<main >
+			<div class="p-4 mx-auto max-w-[1632px] md:p-6">
+				<div class="grid grid-cols-12 gap-4 md:gap-6">
+					<div class="col-span-12 space-y-4 2xl:col-span-7 md:space-y-6">
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+							<div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+								<div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+									<svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+										<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+											<path d="M14.17 20.89c4.184-.277 7.516-3.657 7.79-7.9c.053-.83.053-1.69 0-2.52c-.274-4.242-3.606-7.62-7.79-7.899a33 33 0 0 0-4.34 0c-4.184.278-7.516 3.657-7.79 7.9a20 20 0 0 0 0 2.52c.1 1.545.783 2.976 1.588 4.184c.467.845.159 1.9-.328 2.823c-.35.665-.526.997-.385 1.237c.14.24.455.248 1.084.263c1.245.03 2.084-.322 2.75-.813c.377-.279.566-.418.696-.434s.387.09.899.3c.46.19.995.307 1.485.34c1.425.094 2.914.094 4.342 0"/>
+											<path d="M10.5 9.538C10.5 8.688 11.172 8 12 8s1.5.689 1.5 1.538c0 .307-.087.592-.238.832c-.448.714-1.262 1.396-1.262 2.245V13m0 2h.009"/>
+										</g>
+									</svg>
+								</div>
+								<div class="mt-5">
+									<div class="relative">
+										<span class="text-sm text-gray-500">Вопросов решено</span>
+									</div>
+									<div class="relative">
+										<h4 class="mt-1 text-3xl font-bold text-gray-800">3,782</h4>
+									</div>
+								</div>
+							</div>
+							<div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+								<div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+									<svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+										<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.828 6.001a3 3 0 1 0-5.658 0c-2.285.008-3.504.09-4.292.878S2.008 8.886 2 11.17a3 3 0 1 1 0 5.66c.008 2.284.09 3.503.878 4.291s2.007.87 4.291.878a3 3 0 1 1 5.66 0c2.284-.008 3.503-.09 4.291-.878s.87-2.007.878-4.292a3 3 0 1 0 0-5.658c-.008-2.285-.09-3.504-.878-4.292c-.788-.789-2.007-.87-4.292-.878"/>
+									</svg>
+								</div>
+								<div class="mt-5">
+									<div class="relative">
+										<span class="text-sm text-gray-500">Квизов выполнено</span>
+									</div>
+									<div class="relative">
+										<h4 class="mt-1 text-3xl font-bold text-gray-800">
+											<span id="data">5,359</span>
+										</h4>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- ====== Chart One Start: Выполнение Квизов ====== -->
+						<div class="px-5 pt-5 pb-5 overflow-hidden bg-white border border-gray-200 rounded-2xl min-h-[400px] sm:px-6 sm:pt-6">
+							<div class="flex items-center justify-between mb-4">
+								<div class="relative w-full">
+									<h3 class="text-lg font-semibold text-gray-800">
+										Выполнение Квизов
+									</h3>
+								</div>
+							</div>
+							<div class="w-full">
+								<div id="hs-single-area-chart" class="min-h-[300px] relative z-[1]"></div>
+							</div>
+						</div>
+						<!-- ====== Chart One End ====== -->
+					</div>
+					<div class="flex flex-col col-span-12 2xl:col-span-5">
+						<!-- ====== Chart Two Start: Подробная статистика ====== -->
+						<div class="flex flex-col h-full bg-white border border-gray-200 rounded-2xl">
+							<div class="flex-grow p-5 sm:p-6">
+								<div class="mb-6 text-center">
+									<div class="relative mb-1">
+										<h3 class="text-xl font-semibold text-gray-800">Подробная статистика</h3>
+									</div>
+									<div class="relative">
+										<p class="mt-1 text-sm text-gray-500">Узнайте, как ваши ученики справляются с заданиями</p>
+									</div>
+								</div>
+								<div class="space-y-4">
+									<div class="relative p-4 border border-gray-200 rounded-2xl">
+										<div class="relative z-[1] flex items-center justify-between">
+											<div class="flex items-center flex-1 min-w-0">
+												<div class="relative inline-block shrink-0">
+													<img class="inline-block rounded-full object-cover h-11 w-11" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80" alt="User Avatar">
+													<span class="absolute bottom-0 end-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-500"></span>
+												</div>
+												<div class="flex-1 min-w-0 ml-4">
+													<h2 class="text-base font-semibold text-gray-800 truncate">Алексей Повалов</h2>
+													<p class="text-sm text-gray-500 truncate">Биология: Части тела человека</p>
+												</div>
+											</div>
+											<div class="ml-4 shrink-0">
+												<span class="inline-block px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full whitespace-nowrap">ONLINE</span>
+											</div>
+										</div>
+									</div>
+									<div class="relative p-4 border border-gray-200 rounded-2xl">
+										<div class="relative z-[1] flex items-center justify-between">
+											<div class="flex items-center flex-1 min-w-0">
+												<div class="relative inline-block shrink-0">
+													<img class="inline-block rounded-full object-cover h-11 w-11" src="https://img.freepik.com/free-photo/smiley-little-boy-isolated-pink_23-2148984798.jpg?semt=ais_hybrid&w=740" alt="User Avatar">
+													<span class="absolute bottom-0 end-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-500"></span>
+												</div>
+												<div class="flex-1 min-w-0 ml-4">
+													<h2 class="text-base font-semibold text-gray-800 truncate">Владимир Кастров</h2>
+													<p class="text-sm text-gray-500 truncate">Основы математических уравнений</p>
+												</div>
+											</div>
+											<div class="ml-4 shrink-0">
+												<span class="inline-block px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full whitespace-nowrap">ONLINE</span>
+											</div>
+										</div>
+									</div>
+									<div class="relative p-4 border border-gray-200 rounded-2xl">
+										<div class="relative z-[1] flex items-center justify-between">
+											<div class="flex items-center flex-1 min-w-0">
+												<div class="relative inline-block shrink-0">
+													<img class="inline-block rounded-full object-cover h-11 w-11" src="https://t3.ftcdn.net/jpg/02/97/88/38/360_F_297883844_EmsYYpE65joWrbEHjuURVBULFnW3GiqK.jpg" alt="User Avatar">
+													<span class="absolute bottom-0 end-0 block h-3 w-3 rounded-full ring-2 ring-white bg-green-500"></span>
+												</div>
+												<div class="flex-1 min-w-0 ml-4">
+													<h2 class="text-base font-semibold text-gray-800 truncate">Даниэль Астранцев</h2>
+													<p class="text-sm text-gray-500 truncate">Русский язык: Функциональные разновидности языка</p>
+												</div>
+											</div>
+											<div class="ml-4 shrink-0">
+												<span class="inline-block px-3 py-1 text-xs font-medium text-white bg-green-500 rounded-full whitespace-nowrap">ONLINE</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="relative px-6 py-4 border-t rounded-xl border-gray-200 bg-gray-50 sm:py-5">
+								<div class="relative z-[1] flex items-center justify-center gap-5 sm:gap-8">
+									<div>
+										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Учеников</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">32</p>
+									</div>
+									<div class="w-px h-8 bg-gray-200"></div>
+									<div>
+										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Затрачено</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">195ч.</p>
+									</div>
+									<div class="w-px h-8 bg-gray-200"></div>
+									<div>
+										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Онлайн</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">12</p>
+									</div>
+									<div class="w-px h-8 bg-gray-200"></div>
+									<div>
+										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Начато</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">1512</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- ====== Chart Two End ====== -->
+					</div>
+					<div class="col-span-12">
+						<!-- ====== Chart Three Start: Статистика в графике ====== -->
+						<div class="p-5 bg-white border border-gray-200 rounded-2xl min-h-[400px] sm:px-6 sm:pt-6">
+							<div class="flex flex-col gap-2 mb-6 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+								<div class="w-full">
+									<div class="relative mb-1">
+										<h3 class="text-lg font-semibold text-gray-800">Статистика в графике</h3>
+									</div>
+									<div class="relative">
+										<p class="mt-1 text-sm text-gray-500">Количество вопросов, количество времени на квизы</p>
+									</div>
+								</div>
+							</div>
+							<div class="overflow-x-auto custom-scrollbar">
+								<div class="min-w-[700px] relative">
+									<div id="hs-curved-area-charts" class="min-h-[300px] relative z-[1]"></div>
+								</div>
+							</div>
+						</div>
+						<!-- ====== Chart Three End ====== -->
+					</div>
+				</div>
+			</div>
+		</main>
+		<!-- ===== Main Content End ===== -->
+	</div>
+	<!-- ===== Content Area End ===== -->
+</div>
+<!-- ===== Page Wrapper End ===== -->
+<script n:syntax=off>
+	document.addEventListener('DOMContentLoaded', () => {
+
+
+	    const colors = {
+	        primary: '#2563eb',
+	        secondary: '#9333ea',
+	        grid: '#e5e7eb',
+	        text: '#6b7280'
+	    };
+
+        const russianMonths = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+
+        function generateDateLabels(startDate) {
+            const labels = [];
+            const currentDate = new Date(startDate);
+            for (let i = 0; i < 31; i++) {
+                const day = currentDate.getDate();
+                const monthIndex = currentDate.getMonth();
+                const monthAbbr = russianMonths[monthIndex];
+                labels.push(`${day} ${monthAbbr}.`);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            return labels;
+        }
+
+        const startDate = new Date(2024, 3, 1);
+        let dateLabels = generateDateLabels(startDate);
+        dateLabels.reverse();
+
+        let voprosovData = [
+            10, 20, 15, 30, 25, 40, 35, 50, 45, 60, 55, 110, 65, 80, 75, 90, 85, 100, 95, 110, 105, 120, 115, 130, 125, 140, 135, 150, 145, 160, 155
+        ];
+        let vremeniData = [
+            5, 10, 8, 15, 12, 20, 18, 25, 22, 30, 28, 55, 32, 40, 38, 45, 42, 50, 48, 55, 52, 60, 58, 65, 62, 70, 68, 75, 72, 80, 78
+        ];
+        let QuizTotalData = [
+            100, 110, 105, 120, 115, 130, 125, 140, 135, 150, 145, 160, 155, 170, 165, 180, 175, 190, 185, 200, 195, 210, 205, 220, 215, 230, 225, 240, 235, 250, 245
+        ];
+
+        voprosovData.reverse();
+        vremeniData.reverse();
+        QuizTotalData.reverse();
+
+
+	    const options1 = {
+            
+	      chart: {
+	        height: 300,
+	        type: 'area',
+	        toolbar: { show: false },
+	        zoom: { enabled: false }
+	      },
+	      series: [
+	        { name: 'Вопросов', data: voprosovData },
+	        { name: 'Времени', data: vremeniData }
+	      ],
+	      legend: { show: false },
+	      dataLabels: { enabled: false },
+	      stroke: { curve: 'smooth', width: 2 },
+	      grid: {
+	        borderColor: colors.grid,
+	        strokeDashArray: 2
+	      },
+	      fill: {
+	        type: 'gradient',
+	        gradient: {
+	          type: 'vertical',
+	          shadeIntensity: 0.1,
+	          opacityFrom: 0.4,
+	          opacityTo: 0.0,
+	          stops: [0, 100]
+	        }
+	      },    
+	      xaxis: {
+	        type: 'category',
+	        tickPlacement: 'on',
+	        categories: dateLabels,
+	        axisBorder: { show: false },
+	        axisTicks: { show: false },
+	        tooltip: { enabled: false },
+	        labels: {
+	          style: {
+	            colors: colors.text,
+	            fontSize: '12px',
+	            fontFamily: 'Inter, ui-sans-serif'
+	          },
+	        }
+	      },
+	      yaxis: {
+	        labels: {
+	          align: 'left',
+	          minWidth: 0,
+	          maxWidth: 140,
+	          style: {
+	            colors: colors.text,
+	            fontSize: '12px',
+	            fontFamily: 'Inter, ui-sans-serif'
+	          },
+	          formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+	        }
+	      },
+	      colors: [colors.primary, colors.secondary],
+	      tooltip: {
+	        theme: 'light',
+	        x: {
+                formatter: (val) => val
+            },
+	        y: {
+                formatter: (value, { seriesIndex }) => {
+                    if (seriesIndex === 0) {
+                        return value.toString();
+                    } else if (seriesIndex === 1) {
+                        return `${value} ч.`;
+                    }
+                    return value;
+                }
+            }
+	      },
+	      responsive: [{
+	        breakpoint: 568,
+	        options: {
+	          chart: { height: 250 },
+	          xaxis: { labels: { style: { fontSize: '11px' } } },
+	          yaxis: { labels: { style: { fontSize: '11px' } } }
+	        },
+	      }]
+	    };
+
+	    const chart1El = document.querySelector("#hs-curved-area-charts");
+	    if (chart1El) {
+	        const chart1 = new ApexCharts(chart1El, options1);
+	        chart1.render();
+	    }
+
+
+	    const options3 = {
+	      chart: {
+	        height: 300,
+	        type: 'area',
+	        toolbar: { show: false },
+	        zoom: { enabled: false }
+	      },
+	      series: [
+	        { name: 'Квизов', data: QuizTotalData }
+	      ],
+	      legend: { show: false },
+	      dataLabels: { enabled: false },
+	      stroke: { curve: 'smooth', width: 2 },
+	      grid: {
+	        borderColor: colors.grid,
+	        strokeDashArray: 2
+	      },
+	      fill: {
+	        type: 'gradient',
+	        gradient: {
+	          type: 'vertical',
+	          shadeIntensity: 0.1,
+	          opacityFrom: 0.4,
+	          opacityTo: 0.0,
+	          stops: [0, 100]
+	        }
+	      },
+	      xaxis: {
+	        type: 'category',
+	        tickPlacement: 'on',
+	        categories: dateLabels,
+	        axisBorder: { show: false },
+	        axisTicks: { show: false },
+	        tooltip: { enabled: false },
+	        labels: {
+	          style: {
+	            colors: colors.text,
+	            fontSize: '12px',
+	            fontFamily: 'Inter, ui-sans-serif'
+	          },
+	        }
+	      },
+	      yaxis: {
+	        labels: {
+	          align: 'left',
+	          minWidth: 0,
+	          maxWidth: 140,
+	          style: {
+	            colors: colors.text,
+	            fontSize: '12px',
+	            fontFamily: 'Inter, ui-sans-serif'
+	          },
+	          formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+	        }
+	      },
+	      colors: [colors.primary],
+	       tooltip: {
+	        theme: 'light',
+	        x: {
+                formatter: (val) => val
+            },
+	        y: {
+                formatter: (value) => `${value >= 1000 ? `${value / 1000}k` : value}`
+            }
+	      },
+	      responsive: [{
+	        breakpoint: 568,
+	        options: {
+	          chart: { height: 250 },
+	          xaxis: { labels: { style: { fontSize: '11px' } } },
+	          yaxis: { labels: { style: { fontSize: '11px' } } }
+	        },
+	      }]
+	    };
+
+	    const chart3El = document.querySelector("#hs-single-area-chart");
+	    if (chart3El) {
+	        const chart3 = new ApexCharts(chart3El, options3);
+	        chart3.render();
+	    }
+
+	});
+</script>
+{include 'partials/footer.latte'}

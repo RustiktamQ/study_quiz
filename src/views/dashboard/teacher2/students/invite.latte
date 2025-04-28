@@ -1,0 +1,742 @@
+{include '../partials/header.latte'}
+<main>
+<div class="p-4 mx-auto max-w-7xl md:p-6 2xl:p-10">
+    <!-- Breadcrumb Start -->
+    <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <h2 class="text-2xl font-semibold text-gray-900">
+        Пригласить ученика
+      </h2>
+      <nav>
+        <ol class="flex items-center gap-2">
+          <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+          <li><a class="font-medium" href="/dashboard/teacher/students/list/0">Ученики /</a></li>
+          <li class="font-medium text-green-500">Пригласить</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Ваш код приглашения</h2>
+            <p class="text-sm text-gray-600 mb-4">Ученики могут использовать этот код при регистрации, чтобы подключиться к вашему аккаунту.</p>
+
+            <div class="max-w-2xl flex items-center gap-x-3 bg-gray-50 border border-dashed border-gray-400 rounded-lg p-4">
+                <span id="invite_code" class="flex-1 text-center font-mono text-2xl sm:text-3xl font-bold text-gray-800 tracking-widest">
+                    <!-- Code will be loaded here by JS -->
+                    <span class="text-sm text-gray-500">Загрузка...</span>
+                </span>
+                <button id="copy-button" onclick="copyInviteCode()" type="button" class="py-2.5 cursor-pointer px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                    <svg id="copy-icon" class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <svg id="check-icon" class="shrink-0 size-4 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span class="copy-text hidden md:block">Скопировать</span>
+                </button>
+                <button id="share-button" type="button" class="py-2.5 cursor-pointer px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3m5 0v.01M12 7v3a2 2 0 0 1-2 2H7m-4 0h.01M12 3h.01M12 16v.01M16 12h1m4 0v.01M12 21v-1"/></g></svg>
+                     <span class="hidden sm:inline">QR</span>
+                </button>
+            </div>
+
+             <div class="mt-6 pt-6 border-t border-gray-200">
+                 <h3 class="text-md font-semibold text-gray-800 mb-2">Нужен новый код?</h3>
+                 <p class="text-sm text-gray-600 mb-3">Сгенерируйте новый код. Ученики, использующие старый код, не смогут присоединиться.</p>
+                 <div> <!-- TODO: backend logic to generate new code -->
+                    <input type="hidden" name="action" value="generate_new_code">
+                    <div class="space-x-2">
+                         <button id="newCode" type="button" class="cursor-pointer bg-green-500 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl transition text-white shadow-sm hover:bg-green-600 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+                             Сгенерировать новый код
+                         </button>
+                     </div>
+                 </div>
+             </div>
+    </div>
+
+    <!-- QR Share Modal -->
+    <div id="share-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
+        <div class="flex min-h-screen items-center justify-center p-4">
+            <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
+                <!-- Close Button (using the style from delete modal) -->
+                <button id="close-modal" type="button" class="cursor-pointer absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl text-gray-600 transition-all hover:bg-gray-100 hover:shadow-sm" aria-label="Close">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18L12 12M18 6L12 12M12 12L6 6M12 12L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <!-- Modal Content -->
+                <div class="p-4 sm:p-7">
+                     <div class="text-center mb-6">
+                         <h3 id="share-modal-title" class="text-xl font-bold text-gray-800">
+                             Поделиться кодом приглашения
+                         </h3>
+                         <p class="text-sm text-gray-600 mt-1">
+                             Ученики могут отсканировать QR-код или скопировать текстовый код.
+                         </p>
+                     </div>
+
+                     <div class="space-y-4">
+                         <div class="flex justify-center">
+                              <div id="qrcode-container" class="p-3 bg-white border border-gray-200 rounded-2xl inline-block relative min-h-[260px] min-w-[260px] flex items-center justify-center">
+                                  <div id="qrcode" class="absolute inset-0 flex items-center justify-center"></div>
+                                  <div id="qrcode-loading" class="absolute inset-0 flex flex-col items-center justify-center text-gray-500 hidden">
+                                      <svg class="animate-spin h-10 w-10 text-green-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                         <g stroke="currentColor">
+                                            <circle cx="12" cy="12" r="9.5" fill="none" stroke-linecap="round" stroke-width="3">
+                                               <animate attributeName="stroke-dasharray" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0 150;42 150;42 150;42 150"/>
+                                               <animate attributeName="stroke-dashoffset" calcMode="spline" dur="1.5s" keySplines="0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1" keyTimes="0;0.475;0.95;1" repeatCount="indefinite" values="0;-16;-59;-59"/>
+                                            </circle>
+                                            <animateTransform attributeName="transform" dur="2s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/>
+                                         </g>
+                                      </svg>
+                                      <p class="text-xs text-center mt-2">Генерируем QR-код...</p>
+                                  </div>
+                                  <p id="qrcode-error" class="absolute inset-0 flex items-center justify-center text-xs text-red-500 text-center mt-1 hidden px-4">Упс! Не получилось сгенерировать QR. Попробуйте позже.</p>
+                              </div>
+                         </div>
+                         <p class="text-xs text-gray-500 text-center">Или скопируйте код:</p>
+
+                         <div class="flex items-center gap-x-3 bg-gray-100 border border-dashed border-gray-400 rounded-lg p-3">
+                             <span id="modal-invite_code" class="flex-1 text-center font-mono text-xl sm:text-2xl font-bold text-gray-800 tracking-widest">
+                                 <!-- Code will be loaded here -->
+                             </span>
+                             <button id="modal-copy-button" type="button" class="py-2 cursor-pointer px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                                 <svg class="modal-copy-icon shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                                 <svg class="modal-check-icon shrink-0 size-4 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                             </button>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End QR Share Modal -->
+
+</div>
+</main>
+
+<style>
+.toastify{
+
+    transition:all .4s cubic-bezier(.215,.61,.355,1);
+    border-radius:2px;
+    cursor:pointer;
+    text-decoration:none;
+
+    z-index:2147483647
+}
+.toastify.on{
+    opacity:1
+}
+.toast-close{
+    opacity:.4;
+    padding:0 5px
+}
+.toastify-right{
+    right:15px
+}
+.toastify-left{
+    left:15px
+}
+.toastify-top{
+    top:-150px
+}
+.toastify-bottom{
+    bottom:-150px
+}
+.toastify-rounded{
+    border-radius:25px
+}
+.toastify-avatar{
+    width:1.5em;
+    height:1.5em;
+    margin:0 5px;
+    border-radius:2px
+}
+.toastify-center{
+    margin-left:auto;
+    margin-right:auto;
+    left:0;
+    right:0;
+    max-width:fit-content
+}
+@media only screen and (max-width:360px){
+    .toastify-left,.toastify-right{
+        margin-left:auto;
+        margin-right:auto;
+        left:0;
+        right:0;
+        max-width:fit-content
+    }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js" integrity="sha512-79j1YQOJuI8mLseq9icSQKT6bLlLtWknKwj1OpJZMdPt2pFBry3vQTt+NZuJw7NSd1pHhZlu0s12Ngqfa371EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Include QR Code Styling Library -->
+<script src="/assets/teacher/js/qrcodestyling.js"></script>
+
+<script n:syntax=off>
+    // Global variable for the QR Code instance
+    let qrCodeInstance = null;
+    let showMessageTimeout; // For preloader
+
+    // --- Preloader Logic ---
+    window.addEventListener("load", () => {
+        const preloader = document.getElementById("preloader");
+         if (preloader) {
+            if (showMessageTimeout) {
+                clearTimeout(showMessageTimeout);
+            }
+            preloader.style.transition = "opacity 0.5s ease";
+            preloader.style.opacity = "0";
+            setTimeout(() => {
+                preloader.style.display = "none";
+            }, 500);
+        }
+    });
+
+    showMessageTimeout = setTimeout(() => {
+        const loadingMessage = document.getElementById("loading-message");
+         if (loadingMessage) {
+           loadingMessage.style.opacity = "1";
+        }
+    }, 10000);
+
+    // --- Main Page Invite Code Copy Logic ---
+    function copyInviteCode() {
+        const codeElement = document.getElementById('invite_code');
+        if (!codeElement) return;
+        const codeToCopy = codeElement.innerText.trim();
+        const copyButton = document.getElementById('copy-button');
+        if (!copyButton) return;
+        const copyIcon = document.getElementById('copy-icon');
+        const checkIcon = document.getElementById('check-icon');
+        const copyTextSpan = copyButton.querySelector('.copy-text');
+
+        if (!codeToCopy || codeToCopy.includes("Загрузка") || codeToCopy.includes("Ошибка")) {
+            Toastify({
+                    text: `
+                        <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                            <div class="flex p-4">
+                                <div class="shrink-0">
+                                <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#efb100" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                </div>
+                                <div class="ms-3">
+                                <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                    Код приглашения не готов или недействителен, невозможно скопировать.
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    className: "fixed top-5 right-5",
+                    duration: 10000,
+                    close: false,
+                    escapeMarkup: false
+                }).showToast();
+            return;
+        }
+
+        navigator.clipboard.writeText(codeToCopy).then(() => {
+            copyButton.classList.add('bg-green-100', 'text-green-700');
+            if(copyIcon) copyIcon.classList.add('hidden');
+            if(checkIcon) checkIcon.classList.remove('hidden');
+            if (copyTextSpan) copyTextSpan.textContent = 'Скопировано!';
+
+            setTimeout(() => {
+                copyButton.classList.remove('bg-green-100', 'text-green-700');
+                if(copyIcon) copyIcon.classList.remove('hidden');
+                if(checkIcon) checkIcon.classList.add('hidden');
+                if (copyTextSpan) copyTextSpan.textContent = 'Скопировать';
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            if (copyTextSpan) {
+                 copyTextSpan.textContent = 'Ошибка';
+                 copyTextSpan.classList.add('text-red-600');
+                 setTimeout(() => {
+                      copyTextSpan.textContent = 'Скопировать';
+                      copyTextSpan.classList.remove('text-red-600');
+                 }, 2500);
+            } else {
+                 Toastify({
+                    text: `
+                        <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                            <div class="flex p-4">
+                                <div class="shrink-0">
+                                <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                </div>
+                                <div class="ms-3">
+                                <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                    Не удалось скопировать код.
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    className: "fixed top-5 right-5",
+                    duration: 10000,
+                    close: false,
+                    escapeMarkup: false
+                }).showToast();
+            }
+        });
+    }
+
+    // --- Invite Code Generation/Fetching Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const newCodeButton = document.getElementById('newCode');
+        const inviteCodeSpan = document.getElementById('invite_code');
+
+        function getUserData() {
+            try {
+                const cookie = document.cookie.split('; ')
+                               .find(row => row.startsWith('user='));
+                if (!cookie) return {};
+                const decoded = decodeURIComponent(cookie.split('=')[1]);
+                return JSON.parse(decoded || '{}');
+            } catch (e) {
+                console.error("Error parsing user data cookie:", e);
+                return {};
+            }
+        }
+
+        const teacher_id = getUserData().id;
+
+        function createRandomString(length){
+            const symbolArr = "1234567890QWERTYUPASDFGHJKLZXCVBNM";
+            let randomString = "";
+            for (let i = 0; i < length; i++){
+                const index = Math.floor(Math.random() * symbolArr.length);
+                randomString += symbolArr[index];
+            }
+            return randomString;
+        }
+
+        async function codeIsFree(teacherId, code) {
+             if (!teacherId || !code) {
+                 console.error("Missing teacherId or code for check");
+                 return { success: false, message: "Invalid input for check" };
+             }
+            try {
+                const response = await fetch(`${window.location.origin}/api/teacher/check/code`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code, teacher_id: teacherId })
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error("Error checking code:", error);
+                return { success: false, message: error.message || "Network error" };
+            }
+        }
+
+        async function setNewCode(teacherId, code) {
+             if (!teacherId || !code) {
+                 console.error("Missing teacherId or code for setting");
+                 return { success: false, message: "Invalid input for setting" };
+             }
+            try {
+                const response = await fetch(`${window.location.origin}/api/teacher/set/code`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ code, teacher_id: teacherId })
+                });
+                 if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error("Error setting new code:", error);
+                return { success: false, message: error.message || "Network error" };
+            }
+        }
+
+        async function fetchInitialCode(teacherId) {
+             if (!teacherId) {
+                 console.error("Missing teacherId for initial fetch");
+                 if (inviteCodeSpan) inviteCodeSpan.innerHTML = 'Ошибка ID';
+                 return;
+             }
+             try {
+                 const response = await fetch(`${window.location.origin}/api/teacher/get/code`, {
+                     method: "POST",
+                     headers: { "Content-Type": "application/json" },
+                     body: JSON.stringify({ teacher_id: teacherId })
+                 });
+                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                 const data = await response.json();
+
+                 if (data.success && data.code) {
+                     if (inviteCodeSpan) inviteCodeSpan.textContent = data.code;
+                 } else if (data.success && !data.code) {
+                     console.log("No existing code found for teacher, generating initial code...");
+                     await generateAndSetNewCode(); // Await this generation
+                 }
+                  else {
+                      console.error("Failed to fetch initial code:", data.message);
+                      if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-red-500">Ошибка загрузки</span>';
+                 }
+             } catch (error) {
+                 console.error("Error fetching initial code:", error);
+                 if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-red-500">Ошибка сети</span>';
+             }
+        }
+
+        async function generateAndSetNewCode() {
+             if (!teacher_id) {
+                Toastify({
+                    text: `
+                        <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                            <div class="flex p-4">
+                                <div class="shrink-0">
+                                <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                </div>
+                                <div class="ms-3">
+                                <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                    Ошибка генерации кода. ID Учителя не найден.
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    className: "fixed top-5 right-5",
+                    duration: 10000,
+                    close: false,
+                    escapeMarkup: false
+                }).showToast();
+                if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-red-500">Ошибка ID</span>';
+                return;
+            }
+             if (newCodeButton) newCodeButton.disabled = true;
+             if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-gray-500">Генерация...</span>';
+
+             let attempts = 0;
+             const maxAttempts = 10;
+             let code = '';
+             let isFree = { success: false };
+
+             while (!isFree.success && attempts < maxAttempts) {
+                 attempts++;
+                 code = createRandomString(10);
+                 // console.log(`Attempt ${attempts}: Trying code ${code}`); // Optional debug
+                 isFree = await codeIsFree(teacher_id, code);
+                 if (isFree === null || typeof isFree !== 'object') {
+                      console.error("Error response from codeIsFree check.");
+                        Toastify({
+                            text: `
+                                <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                                    <div class="flex p-4">
+                                        <div class="shrink-0">
+                                        <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                        </div>
+                                        <div class="ms-3">
+                                        <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                            Произошла ошибка при проверке кода. Попробуйте позже.
+                                        </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `,
+                            className: "fixed top-5 right-5",
+                            duration: 10000,
+                            close: false,
+                            escapeMarkup: false
+                        }).showToast();
+                      if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-sm text-red-500">Ошибка проверки</span>';
+                      if (newCodeButton) newCodeButton.disabled = false;
+                      return;
+                 }
+             }
+
+             if (!isFree.success) {
+                 console.error(`Failed to generate a unique code after ${maxAttempts} attempts.`);
+                 Toastify({
+                    text: `
+                        <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                            <div class="flex p-4">
+                                <div class="shrink-0">
+                                <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                </div>
+                                <div class="ms-3">
+                                <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                    Не удалось сгенерировать уникальный код. Попробуйте позже.
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    className: "fixed top-5 right-5",
+                    duration: 10000,
+                    close: false,
+                    escapeMarkup: false
+                }).showToast();
+                 if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-red-500">Ошибка генерации</span>';
+                 if (newCodeButton) newCodeButton.disabled = false;
+                 return;
+             }
+
+             // console.log(`Generated unique code: ${code}`); // Optional debug
+             const res = await setNewCode(teacher_id, code);
+
+             if (res && res.success) {
+                 if (inviteCodeSpan) inviteCodeSpan.textContent = code;
+                 console.log("Successfully set new code.");
+             } else {
+                 console.error("Failed to set the new code on the server:", res?.message);
+                    Toastify({
+                        text: `
+                            <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                                <div class="flex p-4">
+                                    <div class="shrink-0">
+                                    <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                    </div>
+                                    <div class="ms-3">
+                                    <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                        Не удалось сохранить новый код: ${res?.message || 'Неизвестная ошибка'}
+                                    </p>
+                                    </div>
+                                </div>
+                            </div>
+                        `,
+                        className: "fixed top-5 right-5",
+                        duration: 10000,
+                        close: false,
+                        escapeMarkup: false
+                    }).showToast();
+                 if (inviteCodeSpan) inviteCodeSpan.innerHTML = '<span class="text-red-500">Ошибка сохранения</span>';
+             }
+
+             if (newCodeButton) newCodeButton.disabled = false;
+        }
+
+
+        if (newCodeButton) {
+            newCodeButton.addEventListener('click', generateAndSetNewCode);
+        } else {
+            console.warn("Element with ID 'newCode' not found.");
+        }
+
+        // Fetch initial code when the page loads
+        fetchInitialCode(teacher_id);
+
+    });
+
+
+    // --- QR Modal Logic ---
+    document.addEventListener('DOMContentLoaded', () => {
+       const shareBtn = document.getElementById('share-button');
+       const modal = document.getElementById('share-modal');
+       const modalContent = modal?.querySelector('.modal-content'); // Use optional chaining
+       const closeBtn = document.getElementById('close-modal');
+       const mainInviteCodeSpan = document.getElementById('invite_code');
+       const modalInviteCodeSpan = document.getElementById('modal-invite_code');
+       const modalCopyButton = document.getElementById('modal-copy-button');
+       const qrcodeDiv = document.getElementById('qrcode');
+       const qrcodeLoading = document.getElementById('qrcode-loading');
+       const qrcodeError = document.getElementById('qrcode-error');
+       const qrcodeContainer = document.getElementById('qrcode-container');
+
+       if (!modal || !modalContent || !closeBtn || !shareBtn || !qrcodeDiv || !qrcodeLoading || !qrcodeError || !qrcodeContainer || !modalCopyButton || !modalInviteCodeSpan || !mainInviteCodeSpan) {
+            console.error("One or more essential modal elements are missing. Modal functionality might be compromised.");
+            // Disable the share button if critical elements are missing
+            if (shareBtn) {
+                shareBtn.disabled = true;
+                shareBtn.title = "Ошибка: компоненты модального окна не найдены";
+                shareBtn.style.cursor = 'not-allowed';
+            }
+            return; // Stop initialization if elements are missing
+       }
+
+
+       function openModal() {
+         const inviteCode = mainInviteCodeSpan.innerText.trim();
+
+         if (!inviteCode || inviteCode.includes("Загрузка") || inviteCode.includes("Ошибка")) {
+              console.error('Invite code is not available or invalid! Cannot open modal or generate QR code.');
+                Toastify({
+                    text: `
+                        <div class="max-w-xs bg-white border mt-4 border-gray-200 rounded-xl" role="alert" tabindex="-1" aria-labelledby="hs-toast-stack-toggle-update-label" onclick="Toastify(this).hideToast()">
+                            <div class="flex p-4">
+                                <div class="shrink-0">
+                                <svg class="shrink-0 text-white size-6 mt-0.5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#fb2c36" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m15.75 15l-6-6m0 6l6-6m7 3c0-5.523-4.477-10-10-10s-10 4.477-10 10s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>
+                                </div>
+                                <div class="ms-3">
+                                <p id="hs-toast-stack-toggle-update-label" class="text-sm text-gray-700">
+                                    Код приглашения не загружен или содержит ошибку. Попробуйте обновить страницу или сгенерировать новый код.
+                                </p>
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                    className: "fixed top-5 right-5",
+                    duration: 10000,
+                    close: false,
+                    escapeMarkup: false
+                }).showToast();
+              return;
+         }
+
+         modalInviteCodeSpan.innerText = inviteCode;
+
+         // Reset QR display
+         qrcodeDiv.innerHTML = '';
+         qrCodeInstance = null;
+         qrcodeError.classList.add('hidden');
+         qrcodeContainer.classList.remove('border-red-500');
+         qrcodeLoading.classList.remove('hidden');
+
+         // Start opening animation (using delete modal's style)
+         modal.classList.remove('hidden');
+         document.addEventListener('keydown', handleEscapeKey); // Add listener
+
+         requestAnimationFrame(() => { // Use requestAnimationFrame for smoother transition start
+           modal.classList.remove('bg-gray-900/0');
+           modal.classList.add('bg-gray-900/80'); // Add backdrop opacity
+           modalContent.classList.remove('scale-95', 'opacity-0');
+           modalContent.classList.add('scale-100', 'opacity-100'); // Scale/fade in content
+         });
+
+         // Generate QR Code
+         generateQRCode(inviteCode);
+       }
+
+       function generateQRCode(code) {
+            if (typeof QRCodeStyling === 'undefined') {
+                 console.error("QRCodeStyling library is not loaded!");
+                 qrcodeLoading.classList.add('hidden');
+                 qrcodeError.innerText = 'Ошибка загрузки QR-генератора.';
+                 qrcodeError.classList.remove('hidden');
+                 qrcodeContainer.classList.add('border-red-500', 'border-dashed');
+                 return;
+            }
+
+            // Use setTimeout to ensure the modal is visible before QR rendering starts
+            setTimeout(() => {
+                try {
+                    qrCodeInstance = new QRCodeStyling({
+                        width: 230,
+                        height: 230,
+                        // Use a placeholder or actual logo URL
+                        image: "https://gorislavets.com/logo2.png",
+                        data: 'code', // Use the actual invite code
+                        margin: 5,
+                        qrOptions: {
+                            typeNumber: 0,
+                            mode: 'Byte',
+                            errorCorrectionLevel: 'H' // High error correction
+                        },
+                        imageOptions: {
+                            hideBackgroundDots: true,
+                            imageSize: 0.4, // Adjust logo size
+                            margin: 10 // Margin around the logo
+                        },
+                        dotsOptions: {
+                            type: 'rounded', // Style of the dots
+                            color: '#000000' // Black dots
+                        },
+                        backgroundOptions: {
+                            color: '#ffffff', // White background
+                        },
+                         cornersSquareOptions: {
+                           type: 'extra-rounded', // Style of the corner squares
+                           color: '#000000' // Black corners
+                         },
+                         cornersDotOptions: {
+                           type: 'dot', // Style of the inner dots in corners
+                           color: '#000000' // Black inner dots
+                         }
+                    });
+
+                    qrCodeInstance.append(qrcodeDiv);
+                    qrcodeLoading.classList.add('hidden'); // Hide loading spinner
+
+                } catch (error) {
+                    console.error("Error generating QR Code:", error);
+                    qrcodeLoading.classList.add('hidden');
+                    qrcodeError.innerText = 'Не удалось создать QR-код. Попробуйте еще раз.';
+                    qrcodeError.classList.remove('hidden');
+                    qrcodeContainer.classList.add('border-red-500', 'border-dashed'); // Indicate error visually
+                }
+            }, 100); // Small delay
+       }
+
+       function closeModal() {
+         // Start closing animation
+         modal.classList.remove('bg-gray-900/80');
+         modal.classList.add('bg-gray-900/0'); // Remove backdrop opacity
+         modalContent.classList.remove('scale-100', 'opacity-100');
+         modalContent.classList.add('scale-95', 'opacity-0'); // Scale/fade out content
+         document.removeEventListener('keydown', handleEscapeKey); // Remove listener
+
+         setTimeout(() => {
+            modal.classList.add('hidden'); // Hide modal after animation
+             // Clean up QR code elements
+            if(qrcodeLoading) qrcodeLoading.classList.add('hidden');
+            if(qrcodeError) qrcodeError.classList.add('hidden');
+            if(qrcodeContainer) qrcodeContainer.classList.remove('border-red-500', 'border-dashed');
+            if(qrcodeDiv) qrcodeDiv.innerHTML = ''; // Clear the QR code SVG/Canvas
+            qrCodeInstance = null; // Release the instance
+         }, 300); // Match animation duration
+       }
+
+       const handleEscapeKey = (event) => {
+           if (event.key === 'Escape') {
+               closeModal();
+           }
+       };
+
+       const copyModalCode = () => {
+            if(!modalInviteCodeSpan) return;
+            const codeToCopy = modalInviteCodeSpan.innerText.trim();
+            const copyButton = modalCopyButton;
+            if (!copyButton) return;
+            const copyIcon = copyButton.querySelector('.modal-copy-icon');
+            const checkIcon = copyButton.querySelector('.modal-check-icon');
+
+            if (!codeToCopy) {
+                console.warn("Modal invite code is empty, cannot copy.");
+                return;
+            }
+
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                copyButton.classList.add('bg-green-100', 'text-green-700');
+                if(copyIcon) copyIcon.classList.add('hidden');
+                if(checkIcon) checkIcon.classList.remove('hidden');
+
+                setTimeout(() => {
+                    copyButton.classList.remove('bg-green-100', 'text-green-700');
+                    if(copyIcon) copyIcon.classList.remove('hidden');
+                    if(checkIcon) checkIcon.classList.add('hidden');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy modal text: ', err);
+                 copyButton.classList.add('bg-red-100', 'border-red-500');
+                 if (copyIcon) { // Simple visual error indication
+                     copyIcon.classList.add('text-red-500');
+                 }
+                 if (checkIcon) checkIcon.classList.add('hidden');
+
+                 setTimeout(() => {
+                     copyButton.classList.remove('bg-red-100', 'border-red-500');
+                     if (copyIcon) copyIcon.classList.remove('text-red-500');
+                 }, 2500);
+            });
+        };
+
+       // Event Listeners
+       shareBtn.addEventListener('click', openModal);
+       closeBtn.addEventListener('click', closeModal);
+       modalCopyButton.addEventListener('click', copyModalCode);
+
+       // Close modal if clicking outside the content
+       modal.addEventListener('click', (e) => {
+         if (e.target === modal) { // Check if the click is on the backdrop itself
+           closeModal();
+         }
+       });
+
+    });
+</script>
+{include '../partials/footer.latte'}

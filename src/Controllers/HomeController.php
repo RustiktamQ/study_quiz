@@ -704,14 +704,18 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('dashboard/teacher/index', [
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture
+            'teacher' => $user,
+            'notifs' => $notifs
         ]);
     }
 
@@ -723,14 +727,18 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('dashboard/teacher/profile/index', [
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/profile/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture
+            'teacher' => $user,
+            'notifs' => $notifs
         ]);
     }
 
@@ -742,19 +750,22 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('dashboard/teacher/profile/settings/settings', [
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/profile/settings', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'token' => $user->invite_code
+            'teacher' => $user,
+            'notifs' => $notifs
         ]);
     }
 
-    public function showTeacherOrigin()
+    public function showTeacherStudents($params)
     {
         $this->checkTeacherAuthorization();
         $user = $this->user;
@@ -762,91 +773,50 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $this->renderPartial('dashboard/teacher/origin/index', [
-            'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture
-        ]);
-    }
-
-    public function showTeacherStudents()
-    {
-        $this->checkTeacherAuthorization();
-        $user = $this->user;
-
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+        $page;
+        if ($params['page']) {
+            $page = $params['page'];
+        } else {
+            $page = 0;
+        }
 
         $teacher = R::findOne('teachers', 'id = ?', [$user['id']]);
         $students = R::getAll('
-SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapsed_time as `time_spent`
-        FROM users u
-        JOIN progress p ON u.id = p.student_id
-        JOIN teachers t ON t.invite_code = u.token
-        JOIN quizzes q ON q.id = p.quiz_id
-        WHERE p.start_time = (
-            SELECT MAX(p2.start_time)
-            FROM progress p2
-            WHERE p2.student_id = u.id
-        ) AND u.token = ?
-    ', [$teacher['invite_code']]);
+            SELECT 
+                users.id, 
+                users.name, 
+                users.picture, 
+                COALESCE(SUM(completed), 0) AS quizzes_completed, 
+                COALESCE(SUM(answered), 0) AS answers_completed, 
+                COALESCE(SUM(TIME_TO_SEC(elapsed_time)), 0) AS time_spent 
+            FROM users
+            LEFT JOIN progress ON users.id = progress.student_id
+            WHERE users.token = ? AND users.token_confirmed = 1
+            GROUP BY users.id, users.name, users.picture;
+        ', [$teacher['invite_code']]);
+
+        foreach ($students as &$student) {
+            $student['time_spent'] = $this->secondsToHours($student['time_spent']);
+        }
+        unset($student);
+        
+
+        $notConfirmed = R::getAll('SELECT * FROM users WHERE token = ? AND token_confirmed = 0', [$teacher['invite_code']]);
     
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher/students/index', [
+        $this->renderPartial('dashboard/teacher2/students/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'students' => $students
-        ]);
-    }
-
-    public function showTeacherStudentsAdd()
-    {
-        $this->checkTeacherAuthorization();
-        $user = $this->user;
-
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-
-        $this->renderPartial('dashboard/teacher/students/manage/add', [
-            'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture
-        ]);
-    }
-
-    public function showTeacherStudentsEdit($params)
-    {
-        $this->checkTeacherAuthorization();
-        $user = $this->user;
-
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-
-        $studentId = $params['id'];
-        $student = R::findOne('users', 'id = ?', [$studentId]);
-
-        $this->renderPartial('dashboard/teacher/students/manage/edit', [
-            'lang' => $this->lang,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'ROOT_URL' => $root,
-            'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'student' => $student
+            'teacher' => $user,
+            'students' => $students,
+            'notConfirmed' => $notConfirmed,
+            'notifs' => $notifs
         ]);
     }
 
@@ -860,15 +830,103 @@ SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapse
 
         $inviteCode = R::findOne('teachers', 'id = ?', [$user['id']])->invite_code;
 
-        $this->renderPartial('dashboard/teacher/students/manage/invite', [
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/students/invite', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
-            'fullname' => $user->name,
-            'firstname' => $user->firstname,
-            'picture' => $user->picture,
-            'invite_code' => $inviteCode
+            'teacher' => $user,
+            'invite_code' => $inviteCode,
+            'notifs' => $notifs
+        ]);
+    }
+
+    public function showTeacherStudentsView($params)
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $studentId = $params['id'];
+
+        $student = R::findOne('users', 'id = ?', [$studentId]);
+        $statistics = R::getRow(
+            'SELECT SUM(completed) AS quizzes_completed, 
+                    SUM(answered) AS answers_completed, 
+                    SUM(TIME_TO_SEC(elapsed_time)) AS time_spent 
+             FROM progress 
+             WHERE student_id = ? 
+             GROUP BY student_id',
+            [$studentId]
+        );
+
+        $quizzes = R::getAll('SELECT quizzes.name, categories.name as `categoryName`, progress.start_time FROM quizzes
+        JOIN categories ON categories.id = quizzes.category_id
+        JOIN progress ON progress.quiz_id = quizzes.id
+        WHERE progress.completed = 0 AND progress.student_id = ?', [$studentId]);
+
+        if (isset($statistics['time_spent'])) {
+            $statistics['time_spent'] = $this->secondsToHours($statistics['time_spent']);
+        } else {
+            $statistics['time_spent'] = 0;
+        }
+
+        if (!isset($statistics['quizzes_completed'])) {
+            $statistics['quizzes_completed'] = 0;
+        }
+
+        if (!isset($statistics['answers_completed'])) {
+            $statistics['answers_completed'] = 0;
+        }
+
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/students/view', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'teacher' => $user,
+            'student' => $student,
+            'statistics' => $statistics,
+            'quizzes' =>  $quizzes,
+            'notifs' => $notifs
+        ]);
+    }
+
+    public function showTeacherManual()
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $inviteCode = R::findOne('teachers', 'id = ?', [$user['id']])->invite_code;
+
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $this->renderPartial('dashboard/teacher2/manual', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'teacher' => $user,
+            'invite_code' => $inviteCode,
+            'notifs' => $notifs
         ]);
     }
 
@@ -880,9 +938,9 @@ SELECT u.*, q.name as `last_skill_name`, q.grade as `last_skill_grade`, p.elapse
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $checkConfirm = R::findOne('users', 'id = ?', [$user['id']]);
+        $student = R::findOne('users', 'id = ?', [$user['id']]);
 
-        if ($checkConfirm['token_confirmed'] == 1) {
+        if ($student->token_confirmed == 1) {
             header('Location: /');
         }
 

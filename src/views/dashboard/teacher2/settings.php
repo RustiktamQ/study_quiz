@@ -1,0 +1,518 @@
+{include "../../partials/header.latte"}
+{include "../../partials/sidebar.latte"}
+<div class="w-full lg:ps-64 w-5xl max-w-7xl mx-auto items-center justify-center">
+   <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <ol class="flex items-center whitespace-nowrap">
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="<?= ROOT_URL ?>dashboard/">
+            Dashboard
+            </a>
+            <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="m9 18 6-6-6-6"></path>
+            </svg>
+         </li>
+         <li class="inline-flex items-center">
+            <a class="flex items-center text-sm text-gray-500 hover:text-green-600 focus:outline-none focus:text-green-600" href="#">
+               Profile
+               <svg class="shrink-0 mx-2 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m9 18 6-6-6-6"></path>
+               </svg>
+            </a>
+         </li>
+         <li class="inline-flex items-center text-sm font-semibold text-gray-800 truncate" aria-current="page">
+            Settings
+         </li>
+      </ol>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+         <!-- короче я хуй знает блять. Пока просто скрыть эту хуйню но ее сохранить по идеи надо бы -->
+         <!-- <div class="sm:col-span-2 lg:col-span-2">
+            <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+               <div class="p-4 md:p-5">
+             <div class="p-4 flex md:p-5">
+             <img class="shrink-0 size-[38px] rounded-full" src="<?= htmlspecialchars($user['picture'] ?? ''); ?>" alt="Avatar">
+             <span class="my-auto ml-3"><?= $_SESSION['user']['name'] ?? ''; ?></span>
+            
+             <div class="hs-tooltip [--trigger:hover] my-auto flex">
+             <button type="button" class="hs-tooltip-toggle">
+             <span class="hs-tooltip-toggle text-sm my-auto px-2 py-1 rounded-md ml-2 border cursor-default text-gray-600"><?= $userregdate ?? $_SESSION['user']['reg_date'] ?? ''; ?></span>
+                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-3 px-4 bg-white border text-sm text-gray-600 rounded-lg shadow-md" role="tooltip">
+                Date of your registration
+                </span>
+             </button>
+             </div>
+            
+             <div class="hs-tooltip [--trigger:hover] my-auto flex">
+             <button type="button" class="hs-tooltip-toggle">
+             <span class="hs-tooltip-toggle flex text-sm my-auto px-2 py-1 rounded-md ml-2 border cursor-default text-gray-600"><svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="m8 12.5l2.5 2.5L16 9"/></g></svg></span>
+                <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-3 px-4 bg-white border text-sm text-gray-600 rounded-lg shadow-md" role="tooltip">
+                Your account is verified by <?= APP_NAME ?? 'our system'; ?> and your school administration.
+                </span>
+             </button>
+             </div>
+            
+             </div>
+               </div>
+            </div>
+            </div> -->
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-2 gap-4 sm:gap-6">
+         <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <h1 class="text-lg font-semibold text-gray-800">Interface language</h1>
+               <select id="chooseLang" data-hs-select='{
+                  "placeholder": "Select option...",
+                  "toggleTag": "<button type=\"button\" aria-expanded=\"false\"></button>",
+                  "toggleClasses": "hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50 relative mt-4 transition py-3 ps-4 pe-9 flex gap-x-2 text-nowrap w-full cursor-pointer bg-white border border-gray-200 rounded-lg text-start text-sm focus:outline-none focus:ring-2 focus:ring-green-500",
+                  "dropdownClasses": "mt-2 z-50 w-full max-h-72 p-1 space-y-0.5 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500",
+                  "dropdownVerticalFixedPlacement": "bottom",
+                  "optionClasses": "py-2 px-4 w-full transition text-sm text-gray-800 cursor-pointer hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100 hs-select-disabled:pointer-events-none hs-select-disabled:opacity-50",
+                  "optionTemplate": "<div class=\"flex justify-between items-center w-full\"><span data-title></span><span class=\"hidden hs-selected:block\"><svg class=\"shrink-0 size-3.5 text-green-600 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 6 9 17 4 12\"/></svg></span></div>",
+                  "extraMarkup": "<div class=\"absolute top-1/2 end-3 -translate-y-1/2\"><svg class=\"shrink-0 size-3.5 text-gray-500 \" xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m7 15 5 5 5-5\"/><path d=\"m7 9 5-5 5 5\"/></svg></div>"
+                  }' class="hidden">
+                  <option>Қазақ тілі</option>
+                  <option selected>Русский</option>
+                  <option>English</option>
+               </select>
+               <button id="saveLang" type="button" class="whitespace-nowrap mt-4 flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-8 bg-green-500 text-white border-green-500 hover:border-green-600 disabled:bg-green-400 disabled:border-green-400 hover:bg-green-600 shadow-10 hover:shadow-15" href="/signup">Save</button>
+            </div>
+         </div>
+         <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <div class="flex">
+                  <h1 class="text-lg font-semibold text-gray-800">Set teacher's invite token</h1>
+                  <div class="hs-tooltip ml-2 my-auto">
+                     <div class="hs-tooltip-toggle">
+                        <svg class="shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                           <circle cx="12" cy="12" r="10" />
+                           <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                           <path d="M12 17h.01" />
+                        </svg>
+                        <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm" role="tooltip">
+                        With this code, the student will be able to link their account to you
+                        </span>
+                     </div>
+                  </div>
+               </div>
+               <div class="max-w-sm mt-4 space-y-3">
+                  <input id="chooseToken" type="text" class="transition py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" value={$token}>
+               </div>
+               <button id="saveToken" type="button" class="whitespace-nowrap mt-4 flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-8 bg-green-500 text-white border-green-500 hover:border-green-600 disabled:bg-green-400 disabled:border-green-400 hover:bg-green-600 shadow-10 hover:shadow-15" href="/signup">Save</button>
+            </div>
+         </div>
+      </div>
+      <div class="hidden sm:col-span-2 lg:col-span-2">
+         <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <div class="flex border-b pb-4">
+                  <h1 class="text-xl font-semibold text-gray-800">Preferences</h1>
+               </div>
+               <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div class="space-y-3">
+                     <div class="flex items-center">
+                        <label for="notifications" class="text-sm font-medium mr-4 text-gray-700">Disable confetti</label>
+                        <label class="items-center cursor-pointer">
+                           <input type="checkbox" value="" class="sr-only peer" checked>
+                           <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <button type="button" class="whitespace-nowrap mt-6 flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-4 bg-green-500 text-white border-green-500 hover:border-green-600 disabled:bg-green-400 disabled:border-green-400 hover:bg-green-600 shadow-10 hover:shadow-15" href="/signup">Save Preferences</button>
+            </div>
+         </div>
+      </div>
+      <div class="sm:col-span-2 lg:col-span-2">
+         <div class="flex flex-col bg-white border shadow-sm rounded-xl w-full">
+            <div class="p-4 md:p-6">
+               <div class="flex items-center justify-between border-b border-gray-200 pb-3">
+                  <h1 class="text-xl font-semibold text-gray-800">Account Security</h1>
+                  <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Recommended</span>
+               </div>
+               <div class="mt-5 space-y-4">
+                  <div class="flex items-center space-x-3">
+                     <svg class="flex-shrink-0 w-8 h-8 text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+                           <path d="M12 16.5v-2m-7.732 4.345c.225 1.67 1.608 2.979 3.292 3.056c1.416.065 2.855.099 4.44.099s3.024-.034 4.44-.1c1.684-.076 3.067-1.385 3.292-3.055c.147-1.09.268-2.207.268-3.345s-.121-2.255-.268-3.345c-.225-1.67-1.608-2.979-3.292-3.056A95 95 0 0 0 12 9c-1.585 0-3.024.034-4.44.1c-1.684.076-3.067 1.385-3.292 3.055C4.12 13.245 4 14.362 4 15.5s.121 2.255.268 3.345"/>
+                           <path d="M7.5 9V6.5a4.5 4.5 0 0 1 9 0V9"/>
+                        </g>
+                     </svg>
+                     <div>
+                        <h2 class="text-lg font-medium text-gray-800">Two-Factor Authentication (2FA)</h2>
+                        <p class="text-sm text-gray-600 mt-1">Add an extra layer of security to your account</p>
+                     </div>
+                  </div>
+                  <div class="bg-gray-50 rounded-lg p-4">
+                     <div class="flex items-center justify-between">
+                        <div>
+                           <span class="text-sm font-medium text-gray-700">Status: </span>
+                           <span class="text-sm text-red-500 font-medium">Not Configured</span>
+                        </div>
+                        <div class="text-sm text-gray-500">Requires Setup</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="mt-6 flex justify-end">
+                  <a href="#" class="mr-4 my-auto text-sm text-gray-500">How it works</a>
+                  <button type="button" class="whitespace-nowrap inline-flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-4 bg-green-500 text-white border-green-500 hover:border-green-600 disabled:bg-green-400 disabled:border-green-400 hover:bg-green-600 shadow-10 hover:shadow-15" href="/signup">Setup 2FA</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="sm:col-span-2 lg:col-span-2">
+         <div class="flex flex-col bg-white border shadow-sm rounded-xl">
+            <div class="p-4 md:p-5">
+               <div class="flex border-b pb-4">
+                  <h1 class="text-xl font-semibold text-gray-800">Account management</h1>
+                  <!-- <div class="hs-tooltip ml-2 my-auto">
+                     <div class="hs-tooltip-toggle">
+                       <svg class="shrink-0 size-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <circle cx="12" cy="12" r="10" />
+                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                         <path d="M12 17h.01" />
+                       </svg>
+                       <span class="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm" role="tooltip">
+                          Customize your system preferences
+                       </span>
+                     </div>
+                     </div> -->
+               </div>
+               <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                  <div class="space-y-3">
+                     <div class="flex justify-between items-center">
+                        <label for="notifications" class="text-sm font-medium text-gray-700">Notifications</label>
+                        <label class="inline-flex items-center cursor-pointer">
+                           <input type="checkbox" value="" class="sr-only peer" checked>
+                           <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                     </div>
+                     <div class="flex justify-between items-center">
+                        <label for="darkmode" class="text-sm font-medium text-gray-700">Dark mode</label>
+                        <label class="inline-flex items-center cursor-pointer">
+                           <input type="checkbox" value="" class="sr-only peer">
+                           <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                     </div>
+                  </div>
+                  <div class="space-y-3">
+                     <div class="flex justify-between items-center">
+                        <label for="twofa" class="text-sm font-medium text-gray-700">Share my data with North Korea</label>
+                        <label class="inline-flex items-center cursor-pointer">
+                           <input type="checkbox" value="" class="sr-only peer">
+                           <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                     </div>
+                     <div class="flex justify-between items-center">
+                        <label for="activity" class="text-sm font-medium text-gray-700">Activity logs</label>
+                        <label class="inline-flex items-center cursor-pointer">
+                           <input type="checkbox" value="" class="sr-only peer" checked>
+                           <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                        </label>
+                     </div>
+                  </div>
+               </div>
+               <div class="my-4 p-4 border rounded-xl flex justify-between items-center">
+                  <div class="flex">
+                     <h1>Delete my account</h1>
+                     <span class="my-auto text-xs text-yellow-600 bg-yellow-100 px-2 py-1 ml-2 rounded-full">You may lose your paid subscription</span>
+                  </div>
+                  <button type="button" class="whitespace-nowrap flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-8 bg-red-500 text-white border-red-500 hover:border-red-600 disabled:bg-red-400 disabled:border-red-400 hover:bg-red-600 shadow-10 hover:shadow-15">
+                  Delete
+                  </button>
+                  <div id="delete-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
+                     <div class="flex min-h-screen items-center justify-center p-4">
+                        <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
+                           <button id="close-modal" type="button" class="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl text-gray-600 transition-all hover:bg-gray-100 hover:shadow-sm">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M6 18L12 12M18 6L12 12M12 12L6 6M12 12L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                           </button>
+                           <div class="p-6 text-center">
+                              <svg class="mx-auto mb-4 h-10 w-10 text-red-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                 <!-- Icon from Huge Icons by Hugeicons - undefined -->
+                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.322 9.683c2.413-4.271 3.62-6.406 5.276-6.956a4.45 4.45 0 0 1 2.804 0c1.656.55 2.863 2.685 5.276 6.956c2.414 4.27 3.62 6.406 3.259 8.146c-.2.958-.69 1.826-1.402 2.48C19.241 21.5 16.827 21.5 12 21.5s-7.241 0-8.535-1.19a4.66 4.66 0 0 1-1.402-2.48c-.362-1.74.845-3.876 3.259-8.147M11.992 16h.009M12 13V9" color="currentColor"/>
+                              </svg>
+                              <h3 class="mb-2 text-lg font-semibold text-gray-800">Delete Account?</h3>
+                              <p class="mb-4 text-sm text-gray-600">Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.</p>
+                              <div class="mb-6">
+                                 <input 
+                                    id="confirm-input" 
+                                    type="text" 
+                                    placeholder="Type CONFIRM to proceed" 
+                                    class="w-full rounded-lg border transition outline-none border-gray-200 text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    >
+                              </div>
+                              <div class="flex justify-center gap-4">
+                                 <button id="cancel-btn" type="button" class="flex items-center rounded-xl border border-gray-300 px-8 py-1.5 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-100 hover:shadow-sm">
+                                 Cancel
+                                 </button>
+                                 <button 
+                                    id="confirm-delete" 
+                                    type="button" 
+                                    disabled 
+                                    class="flex items-center rounded-xl border border-red-500 bg-red-500 px-4 py-1.5 text-sm font-semibold text-white transition-all disabled:bg-red-300 disabled:border-red-300 disabled:cursor-not-allowed hover:bg-red-600 hover:shadow-sm"
+                                    >
+                                 Delete
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <button type="button" class="whitespace-nowrap mt-6 flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-4 bg-green-500 text-white border-green-500 hover:border-green-600 disabled:bg-green-400 disabled:border-green-400 hover:bg-green-600 shadow-10 hover:shadow-15" href="/signup">Save Preferences</button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<style>
+   #tooltip {
+   background-color: #333;
+   color: white;
+   padding: 5px 10px;
+   border-radius: 4px;
+   font-size: 13px;
+   }
+   .modal-enter {
+   opacity: 0;
+   transform: scale(0.95);
+   }
+   .modal-enter-active {
+   opacity: 1;
+   transform: scale(1);
+   transition: all 300ms ease-out;
+   }
+   .modal-exit {
+   opacity: 1;
+   transform: scale(1);
+   }
+   .modal-exit-active {
+   opacity: 0;
+   transform: scale(0.95);
+   transition: all 200ms ease-in;
+   }
+   .overlay-enter {
+   opacity: 0;
+   }
+   .overlay-enter-active {
+   opacity: 1;
+   transition: opacity 300ms ease-out;
+   }
+   .overlay-exit {
+   opacity: 1;
+   }
+   .overlay-exit-active {
+   opacity: 0;
+   transition: opacity 200ms ease-in;
+   }
+</style>
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script>
+   const button = document.querySelector('#button');
+   const tooltip = document.querySelector('#tooltip');
+   Popper.createPopper(button, tooltip, {
+     placement: 'right',
+   });
+   
+   document.addEventListener('DOMContentLoaded', () => {
+   const deleteBtn = document.querySelector('.bg-red-500');
+   const modal = document.getElementById('delete-modal');
+   const modalContent = modal.querySelector('.modal-content');
+   const closeBtn = document.getElementById('close-modal');
+   const cancelBtn = document.getElementById('cancel-btn');
+   const confirmBtn = document.getElementById('confirm-delete');
+   const confirmInput = document.getElementById('confirm-input');
+   
+   function openModal() {
+     modal.classList.remove('hidden');
+     confirmInput.value = '';
+     confirmBtn.disabled = true;
+     setTimeout(() => {
+       modal.classList.remove('bg-gray-900/0');
+       modal.classList.add('bg-gray-900/80');
+       modalContent.classList.remove('scale-95', 'opacity-0');
+       modalContent.classList.add('scale-100', 'opacity-100');
+     }, 10);
+   }
+   
+   function closeModal() {
+     modal.classList.remove('bg-gray-900/80');
+     modal.classList.add('bg-gray-900/0');
+     modalContent.classList.remove('scale-100', 'opacity-100');
+     modalContent.classList.add('scale-95', 'opacity-0');
+     setTimeout(() => {
+       modal.classList.add('hidden');
+     }, 300);
+   }
+   
+   confirmInput.addEventListener('input', () => {
+     const inputValue = confirmInput.value.trim().toUpperCase();
+     confirmBtn.disabled = inputValue !== 'CONFIRM';
+   });
+   
+   deleteBtn.addEventListener('click', openModal);
+   closeBtn.addEventListener('click', closeModal);
+   cancelBtn.addEventListener('click', closeModal);
+   
+   modal.addEventListener('click', (e) => {
+     if (e.target === modal) {
+       closeModal();
+     }
+   });
+   
+   confirmBtn.addEventListener('click', () => {
+     if (!confirmBtn.disabled) {
+       console.log('Account deletion confirmed');
+       closeModal();
+     }
+   });
+   });
+   
+</script>
+<script src="https://cdn.jsdelivr.net/npm/preline@3.0.0/dist/preline.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+   function getUserData() {
+      return JSON.parse(
+      decodeURIComponent(
+          document.cookie.split('; ')
+          .find(row => row.startsWith('user='))
+          ?.split('=')[1] || '{}'
+          )   
+      );
+   }
+
+   const userId = getUserData().id;
+
+   async function updateTeacherData(user_id, data) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/settings/teacher/update`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    data
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+   async function deleteTeacherAccount(user_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/settings/teacher/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+   document.getElementById('saveLang').addEventListener('click', async () => {
+      const lang = document.getElementById('chooseLang').value;
+      const res = await updateTeacherData(userId, {lang});
+      console.log(res)
+      if (res.success) {
+         Toastify({
+            text: "Success",
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+                     background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+            },
+         }).showToast();
+      } else if (res.error) {
+         Toastify({
+            text: res.message,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+               background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+            },
+         }).showToast();
+      }
+   })
+
+   document.getElementById('saveToken').addEventListener('click', async () => {
+      const token = document.getElementById('chooseToken').value;
+      const res = await updateTeacherData(userId, {token});
+
+      if (res.success) {
+            Toastify({
+              text: "Success",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+                  },
+            }).showToast();
+      } else if (res.error) {
+            Toastify({
+              text: res.message,
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                  },
+            }).showToast();
+      }
+   })
+
+   document.getElementById('confirm-delete').addEventListener('click', async () => {
+      const res = await deleteTeacherAccount(userId);
+
+      if (res.success) {
+         document.cookie.split(";").forEach(cookie => {
+            const name = cookie.split("=")[0].trim();
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+         });
+         localStorage.clear();
+
+         window.location.replace('/');
+      } else if (res.error) {
+            Toastify({
+              text: res.message,
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                  },
+            }).showToast();
+      }
+   });
+</script>
+{include "../../partials/footer.latte"}

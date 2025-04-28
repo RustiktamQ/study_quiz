@@ -1,0 +1,137 @@
+{include '../partials/header.latte'}
+
+<main>
+  <div class="p-4 mx-auto md:p-6 2xl:p-10">
+    <!-- Breadcrumb Start -->
+    <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <div class="flex">
+        <div class="relative inline-block">
+          <img class="inline-block size-16 rounded-full" src="{$student['picture']}" alt="Avatar">
+          <span class="absolute bottom-0 end-0 block size-3 rounded-full ring-2 ring-white bg-teal-400"></span>
+        </div>
+        <h2 class="text-3xl font-semibold text-gray-900 my-auto ml-8">
+          {$student['name']}
+        </h2>
+      </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Students Table -->
+    <div class="grid grid-cols-4 gap-4">
+        <div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+            <div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+                <svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="currentColor"/></svg>
+            </div>
+            <div class="mt-5">
+            <div class="relative">
+                <span class="text-sm text-gray-500">AI Запросов</span>
+            </div>
+            <div class="relative">
+                <div class="flex">
+                <h4 class="mt-1 text-3xl font-bold text-gray-800">
+                    <span id="data">0</span>
+                </h4>
+                <h4 class="mt-1 text-sm font-bold my-auto text-gray-400">
+                    <span id="data">/ 3000</span>
+                </h4>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
+        <div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+            <div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+                <svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><circle cx="12" cy="13" r="9"/><path d="m5 19l-2 2m16-2l2 2M19 3.57l.596-.298c.845-.423 1.162-.374 1.834.298s.72.99.298 1.834L21.43 6M5 3.57l-.596-.298c-.845-.423-1.162-.374-1.834.298s-.72.99-.298 1.834L2.57 6M12 9.5v4l2 2m-2-12V2m-2 0h4"/></g></svg>
+            </div>
+            <div class="mt-5">
+            <div class="relative">
+                <span class="text-sm text-gray-500">Времени Затрачено</span>
+            </div>
+            <div class="relative">
+                <h4 class="mt-1 text-3xl font-bold text-gray-800">
+                <span id="data">{$statistics['time_spent']}ч.</span>
+                </h4>
+            </div>
+            </div>
+        </div>
+
+        <div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+            <div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+            <svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12.828 6.001a3 3 0 1 0-5.658 0c-2.285.008-3.504.09-4.292.878S2.008 8.886 2 11.17a3 3 0 1 1 0 5.66c.008 2.284.09 3.503.878 4.291s2.007.87 4.291.878a3 3 0 1 1 5.66 0c2.284-.008 3.503-.09 4.291-.878s.87-2.007.878-4.292a3 3 0 1 0 0-5.658c-.008-2.285-.09-3.504-.878-4.292c-.788-.789-2.007-.87-4.292-.878" />
+            </svg>
+            </div>
+            <div class="mt-5">
+            <div class="relative">
+                <span class="text-sm text-gray-500">Квизов выполнено</span>
+            </div>
+            <div class="relative">
+                <h4 class="mt-1 text-3xl font-bold text-gray-800">
+                <span id="data">{$statistics['quizzes_completed']}</span>
+                </h4>
+            </div>
+            </div>
+        </div>
+
+        <div class="p-5 bg-white border border-gray-200 rounded-2xl md:p-6">
+            <div class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+				<svg class="relative z-[1] w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+					<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+						<path d="M14.17 20.89c4.184-.277 7.516-3.657 7.79-7.9c.053-.83.053-1.69 0-2.52c-.274-4.242-3.606-7.62-7.79-7.899a33 33 0 0 0-4.34 0c-4.184.278-7.516 3.657-7.79 7.9a20 20 0 0 0 0 2.52c.1 1.545.783 2.976 1.588 4.184c.467.845.159 1.9-.328 2.823c-.35.665-.526.997-.385 1.237c.14.24.455.248 1.084.263c1.245.03 2.084-.322 2.75-.813c.377-.279.566-.418.696-.434s.387.09.899.3c.46.19.995.307 1.485.34c1.425.094 2.914.094 4.342 0"/>
+						<path d="M10.5 9.538C10.5 8.688 11.172 8 12 8s1.5.689 1.5 1.538c0 .307-.087.592-.238.832c-.448.714-1.262 1.396-1.262 2.245V13m0 2h.009"/>
+					</g>
+				</svg>
+			</div>
+            <div class="mt-5">
+                <div class="relative">
+                    <span class="text-sm text-gray-500">Вопросов решено</span>
+                </div>
+            </div>
+            <div class="relative">
+                <h4 class="mt-1 text-3xl font-bold text-gray-800">
+                <span id="data">{$statistics['answers_completed']}</span>
+                </h4>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="mt-4 overflow-hidden border border-gray-200 rounded-2xl">
+    <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ПРЕДМЕТ
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            КВИЗ
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            НАЧАТ
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                {foreach $quizzes as $quiz}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="text-sm font-medium text-gray-900">{$quiz['categoryName']}</div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{$quiz['name']}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{$quiz['start_time']}</div>
+                        </td>
+                    </tr>
+                {/foreach}
+                </tbody>
+            </table>
+    </div>
+  </div>
+</main>
+{include '../partials/footer.latte'}

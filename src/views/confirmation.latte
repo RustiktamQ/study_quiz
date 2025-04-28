@@ -56,18 +56,66 @@
 
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+        async function checkConfirm(user_id) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/student/check/confirm`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_id
+                    })
+                });
+        
+                return await response.json();
+            } catch (error) {
+                return error.message;
+            }
+        }
 
-<script>
-    // check the status via AJAX/fetch later
+        function getUserData() {
+            return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('user='))
+                ?.split('=')[1] || '{}'
+                )   
+            );
+        }
+
+        const user_id = getUserData().id;
+
+
     const checkBtn = document.getElementById('check-status-btn');
     if (checkBtn) {
-        checkBtn.addEventListener('click', () => {
+        checkBtn.addEventListener('click', async () => {
             checkBtn.classList.add('animate-head-shake');
             setTimeout(() => {
                checkBtn.classList.remove('animate-head-shake');
             }, 500);
 
-            console.log('проверять статус. здесь реально чекать через апи статус');
+            const res = await checkConfirm(user_id);
+
+            if (res.success) {
+                window.location.href = '/dashboard/student';
+            } else if (!res.success) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
         });
     }
 

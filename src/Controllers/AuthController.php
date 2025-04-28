@@ -4,19 +4,6 @@ use Google_Client;
 use RedBeanPHP\R;
 
 class AuthController extends BaseController {
-
-    private function setCookie($name, $value, $expire = 0) {
-        setcookie($name, $value, $expire, "/");
-    }
-
-    private function getCookie($name) {
-        return isset($_COOKIE[$name]) ? $_COOKIE[$name] : null;
-    }
-
-    private function deleteCookie($name) {
-        setcookie($name, '', time() - 604800, "/");
-    }
-
     public function showauth()
     {
         $isAuthorized = isset($_COOKIE['user']);
@@ -128,6 +115,39 @@ class AuthController extends BaseController {
         ]);
     }
 
+    public function showRegister()
+    {
+        if (isset($_COOKIE['user'])){
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['register'] == false && $userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+                return;
+            }
+        }
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $student = R::findOne('users', 'google_id = ?', [$userData['google_id']]);
+
+        $isDeny = false;
+        if ($student->token_confirmed == 1) {
+            header('Location: /');
+        } else if ($student->token_confirmed == -1) {
+            $isDeny = true;
+            $student->token_confirmed = 0;
+            R::store($student);
+        }
+
+        $this->renderPartial('auth/register', [
+            'lang' => $this->lang,
+            'ROOT_URL' => $root,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'isTeacherAuth' => true,
+            'isDeny' => $isDeny
+        ]);
+    }
+
     public function teacherRegister() {
         header('Content-Type: application/json; charset=utf-8');
         $input = file_get_contents('php://input');
@@ -143,13 +163,13 @@ class AuthController extends BaseController {
         $teacher = R::findOne('teachers', 'id = ?', [$params['user_id']]);
 
         if ($teacher) {
-            $tokenExist = R::findOne('teachers', 'token = ?', [$params['token']]);
+            $tokenExist = R::findOne('teachers', 'invite_code = ?', [$params['token']]);
             if ($tokenExist) {
                 http_response_code(500);
                 echo json_encode(['error' => true, 'message' => 'Token already exist']);
                 return;
             }
-            $teacher->token = $params['token'];
+            $teacher->invite_code = $params['token'];
             $teacher->school = $params['school'];
             R::store($teacher);
         } else {
@@ -206,7 +226,7 @@ class AuthController extends BaseController {
         //     }
 
         
-        $teacher = R::findOne('teachers', 'email = ?', ['teacher']);
+        $teacher = R::findOne('teachers', 'email = ?', ['test@testmail.io']);
 
         $userData = [
             'id' => $teacher->id,
@@ -269,11 +289,12 @@ class AuthController extends BaseController {
                 'name' => 'qwe w',
                 'email' => 'rramilperm@gmail.com',
                 'picture' => 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c',
-                'isStudent' => true
+                'isStudent' => true,
+                'register' => true
             ];
             $this->setCookie('user', json_encode($userData), time() + 604800);
-            header('Location: /');
-            exit;
+            header('Location: /auth/teacher/student/complete');
+            return;
         //}
 
         header('Location: ' . $client->createAuthUrl());

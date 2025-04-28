@@ -144,7 +144,10 @@ class APIController extends BaseController {
         );
 
         if (is_null($nextQuest) || $progress->score >= 100) {
-            $this->notifyTeacher($quizId, $studentId, "teachers");
+            //$addressId, $addressType, $message, $type
+            $quiz = R::findOne('users', 'id = ?', [$studentId]);
+
+            $this->notify($teacherId, 'teacher', $message, 'Уведомление', $studentId);
             $progress->completed = 1;
             $progress->end_time = date('Y-m-d H:i:s');
             R::store($progress);
@@ -516,7 +519,7 @@ class APIController extends BaseController {
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
 
-        if (!isset($params['user_id']) || !isset($params['teacher_id'])) {
+        if (!isset($params['student_id']) || !isset($params['teacher_id'])) {
             http_response_code(400);
             echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
             return;
@@ -525,7 +528,7 @@ class APIController extends BaseController {
 
         R::exec(
             'UPDATE users SET token = ?, token_confirmed = ? WHERE id = ?',
-            [NULL, 0, $params['user_id']]
+            [NULL, 0, $params['student_id']]
         );
         http_response_code(200);
         echo json_encode(['success' => true]);
@@ -573,7 +576,97 @@ class APIController extends BaseController {
         echo json_encode(['success' => true]);
     }
 
+    public function getTeacherCode($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
 
+        if (!isset($params['teacher_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['teacher_id']);
+
+        $code = R::findOne('teachers', 'id = ?', [$params['teacher_id']])->invite_code;
+        http_response_code(200);
+        echo json_encode(['success' => true, 'code' => $code]);
+    }
+
+    public function checkStudentConfirm($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['user_id']);
+
+        $isConfirmed = R::findOne('users', 'id = ?', [$params['user_id']])->token_confirmed;
+
+        if ($isConfirmed) {
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Аккаунт ещё на потверждении']);
+        }
+        http_response_code(200);
+    }
+
+    public function confirmStudent($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id']) || !isset($params['student_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['user_id']);
+
+        $student = R::findOne('users', 'id = ?', [$params['student_id']]);
+
+        if ($student->token_confirmed == 1) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Student already confirmed']);
+            return;
+        }
+        
+        $student->token_confirmed = 1;
+        R::store($student);
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function denyStudent($params) {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id']) || !isset($params['student_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['user_id']);
+
+        $student = R::findOne('users', 'id = ?', [$params['student_id']]);
+
+        if ($student->token_confirmed) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Student already confirmed']);
+            return;
+        }
+
+        $student->token_confirmed = -1;
+        $student->token = NULL;
+        R::store($student);
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
 
     public function editAdminTeacher($params) {
         header('Content-Type: application/json; charset=utf-8');
@@ -1042,7 +1135,48 @@ class APIController extends BaseController {
     
         http_response_code(200);
         echo json_encode(['success' => true, 'message' => 'User pardoned successfully']);
-    }    
+    }
+
+    public function studentRegister() {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id'], $params['token'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['user_id']);
+
+        $student = R::findOne('users', 'id = ?', [$params['user_id']]);
+        $teacher = R::findOne('teachers', 'invite_code = ?', [$params['token']]);
+        
+        if ($student) {
+            if (!$teacher) {
+                http_response_code(500);
+                echo json_encode(['error' => true, 'message' => 'Code is incorrect!']);
+                return;
+            }
+            $student->token = $params['token'];
+            R::store($student);
+        } else {
+            http_response_code(404);
+            echo json_encode(['error' => true, 'message' => 'User not found']);
+            return;
+        }
+
+        $cookie = json_decode($this->getCookie('user'));
+        $cookie->register = NULL;
+        $userData = $cookie;
+        $this->setCookie('user', json_encode($userData), time() + 604800);
+
+        $this->notify($teacher->id, 'teacher', 'Запрашивает доступ к вашему классу', 'Запрос', $student->id);
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+        return;
+    }
 
     private function calculateScore($progress) {
         $correctCount = $progress->answered;
@@ -1151,36 +1285,16 @@ class APIController extends BaseController {
         return $nextQuestion->question_id;
     }
 
-    private function notifyTeacher($quizId, $userId, $addressType)
+    private function notify($addressId, $addressType, $message, $type, $homeId)
     {
-        $student = R::findOne('users', 'id = ?', [$userId]);
-        if (!$student) {
-            throw new \RuntimeException("Student not found with ID: {$userId}");
-        }
-    
-        $teacher = R::findOne('teachers', 'token = ?', [$student->token]);
-        if (!$teacher) {
-            throw new \RuntimeException("Teacher not found for student token: {$student->token}");
-        }
-    
-        $quiz = R::findOne('quizzes', 'id = ?', [$quizId]);
-        if (!$quiz) {
-            throw new \RuntimeException("Quiz not found with ID: {$quizId}");
-        }
-    
-        $message = sprintf(
-            "Student %s has completed the quiz '%s'",
-            $student->name,
-            $quiz->name
-        );
-    
         try {
             $notification = R::dispense('notifications');
             $notification->message = $message;
             $notification->address_type = $addressType;
-            $notification->address_id = $teacher->id;
+            $notification->address_id = $addressId;
             $notification->created_at = date('Y-m-d H:i:s');
-            $notification->checked = 0;
+            $notification->type = $type;
+            $notification->home_id = $homeId;
             
             return (bool)R::store($notification);
         } catch (\Exception $e) {
