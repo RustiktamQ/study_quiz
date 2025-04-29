@@ -1,4 +1,4 @@
-<?
+<?php
 namespace App\Controllers;
 use Google_Client;
 use RedBeanPHP\R;
