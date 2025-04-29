@@ -9,8 +9,21 @@ use App\Controllers;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-R::setup('mysql:host='.$_ENV['DB_HOST'].';dbname='.$_ENV['DB_DATABASE'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
-R::freeze(true);
+try {
+    R::setup(
+        'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_DATABASE'],
+        $_ENV['DB_USER'],
+        $_ENV['DB_PASS']
+    );
+
+    R::freeze(true);
+} catch (\PDOException $e) {
+    // Выводим ошибку подключения
+    echo "<pre>Database connection failed:\n" . $e->getMessage() . "</pre>";
+    file_put_contents(__DIR__ . '/db_error.log', $e->getMessage() . "\n", FILE_APPEND);
+    exit;
+}
+
 
 $latte = new Engine();
 $latte->setTempDirectory(__DIR__ . '/temp');
