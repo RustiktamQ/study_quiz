@@ -54,7 +54,7 @@ class AuthController extends BaseController {
 
         $this->renderPartial('auth/auth', [
             'lang' => $this->lang,
-            'uri' => $authUrl,
+            'uri' => "$authUrl/teacher",
             'ROOT_URL' => $root,
             'APP_NAME' => $_ENV['APP_NAME'],
             'isTeacherAuth' => true
