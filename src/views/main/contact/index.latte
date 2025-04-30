@@ -1,0 +1,115 @@
+{include '../partials/header.latte'}
+
+<main id="swup" class="transition-fade">
+    <div class="relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <svg class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2" width="800" height="800" fill="none" viewBox="0 0 800 800">
+                <circle cx="400" cy="400" r="400" fill="url(#contact_gradient_bg)" fill-opacity="0.2" />
+                <defs>
+                    <radialGradient id="contact_gradient_bg" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(400 400) rotate(90) scale(400)">
+                        <stop stop-color="#a7f3d0" />
+                        <stop offset="1" stop-color="#34d399" stop-opacity="0" />
+                    </radialGradient>
+                </defs>
+            </svg>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="text-center mb-12 md:mb-20 animate-on-load">
+                <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">Связь</span>
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-4 leading-tight">
+                    Давайте общаться!
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+                    Есть вопрос, предложение или просто хотите поздороваться? Мы всегда рады услышать вас и готовы помочь.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-start">
+                <div class="animate-on-load" style="animation-delay: 0.1s;">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 border-l-4 border-green-500 pl-3">Напишите нам</h2>
+                    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-gray-200 transition-shadow duration-300 flex items-center space-x-4 sm:space-x-6">
+                        <div class="flex-shrink-0 bg-green-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-green-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="m7 8.5l2.942 1.74c1.715 1.014 2.4 1.014 4.116 0L17 8.5" />
+                                    <path d="M2.016 13.476c.065 3.065.098 4.598 1.229 5.733c1.131 1.136 2.705 1.175 5.854 1.254c1.94.05 3.862.05 5.802 0c3.149-.079 4.723-.118 5.854-1.254c1.131-1.135 1.164-2.668 1.23-5.733c.02-.986.02-1.966 0-2.952c-.066-3.065-.099-4.598-1.23-5.733c-1.131-1.136-2.705-1.175-5.854-1.254a115 115 0 0 0-5.802 0c-3.149.079-4.723.118-5.854 1.254c-1.131 1.135-1.164 2.668-1.23 5.733a69 69 0 0 0 0 2.952" />
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm text-gray-500 mb-1">Электронная почта поддержки</p>
+                            <a href="mailto:support@aqyl.app" class="text-lg sm:text-xl font-medium text-gray-800 hover:text-green-600 transition break-words">
+                                support@aqyl.app
+                            </a>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-gray-600 leading-relaxed">
+                        Наша команда поддержки старается отвечать на все запросы в кратчайшие сроки. Обычно вы можете ожидать ответа в течение 24 часов в рабочие дни (Пн-Пт).
+                    </p>
+                </div>
+
+                <div class="animate-on-load" style="animation-delay: 0.2s;">
+                    <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 border-l-4 border-green-500 pl-3">Мы в соцсетях</h2>
+
+                    {var $social_links = [
+                        [
+                            'name' => 'Instagram',
+                            'url' => 'https://www.instagram.com/aqyl.app',
+                            'description' => 'Следите за новостями и закулисьем',
+                            'icon_bg' => 'bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600',
+                            'icon_svg' => '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07..."/></svg>'
+                        ],
+                        [
+                            'name' => 'LinkedIn',
+                            'url' => 'https://www.linkedin.com/company/aqylapp/',
+                            'description' => 'Профессиональные новости и вакансии',
+                            'icon_bg' => 'bg-[#0077B5]',
+                            'icon_svg' => '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239..."/></svg>'
+                        ],
+                        [
+                            'name' => 'Twitter / X',
+                            'url' => 'https://x.com/AqylApp',
+                            'description' => 'Быстрые обновления и обсуждения',
+                            'icon_bg' => 'bg-black',
+                            'icon_svg' => '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227..."/></svg>'
+                        ],
+                        [
+                            'name' => 'AstanaHub',
+                            'url' => 'https://astanahub.com/account/company/15912/',
+                            'description' => 'Наш стартап на платформе AstanaHub',
+                            'icon_bg' => 'bg-white border border-gray-200',
+                            'icon_svg' => '<img src="{$basePath}/assets/astanahub.png" class="w-5 h-5 sm:w-6 sm:h-6 text-white" alt="AstanaHub Logo" />'
+                        ],
+                        [
+                            'name' => 'Сайт создателя',
+                            'url' => 'https://gorislavets.com/aqylapp/from/aqylapp',
+                            'description' => 'Более подробная история aqyl.app',
+                            'icon_bg' => 'bg-gradient-to-br from-green-500 to-green-600',
+                            'icon_svg' => '<svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="..."/></svg>'
+                        ]
+                    ]}
+
+                    <div class="space-y-4">
+                        {foreach $social_links as $link}
+                            <a href="{$link['url']}" target="_blank" rel="noopener noreferrer" class="flex items-center bg-white p-4 sm:p-5 rounded-xl border border-gray-200 hover:border-gray-200 hover:bg-gray-50 transition-all duration-300 group transform hover:-translate-y-1">
+                                <div class="{$link['icon_bg']} p-2 sm:p-3 rounded-lg mr-4 flex-shrink-0">
+                                    {$link['icon_svg']|noescape}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="font-medium text-gray-800 text-base sm:text-lg">{$link['name']}</span>
+                                    <p class="text-sm text-gray-500 group-hover:text-gray-600 truncate">{$link['description']}</p>
+                                </div>
+                                <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 ml-3 group-hover:text-green-500 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </a>
+                        {/foreach}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{include '../partials/footer.latte'}
