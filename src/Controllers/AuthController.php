@@ -246,13 +246,15 @@ class AuthController extends BaseController {
 
     public function loginWithGoogle()
     {
-        $state = $_GET['state'];
-
-        if ($stateData['role'] === 'teacher') {
-            header('Location: /callback/teacher?' . http_build_query($_GET));
-            exit;
+        if (isset($_GET['state'])) {
+            parse_str($_GET['state'], $stateData);
+        
+            if (isset($stateData['role']) && $stateData['role'] === 'teacher') {
+                header('Location: /callback/teacher?' . http_build_query($_GET));
+                exit;
+            }
         }
-
+        
 
         if (isset($_COOKIE['user'])){
             $userData = json_decode($_COOKIE['user'], true);
