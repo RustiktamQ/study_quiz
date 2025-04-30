@@ -1,8 +1,18 @@
 <?php
 // Main
-$r->addRoute('GET', '/', ['HomeController', 'index']);
-$r->addRoute('GET', '/lang/{lang}', ['LanguageController', 'switchLanguage']);
 $r->addRoute('GET', '/confirmation', ['HomeController', 'showConfirmation']);
+$r->addRoute('GET', '/', ['HomeController', 'showIndex']);
+$r->addRoute('GET', '/students', ['HomeController', 'showMainStudents']);
+$r->addRoute('GET', '/teachers', ['HomeController', 'showMainTeachers']);
+$r->addRoute('GET', '/ai', ['HomeController', 'showMainAi']);
+$r->addRoute('GET', '/pricing', ['HomeController', 'showMainPircing']);
+$r->addRoute('GET', '/select', ['HomeController', 'showMainSelect']);
+$r->addRoute('GET', '/android', ['HomeController', 'showMainAndroid']);
+$r->addRoute('GET', '/chooseacc', ['HomeController', 'showMainСhooseacc']);
+$r->addRoute('GET', '/privacy', ['HomeController', 'showMainPrivacy']);
+$r->addRoute('GET', '/delete-my-account', ['HomeController', 'showMainDMA']);
+$r->addRoute('GET', '/terms', ['HomeController', 'showMainTerms']);
+$r->addRoute('GET', '/contact', ['HomeController', 'showMainContact']);
 
 // Admin
 $r->addRoute('GET', '/adminPanel', ['HomeController', 'showAdminPanel']);

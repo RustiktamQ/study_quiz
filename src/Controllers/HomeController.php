@@ -10,66 +10,164 @@ class HomeController extends BaseController {
         $latte->render(__DIR__ . "/../views/{$template}.latte", $params);
     }
 
-    public function index()
+    public function showIndex()
     {
-        $lang = $this->lang;
-        $isAuthorized = isset($_COOKIE['user']);
-        $role = 'guest';
-        if (!$isAuthorized) {
-            header("Location: /auth/signup");
-            exit;
-        }
-        
-        if (isset($_COOKIE['user'])) {
-            $user = json_decode($_COOKIE['user'], true);
-            if (isset($user['google_id'])) {
-                $user = R::findOne('users', 'google_id = ?', [$user['google_id']]);
-                if($user) {
-                    $role = "student";
-                    $fullName = $user->name ?? 'Guest';
-                    $firstName = explode(' ', $fullName)[0] ?? '';
-                    $picture = $user->picture ?? 'https://vk.com/images/wall/deleted_avatar_50.png';
-                    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                    $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-                    $this->renderPartial('index', [
-                        'lang' => $lang,
-                        'APP_NAME' => $_ENV['APP_NAME'],
-                        'ROOT_URL' => $root,
-                        'fullname' => $fullName,
-                        'firstname' => $firstName,
-                        'picture' => $picture,
-                        'isAuthorized' => $isAuthorized,
-                        'role' => $role
-                    ]);
-                    return;
-                }
-            }
-        } else if (isset($_COOKIE['teacher'])) {
-            $teacherData = json_decode($_COOKIE['teacher']);
-            $user = R::findOne('users', 'google_id = ?', [$teacherData['google_id']]);
-            if ($user) {
-                $role = 'teacher';
-                $fullName = $user->name ?? 'Guest';
-                $firstName = explode(' ', $fullName)[0] ?? '';
-                $picture = $user->picture ?? 'https://vk.com/images/wall/deleted_avatar_50.png';
-                $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-                $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-                $this->renderPartial('index', [
-                    'lang' => $lang,
-                    'APP_NAME' => $_ENV['APP_NAME'],
-                    'ROOT_URL' => $root,
-                    'fullname' => $fullName,
-                    'firstname' => $firstName,
-                    'picture' => $picture,
-                    'isAuthorized' => $isAuthorized,
-                    'role' => $role
-                ]);
-                return;
-            }
-        }
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
+        $this->renderPartial('main/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
     }
 
+    public function showMainStudents()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/students/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainTeachers()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/teachers/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainAi()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/ai/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainPircing()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/pricing/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainSelect()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/select/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainAndroid()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/android/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    // ??
+    public function showMainСhooseacc()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/сhooseacc/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainPrivacy()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/privacy/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainDMA()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/delete-my-account/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainTerms()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/terms/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    public function showMainContact()
+    {
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $this->renderPartial('main/contact/index', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+        ]);
+    }
+
+    // STUDENT DAHSBOARD
     public function showStudentDashboard()
     {
         $this->checkAuthorization();
