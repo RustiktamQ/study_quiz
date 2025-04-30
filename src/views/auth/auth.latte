@@ -87,14 +87,6 @@
             window.location.href = {$uri};
         }
 
-        function devLogin(isTeacherAuth) {
-            if (isTeacherAuth) {
-                window.location.href = "/auth/callback/teacher";
-            } else {
-                window.location.href = "/auth/callback";
-            }
-        }
-
         const btn = document.getElementById('googleSignInBtn');
         if (btn) {
             btn.addEventListener('click', () => {
