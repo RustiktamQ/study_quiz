@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);  // Включает отображение ошибок
+ini_set('display_startup_errors', 1);  // Включает ошибки при старте
+error_reporting(E_ALL);  // Устанавливает уровень отчетности на все ошибки
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use RedBeanPHP\R;
