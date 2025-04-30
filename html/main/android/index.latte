@@ -1,0 +1,129 @@
+{include '../partials/header.latte'}
+
+<main class="transition-fade" id="swup">
+    <div class="relative">
+      <div class="max-w-7xl mx-auto py-8 md:py-12">
+
+        <div class="mx-auto justify-center flex text-center gap-8 md:gap-12 mb-12 md:mb-20 items-center">
+          <div class="flex flex-col justify-center">
+            <div class="mb-8 mx-auto flex justify-center items-center animate-on-load">
+              <img src="/main/assets/logo2.png" alt="App Icon" class="h-20 w-20 rounded-2xl">
+            </div>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4 animate-on-load">
+              AqylApp
+            </h1>
+            <p class="text-base md:text-lg text-gray-700 mb-6 md:mb-8 animate-on-load">
+              Мощный инструмент для образования в вашем кармане.
+            </p>
+            <div class="space-x-4 animate-on-load">
+               <a
+                href="/main/assets/AqylApp.apk" download
+                class="inline-flex justify-center items-center px-24 py-2 md:py-3 bg-green-500 text-white font-medium rounded-full hover:bg-green-700 transition text-sm md:text-base"
+              >
+                <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 14l.234.663c.91 2.578 1.365 3.868 2.403 4.602s2.406.735 5.14.735h2.445c2.735 0 4.102 0 5.14-.735c1.039-.734 1.494-2.024 2.404-4.602L21 14m-9 0V4m0 10c-.7 0-2.008-1.994-2.5-2.5M12 14c.7 0 2.008-1.994 2.5-2.5" color="currentColor"/></svg>
+                Скачать APK (35.2MB)
+              </a>
+               <!-- <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex justify-center items-center px-6 py-2 md:py-3 text-gray-700 font-medium border border-gray-300 rounded-full hover:text-green-600 hover:border-green-300 transition focus:outline-none text-sm md:text-base"
+                >
+                 <svg class="h-4 w-4 md:h-5 md:w-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="28.95" height="32" viewBox="0 0 256 283"> <path fill="#EA4335" d="M119.553 134.916L1.06 259.061a32.14 32.14 0 0 0 47.062 19.071l133.327-75.934z"/> <path fill="#FBBC04" d="M239.37 113.814L181.715 80.79l-64.898 56.95l65.162 64.28l57.216-32.67a31.345 31.345 0 0 0 0-55.537z"/> <path fill="#4285F4" d="M1.06 23.487A30.6 30.6 0 0 0 0 31.61v219.327a32.3 32.3 0 0 0 1.06 8.124l122.555-120.966z"/> <path fill="#34A853" d="m120.436 141.274l61.278-60.483L48.564 4.503A32.85 32.85 0 0 0 32.051 0C17.644-.028 4.978 9.534 1.06 23.399z"/> </svg>
+                 {{ $t('android_download.get_on_google_play') }}
+                </a> -->
+            </div>
+             <p class="text-xs text-gray-500 mt-4 animate-on-load">
+                v0.0.1, 29 Апреля 2025
+             </p>
+          </div>
+
+        </div>
+
+        <div class="mb-12 md:mb-20">
+  <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 md:mb-8 text-center animate-on-load">Основные возможности</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+
+    <div class="sm:col-span-2 lg:col-span-1 lg:row-span-2 bg-white p-4 md:p-6 rounded-2xl border border-gray-200 transition flex flex-col justify-between overflow-hidden animate-on-load"> 
+        <div>
+            <div class="bg-green-100 inline-block p-2 rounded-lg mb-3">
+                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="m8 12.5l2.5 2.5L16 9"/></g></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Простая установка и использование</h3>
+            <p class="text-sm text-gray-600 mb-4">Начните работу быстро благодаря интуитивно понятному интерфейсу.</p>
+        </div>
+
+        <div class="mt-4 flex justify-center relative">
+             <img
+                 src="samsung.png"
+                 alt="App interface shown on phone"
+                 class="max-w-[250px] w-full h-auto rounded-t-2xl"
+                 style="margin-bottom: -25px;"
+                 />
+        </div>
+    </div>
+
+    <div class="bg-white p-4 md:p-6 rounded-2xl border border-gray-200 transition animate-on-load">
+         <div class="bg-green-100 inline-block p-2 rounded-lg mb-3">
+            <svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M5 9c0-3.3 0-4.95 1.025-5.975S8.7 2 12 2s4.95 0 5.975 1.025S19 5.7 19 9v6c0 3.3 0 4.95-1.025 5.975S15.3 22 12 22s-4.95 0-5.975-1.025S5 18.3 5 15zm6 10h2"/><path d="m9 2l.089.534c.193 1.157.29 1.736.686 2.088C10.19 4.989 10.776 5 12 5s1.81-.01 2.225-.378c.397-.352.493-.93.686-2.088L15 2"/></g></svg>
+         </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Автоматическая синхронизация между устройствами</h3>
+        <p class="text-sm text-gray-600">Вам не нужно сохранять прогресс. Приложение автоматически отправит прогресс в облако. Для этого нужен только доступ в интернет.</p>
+    </div>
+
+    <div class="sm:col-span-2 lg:col-span-1 lg:row-span-2 bg-white p-4 md:p-6 rounded-2xl border border-gray-200 transition flex flex-col justify-between overflow-hidden animate-on-load"> 
+
+        <div>
+            <div class="bg-green-100 inline-block p-2 rounded-lg mb-3">
+                <svg class="h-6 w-6 text-green-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="currentColor"/></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mb-2">Мощный AI инструмент в вашем кармане</h3>
+            <p class="text-sm text-gray-600 mb-4">Используйте AI для улучшения качества работы ваших учеников.</p>
+        </div>
+
+        <div class="mt-4 flex justify-center relative">
+             <img
+                 src="/main/assets/showcase1.png"
+                 alt="App interface shown on phone"
+                 class=" w-full h-auto rounded-t-2xl"
+                 style="margin-bottom: -125px;"
+                 />
+        </div>
+    </div>
+     <div class="bg-white p-4 md:p-6 rounded-2xl border border-gray-200 transition animate-on-load">
+         <div class="bg-green-100 inline-block p-2 rounded-lg mb-3">
+            <svg class="h-6 w-6 text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><circle cx="12" cy="12" r="10"/><path d="m16.5 9.6l-1.17-.915c-.673-.526-.876-.43-.876.418V14.4c0 1.461-.767 1.6-2.045 1.6M7.5 14.4l1.17.915c.673.527.875.43.875-.418V9.6c0-1.462.768-1.6 2.046-1.6"/></g></svg>
+         </div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-2">Регулярные обновления</h3>
+        <p class="text-sm text-gray-600">Мы постоянно обновляем, дорабатываем и исправляем приложение. </p>
+    </div>
+
+  </div>
+</div>
+
+        <div class="mb-12 md:mb-10">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 text-center animate-on-load">Как установить APK файл?</h2>
+            <ol class="list-decimal list-inside text-center space-y-2 max-w-2xl mx-auto text-gray-700">
+                <li class="animate-on-load">Скачайте .apk файл с помощью кнопки выше.</li>
+                <li class="animate-on-load">Откройте файловый менеджер и перейдите в папку «Загрузки».</li>
+                <li class="animate-on-load">Нажмите на скачанный .apk файл (Зеленый логотип со звёздочками).</li>
+                <li class="animate-on-load">Если потребуется, разрешите установку из «Неизвестных источников» в настройках устройства и продолжите установку.</li>
+            </ol>
+            <p class="text-xs text-gray-500 mt-4 text-center animate-on-load">Возможно, вам нужно будет включить установку из неизвестных источников в настройках Android.
+            </p>
+        </div>
+
+        <div class="text-center animate-on-load">
+             <a
+                href="/main/assets/AqylApp.apk" download
+                class="inline-flex items-center px-24 py-3 bg-green-500 text-white font-medium rounded-full hover:bg-green-700 transition text-base"
+              >
+              <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3 14l.234.663c.91 2.578 1.365 3.868 2.403 4.602s2.406.735 5.14.735h2.445c2.735 0 4.102 0 5.14-.735c1.039-.734 1.494-2.024 2.404-4.602L21 14m-9 0V4m0 10c-.7 0-2.008-1.994-2.5-2.5M12 14c.7 0 2.008-1.994 2.5-2.5" color="currentColor"/></svg>
+                Скачать сейчас (35.2MB)
+            </a>
+        </div>
+
+      </div>
+    </div>
+</main>
+{include '../partials/footer.latte'}
