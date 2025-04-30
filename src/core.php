@@ -13,6 +13,7 @@ use App\Controllers;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
+<<<<<<< HEAD
 try {
     R::setup(
         'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_DATABASE'],
@@ -28,6 +29,20 @@ try {
     exit;
 }
 
+=======
+// Ваш код с подключением базы данных:
+try {
+    R::setup('mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_DATABASE'], $_ENV['DB_USER'], $_ENV['DB_PASS']);
+    R::debug(true, 1);  // Включаем вывод SQL запросов
+    R::freeze(true);  // Замораживаем структуру базы данных
+
+} catch (PDOException $e) {
+    echo "Ошибка подключения к базе данных: " . $e->getMessage();
+    exit;
+}
+
+
+>>>>>>> cb57f7d4dbe722d6030bdf8765a0a864dffdbf51
 
 $latte = new Engine();
 $latte->setTempDirectory(__DIR__ . '/temp');
