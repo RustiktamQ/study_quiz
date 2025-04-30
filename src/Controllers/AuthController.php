@@ -50,11 +50,12 @@ class AuthController extends BaseController {
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
         $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
+        $client->setState('role=teacher');
         $authUrl = $client->createAuthUrl();
 
         $this->renderPartial('auth/auth', [
             'lang' => $this->lang,
-            'uri' => "$authUrl/teacher",
+            'uri' => "$authUrl",
             'ROOT_URL' => $root,
             'APP_NAME' => $_ENV['APP_NAME'],
             'isTeacherAuth' => true
@@ -222,7 +223,7 @@ class AuthController extends BaseController {
                 $teacher->name = $userInfo->name;
                 $teacher->email = $userInfo->email;
                 $teacher->picture = $userInfo->picture;
-                $teacher->created_at = date('Y-m-d H:i:s');
+                $teacher->join_date = date('Y-m-d H:i:s');
                 R::store($teacher);
             }
 
@@ -245,6 +246,14 @@ class AuthController extends BaseController {
 
     public function loginWithGoogle()
     {
+        $state = $_GET['state'];
+
+        if ($stateData['role'] === 'teacher') {
+            header('Location: /callback/teacher?' . http_build_query($_GET));
+            exit;
+        }
+
+
         if (isset($_COOKIE['user'])){
             $userData = json_decode($_COOKIE['user'], true);
             if ($userData['isStudent'] == true) {
@@ -276,7 +285,7 @@ class AuthController extends BaseController {
                 $user->name = $userInfo->email;
                 $user->email = $userInfo->email;
                 $user->picture = $userInfo->picture;
-                $user->created_at = date('Y-m-d H:i:s');
+                $user->join_date = date('Y-m-d H:i:s');
                 R::store($user);
             }
 
