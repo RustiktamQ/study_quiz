@@ -89,9 +89,9 @@
 
         function devLogin(isTeacherAuth) {
             if (isTeacherAuth) {
-                window.location.href = "http://studylocal/auth/callback/teacher";
+                window.location.href = "/auth/callback/teacher";
             } else {
-                window.location.href = "http://studylocal/auth/callback";
+                window.location.href = "/auth/callback";
             }
         }
 
@@ -113,7 +113,7 @@
                  btn.classList.add('bg-green-500', 'text-white');
                  btn.classList.remove('hover:bg-blue-50');
 
-                devLogin({$isTeacherAuth});
+                loginG();
             });
         }
     </script>
