@@ -44,7 +44,7 @@ class BaseController {
 
         $userData = json_decode($_COOKIE['user'], true);
 
-        if ($userData['isStudent']) {
+        if ($userData['isStudent'] == true) {
             if (!$userData || (!isset($userData['google_id']))) {
                 header('Location: /auth/signup');
             }
@@ -61,6 +61,8 @@ class BaseController {
                     header('Location: /confirmation');
                 }
             }
+        } else {
+            header('Location: /');
         }
     }
 

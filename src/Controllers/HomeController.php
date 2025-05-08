@@ -452,6 +452,19 @@ class HomeController extends BaseController {
                         (SELECT COUNT(*) FROM users) +
                         (SELECT COUNT(*) FROM teachers) AS total_users;
                     ')[0];
+
+                    $bannedUsers = R::getAll('SELECT COUNT(*) as bannedUsers FROM ban_list')[0];
+
+                    $usersGrowth = R::getAll('
+                        SELECT COUNT(*) AS total_last_month
+                        FROM (
+                            SELECT join_date FROM users
+                            WHERE join_date >= CURDATE() - INTERVAL 1 MONTH
+                            UNION ALL
+                            SELECT join_date FROM teachers
+                            WHERE join_date >= CURDATE() - INTERVAL 1 MONTH
+                        ) AS combined;
+                    ')[0]['total_last_month'];
                     
                     $this->renderPartial('admin/index', [
                         'lang' => $this->lang,
@@ -460,7 +473,9 @@ class HomeController extends BaseController {
                         'domain' => $_ENV['ROOT_URL'],
                         'fullname' => $user->email,
                         'picture' => 'https://info.qbl.sys.kth.se/user_avatar.png',
-                        'totalUsers' => $totalUsers['total_users']
+                        'totalUsers' => $totalUsers['total_users'],
+                        'bannedUsers' => $bannedUsers['bannedUsers'],
+                        'usersGrowth' => $usersGrowth
                     ]);
                     exit;
                 }
@@ -807,13 +822,29 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
+        $stats = R::getRow('
+            SELECT 
+                COUNT(DISTINCT users.id) AS total_students,
+                COALESCE(SUM(TIME_TO_SEC(progress.elapsed_time)), 0) AS total_time_spent,
+                COUNT(DISTINCT CASE WHEN progress.completed = 0 THEN users.id END) AS students_incomplete_quiz,
+                COUNT(CASE WHEN progress.completed = 1 THEN 1 END) AS completed_quizzes,
+                COALESCE(SUM(progress.answered), 0) AS total_answered_questions
+            FROM users
+            LEFT JOIN progress ON users.id = progress.student_id
+            WHERE users.token = ? AND users.token_confirmed = 1;
+        ', [$user['invite_code']]);
+
+
+        $stats['total_time_spent'] = $this->secondsToHours($stats['total_time_spent']);
+
         $this->renderPartial('dashboard/teacher2/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
             'domain' => $_ENV['ROOT_URL'],
             'teacher' => $user,
-            'notifs' => $notifs
+            'notifs' => $notifs,
+            'stats' => $stats
         ]);
     }
 

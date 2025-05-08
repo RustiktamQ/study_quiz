@@ -6,7 +6,7 @@
     <title>Добро пожаловать!</title>
 
     <!-- ЗАМЕНИТЬ ЭТО ГОВНИЩЕ -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/tailwind.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
     <style>
@@ -87,12 +87,8 @@
             window.location.href = {$uri};
         }
 
-        function devLogin(isTeacherAuth) {
-            if (isTeacherAuth) {
-                window.location.href = "/auth/callback/teacher";
-            } else {
-                window.location.href = "/auth/callback";
-            }
+        function devLogin() {
+            window.location.href = "/auth/callback";
         }
 
         const btn = document.getElementById('googleSignInBtn');
@@ -113,7 +109,7 @@
                  btn.classList.add('bg-green-500', 'text-white');
                  btn.classList.remove('hover:bg-blue-50');
 
-                loginG();
+                devLogin();
             });
         }
     </script>

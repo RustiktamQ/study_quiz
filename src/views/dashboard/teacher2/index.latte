@@ -23,7 +23,7 @@
 										<span class="text-sm text-gray-500">Вопросов решено</span>
 									</div>
 									<div class="relative">
-										<h4 class="mt-1 text-3xl font-bold text-gray-800">3,782</h4>
+										<h4 class="mt-1 text-3xl font-bold text-gray-800">{$stats['total_answered_questions']}</h4>
 									</div>
 								</div>
 							</div>
@@ -39,7 +39,7 @@
 									</div>
 									<div class="relative">
 										<h4 class="mt-1 text-3xl font-bold text-gray-800">
-											<span id="data">5,359</span>
+											<span id="data">{$stats['completed_quizzes']}</span>
 										</h4>
 									</div>
 								</div>
@@ -130,22 +130,22 @@
 								<div class="relative z-[1] flex items-center justify-center gap-5 sm:gap-8">
 									<div>
 										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Учеников</p>
-										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">32</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">{$stats['total_students']}</p>
 									</div>
 									<div class="w-px h-8 bg-gray-200"></div>
 									<div>
 										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Затрачено</p>
-										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">195ч.</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">{$stats['total_time_spent']}ч.</p>
 									</div>
 									<div class="w-px h-8 bg-gray-200"></div>
 									<div>
 										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Онлайн</p>
-										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">12</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">?</p>
 									</div>
 									<div class="w-px h-8 bg-gray-200"></div>
 									<div>
 										<p class="mb-1 text-xs text-center text-gray-500 sm:text-sm">Начато</p>
-										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">1512</p>
+										<p class="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 sm:text-lg">{$stats['students_incomplete_quiz']}</p>
 									</div>
 								</div>
 							</div>

@@ -69,11 +69,11 @@
    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4); /* emerald-500 @ 40% */
 }
 .bad-answer {
-  border-color: #EF4444 !important; /* Tailwind red-500 */
-  background-color: #FECACA !important; /* Tailwind red-200 */
-  color: #B91C1C !important; /* Tailwind red-800 */
+  border-color: #F59E0B !important; 
+  background-color: #FEF3C7 !important;
+  color: #92400E !important;
   transform: scale(1.02);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.4); /* red-500 @ 40% */
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4); /* Полупрозрачный жёлтый */
 }
 
 .incorrect-answer {

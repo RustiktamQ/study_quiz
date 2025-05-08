@@ -211,6 +211,8 @@
         <!-- End Pagination -->
   </div>
 </main>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script n:syntax=off>
     async function confirm(user_id, student_id) {
         try {
@@ -358,7 +360,7 @@
         });
     })
 
-    const denyBtn = document.querySelectorAll('.confirmBtn');
+    const denyBtn = document.querySelectorAll('.denyBtn');
     denyBtn.forEach(btn => {
         btn.addEventListener('click', async function() {
             const student_id = this.getAttribute('data-id');

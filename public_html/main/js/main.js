@@ -73,6 +73,17 @@ document.addEventListener('DOMContentLoaded', function() {
     barBottom.setAttribute('d', 'M4 18h16');
   }
 
+  function handleScroll() {
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (currentScroll > 50) {
+      header.classList.add('shadow-md', 'bg-white'); // Пример: добавить тень и фон
+    } else {
+      header.classList.remove('shadow-md', 'bg-white');
+    }
+  }
+  
+
   // Link hover effects
   navLinks.forEach(link => {
     const underline = link.querySelector('.absolute');

@@ -52,12 +52,11 @@ class AuthController extends BaseController {
         $client->addScope('email');
         $authUrl = $client->createAuthUrl();
 
-        $this->renderPartial('auth/auth', [
+        $this->renderPartial('auth/authTeacher', [
             'lang' => $this->lang,
             'uri' => $authUrl,
             'ROOT_URL' => $root,
-            'APP_NAME' => $_ENV['APP_NAME'],
-            'isTeacherAuth' => true
+            'APP_NAME' => $_ENV['APP_NAME']
         ]);
     }
 
@@ -224,7 +223,55 @@ class AuthController extends BaseController {
                 $teacher->picture = $userInfo->picture;
                 $teacher->created_at = date('Y-m-d H:i:s');
                 R::store($teacher);
+
+                $userData = [
+                    'id' => $teacher->id,
+                    'name' => $teacher->name,
+                    'email' => $teacher->email,
+                    'lang' => $teacher->lang,
+                    'picture' => $teacher->picture,
+                    'isStudent' => false,
+                    'school' => $teacher->school,
+                    'register' => true
+                ];
+    
+                $this->setCookie('user', json_encode($userData), time() + 604800);
+                header('Location: /auth/teacher/register/complete');
+            } else {
+                $userData = [
+                    'id' => $teacher->id,
+                    'name' => $teacher->name,
+                    'email' => $teacher->email,
+                    'lang' => $teacher->lang,
+                    'picture' => $teacher->picture,
+                    'isStudent' => false,
+                    'school' => $teacher->school,
+                    'register' => false
+                ];
+    
+                $this->setCookie('user', json_encode($userData), time() + 604800);
+                header('Location: /dashboard/teacher');
             }
+            exit;
+        } else {
+            header('Location: /auth/teacher/register/complete');
+        }
+    }
+
+    public function DEV_teacherAuthWithGoogle()
+    {
+        if (isset($_COOKIE['user'])){
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+            } else {
+                header("Location: /dashboard/teacher");
+            }
+            exit;
+        }
+
+        if (true) {
+            $teacher = R::findOne('teachers', 'email = ?', ["test@testmail.io"]);
 
             $userData = [
                 'id' => $teacher->id,
@@ -234,13 +281,11 @@ class AuthController extends BaseController {
                 'picture' => $teacher->picture,
                 'isStudent' => false,
                 'school' => $teacher->school,
-                'register' => true
+                'register' => false
             ];
-
+    
             $this->setCookie('user', json_encode($userData), time() + 604800);
-            header('Location: /auth/teacher/register/complete');
-            exit;
-        }
+            header('Location: /dashboard/teacher');
     }
 
     public function loginWithGoogle()
@@ -290,12 +335,42 @@ class AuthController extends BaseController {
                 'register' => true
             ];
             $this->setCookie('user', json_encode($userData), time() + 604800);
-            header('Location: /auth/teacher/student/complete');
+            header('Location: /auth/student/complete');
             return;
         }
 
         header('Location: ' . $client->createAuthUrl());
         exit;
+    }
+
+    public function DEV_loginWithGoogle()
+    {
+        if (isset($_COOKIE['user'])){
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+            } else {
+                header("Location: /dashboard/teacher");
+            }
+            exit;
+        }
+
+
+        $user = R::findOne('users', 'google_id = ?', ["114869489688930855296"]);
+
+        $userData = [
+            'id' => $user->id,
+            'google_id' => $user->google_id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'picture' => $user->picture,
+            'isStudent' => true,
+            'register' => true
+        ];
+
+        $this->setCookie('user', json_encode($userData), time() + 604800);
+        header('Location: /dashboard/student');
+        return;
     }
 
     public function loginAdmin()

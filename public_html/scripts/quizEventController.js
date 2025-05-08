@@ -82,18 +82,17 @@ const main = function() {
         "Промах. 🎯❌"
     ];
     
-
     const quizBox = document.getElementById('quizBox');
     const nextBtn = document.getElementById('nextQuestion');
     const thisBtn = document.getElementById('submit-answer');
     const messBox = document.getElementById('messBox');
     const mess = document.getElementById('mess');
-    
+    const explanation = document.getElementById('explanation');
+
     function getRandomPhrase(phrases) {
         return phrases[Math.floor(Math.random() * phrases.length)];
     }
 
-    // quiz start callback
     document.getElementById('start-quiz').addEventListener("click", async () => {
         const quizData =  await apiController.startQuiz(user.id, quizId);
         quizData.answered = 0;
@@ -105,9 +104,8 @@ const main = function() {
         options.forEach(button => {
             button.disabled = false;
         });
-    })
+    });
 
-    // next btn callback
     document.getElementById('nextQuestion').addEventListener("click", async () => {
         const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
         quizRender.update(quizData);
@@ -128,6 +126,8 @@ const main = function() {
             button.classList = 'answer-btn option-button w-full p-4 md:p-5 border-2 border-gray-300 rounded-xl text-gray-700 hover:border-blue-400 hover:text-blue-600 bg-white focus:border-blue-500 focus:text-blue-700 focus:bg-blue-50 flex items-center justify-center text-lg md:text-xl font-medium';
         });
 
+        explanation.textContent = '';
+
         quizBox.classList = 'border border-gray-200 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-white';
 
         const nextData = await apiController.getNextQuestion(userId, quizId);
@@ -136,30 +136,17 @@ const main = function() {
         quizData.question.answers = JSON.parse(nextData.options, true);
         quizData.question.content = nextData.question_text;
         quizData.score = nextData.score;
-    
-        if (nextData.error) {
-            // do something
-        } else if (nextData.status == 2) {
-            window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
-        }
 
-        document.getElementById('submit-answer').classList.remove('hidden');
         localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
         quizRender.update(quizData);
         quizRender.render();
-    })
+    });
 
-
-    // answer callback
     document.getElementById("submit-answer").addEventListener("click", async () => {
-        const currentUrl = window.location.pathname;
-        const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
         const quizData = JSON.parse(localStorage.getItem(`quiz-${quizId}`), true);
         const answer = document.querySelector('.answer-btn[selected]')?.value;
 
-        if (!answer) {
-            return;
-        }
+        if (!answer) return;
 
         const answerData = await apiController.answerQuestion(userId, quizId, answer, quizData.question.id, quizTimer.getformatTime());
         quizData.answered++;
@@ -170,63 +157,43 @@ const main = function() {
             location.reload();
         }
 
-        if (answerData.status == 1) {
-            const nextData = await apiController.getNextQuestion(userId, quizId);
-            quizData.current_question = nextData.question_id;
-            quizData.question.id = nextData.question_id;
-            quizData.question.answers = JSON.parse(nextData.options, true);
-            quizData.question.content = nextData.question_text;
-            quizData.score = answerData.score;
+        const isCorrect = answerData.status === 1;
+        quizData.score = answerData.score;
+        quizData.explanation = answerData.explanation;
 
-            nextBtn.disabled = false;
-            nextBtn.classList.remove('hidden');
-            thisBtn.disabled = true;
-            thisBtn.classList.add('hidden');
-            messBox.classList.remove('hidden');
+        nextBtn.disabled = false;
+        nextBtn.classList.remove('hidden');
+        thisBtn.disabled = true;
+        thisBtn.classList.add('hidden');
+        messBox.classList.remove('hidden');
+        explanation.textContent = quizData.explanation;
 
+        if (isCorrect) {
             messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-green-100 border border-green-300 rounded-lg shadow-inner';
-            mess.classList = 'text-lg font-semibold green-green-800 flex items-center justify-center gap-2';
-
+            mess.classList = 'text-lg font-semibold text-green-800 flex items-center justify-center gap-2';
             mess.innerText = getRandomPhrase(positivePhrases);
-
-            options.forEach(button => {
-                if (button.hasAttribute('selected')) {
-                    button.classList = 'option-button correct-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed';
-                } else {
-                    button.classList = 'option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed'
-                }
-                button.disabled = true;
-            });
-
             quizBox.classList = 'border-4 border-dashed border-green-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50';
-
-            localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
-        } else if (answerData.status == 0) {
-            document.getElementById('submit-answer').classList.add('hidden');
-
-            nextBtn.disabled = false;
-            nextBtn.classList.remove('hidden');
-            thisBtn.disabled = true;
-            thisBtn.classList.add('hidden');
-            messBox.classList.remove('hidden');
-
-            messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-red-100 border border-red-300 rounded-lg shadow-inner';
-            mess.classList = 'text-lg font-semibold red-green-800 flex items-center justify-center gap-2';
-
+        } else {
+            messBox.classList = 'mt-6 text-center p-4 mb-8 md:mb-10 bg-yellow-100 border border-yellow-300 rounded-lg shadow-inner';
+            mess.classList = 'text-lg font-semibold text-yellow-800 flex items-center justify-center gap-2';
             mess.innerText = getRandomPhrase(negativePhrases);
+            quizBox.classList = 'border-4 border-dashed border-yellow-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50';
+        }
 
-            options.forEach(button => {
-                if (button.hasAttribute('selected')) {
-                    button.classList = 'option-button bad-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed';
-                } else {
-                    button.classList = 'option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed'
-                }
-                button.disabled = true;
-            });
+        options.forEach(button => {
+            if (button.hasAttribute('selected')) {
+                button.classList = isCorrect
+                    ? 'option-button correct-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed'
+                    : 'option-button bad-answer relative w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-bold cursor-not-allowed';
+            } else {
+                button.classList = 'option-button incorrect-answer w-full p-4 md:p-5 border-2 rounded-xl flex items-center justify-center text-lg md:text-xl font-medium cursor-not-allowed';
+            }
+            button.disabled = true;
+        });
 
-            quizBox.classList = 'border-4 border-dashed border-red-300 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-gradient-to-br from-red-50 via-rose-50 to-pink-50';
+        localStorage.setItem(`quiz-${quizId}`, JSON.stringify(quizData));
 
-        } else if (answerData.status == 2) {
+        if (answerData.status == 2) {
             window.location.replace(`${window.location.origin}/quiz/complete/${quizId}`);
         }
     });

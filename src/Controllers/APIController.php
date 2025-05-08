@@ -239,7 +239,8 @@ class APIController extends BaseController {
             'question_text' => $question->question_text,
             'correct_answer' => $question->correct_answer,
             'options' => $question->options,
-            'score' => $progress->score
+            'score' => $progress->score,
+            'explanation' => $question->explanation
         ]);
         return;
     }
@@ -634,11 +635,20 @@ class APIController extends BaseController {
             echo json_encode(['error' => true, 'message' => 'Student already confirmed']);
             return;
         }
+
+        $teacher = R::findOne('teachers', 'id = ?', [$params['user_id']]);
+        $total = R::getAll('SELECT COUNT(*) as total FROM users WHERE token = ? AND token_confirmed = 1', [$teacher->invite_code])[0]['total'];
+
+        if ($total == $teacher['students_limit'] || $total > $teacher['students_limit'] ) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Достигнуто максмальное количество учеников!']);
+            return;
+        }
         
         $student->token_confirmed = 1;
         R::store($student);
         http_response_code(200);
-        echo json_encode(['success' => true]);
+        echo json_encode(['success' => false]);
     }
 
     public function denyStudent($params) {
