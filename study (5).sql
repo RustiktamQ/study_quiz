@@ -3,10 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.2:3306
--- Время создания: Апр 28 2025 г., 11:55
+-- Время создания: Май 08 2025 г., 12:10
 -- Версия сервера: 10.1.48-MariaDB
 -- Версия PHP: 8.1.8
-USE study;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -54,6 +54,13 @@ CREATE TABLE `ban_list` (
   `banned_date` date NOT NULL,
   `expire_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Дамп данных таблицы `ban_list`
+--
+
+INSERT INTO `ban_list` (`id`, `user_id`, `reason`, `banned_date`, `expire_date`) VALUES
+(1, 22, 'qqq', '2025-05-07', '2025-06-06');
 
 -- --------------------------------------------------------
 
@@ -133,7 +140,7 @@ CREATE TABLE `progress` (
 
 INSERT INTO `progress` (`id`, `student_id`, `quiz_id`, `current_question`, `score`, `completed`, `start_time`, `end_time`, `answered`, `elapsed_time`, `shuffled_questions`, `current_question_index`) VALUES
 (98, 21, 3, 8, 19, 0, '2025-04-05 12:20:47', '0000-00-00 00:00:00', 2, '00:00:10', '[\"8\",\"9\",\"7\"]', 0),
-(99, 21, 1, 3, 19, 0, '2025-04-06 16:08:04', '0000-00-00 00:00:00', 2, '00:33:35', '', 0),
+(99, 21, 1, 1, 29, 0, '2025-04-06 16:08:04', '0000-00-00 00:00:00', 5, '00:30:16', '[\"16\",\"15\",\"2\",\"12\",\"11\",\"14\",\"13\",\"1\",\"3\",\"10\"]', 7),
 (100, 21, 2, 5, 10, 0, '2025-04-08 19:49:51', '0000-00-00 00:00:00', 1, '00:03:10', '', 0),
 (101, 21, 7, 23, 0, 0, '2025-04-23 18:27:34', '0000-00-00 00:00:00', 0, '00:00:00', '', 0),
 (102, 21, 8, 25, 22, 0, '2025-04-23 18:31:47', '0000-00-00 00:00:00', 3, '00:00:32', '[\"25\",\"26\"]', 0);
@@ -280,17 +287,18 @@ CREATE TABLE `teachers` (
   `invite_code` varchar(100) DEFAULT NULL,
   `join_date` date NOT NULL,
   `school` varchar(128) NOT NULL,
-  `specialization` varchar(255) NOT NULL
+  `specialization` varchar(255) NOT NULL,
+  `students_limit` int(11) NOT NULL DEFAULT '5'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `teachers`
 --
 
-INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `invite_code`, `join_date`, `school`, `specialization`) VALUES
-(3, 'Name Surname', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'Name', 'Surname', 'test@testmail.io', 'ru', 'X5LQCURFPG', '1900-01-01', 'asd', 'Биология'),
-(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', NULL, '2025-04-05', 'science', ''),
-(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', NULL, '2025-04-08', 'qweqwewqe', '');
+INSERT INTO `teachers` (`id`, `name`, `picture`, `firstname`, `lastname`, `email`, `lang`, `invite_code`, `join_date`, `school`, `specialization`, `students_limit`) VALUES
+(3, 'Name Surname', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'Name', 'Surname', 'test@testmail.io', 'ru', 'reset', '1900-01-01', 'qwe', 'Биология', 2),
+(35, 'test1 test1', 'https://vk.com/images/wall/deleted_avatar_50.png', 'test1', 'test1', 'test@gmail.com', 'ru', NULL, '2025-05-05', 'science', '', 5),
+(37, 'qwe qwe', 'https://vk.com/images/wall/deleted_avatar_50.png', 'qwe', 'qwe', 'qweqwe@gmail.com', 'ru', NULL, '2025-02-08', 'qweqwewqe', '', 5);
 
 -- --------------------------------------------------------
 
@@ -317,9 +325,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `google_id`, `name`, `firstname`, `lastname`, `email`, `picture`, `token`, `token_confirmed`, `join_date`, `grade`) VALUES
-(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
-(22, '114869489688930855296', '1', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
-(23, '114869489688930855296', '2', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
+(21, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'reset', '1', '2025-02-24 15:35:47', 8),
+(22, '114869489688930855296', '1', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'reset', '1', '2025-02-24 15:35:47', 8),
+(23, '114869489688930855296', '2', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'reset', '1', '2025-02-24 15:35:47', 8),
 (24, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
 (25, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', 'X5LQCURFPG', '1', '2025-02-24 15:35:47', 8),
 (26, '114869489688930855296', 'Rustiktam', '1q1', 'zxc', 'rramilperm@gmail.com', 'https://lh3.googleusercontent.com/a-/ALV-UjVY3GWCzg8vA4glNlvC9x83Yl3qYs9AsnTAL-re3cKw2o7JSvd5=s96-c', NULL, '0', '2025-02-24 15:35:47', 8),
@@ -419,7 +427,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT для таблицы `ban_list`
 --
 ALTER TABLE `ban_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `categories`
