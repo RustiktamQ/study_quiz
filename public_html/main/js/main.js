@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Variables
   const header = document.querySelector('header');
   const mobileMenuButton = document.querySelector('.mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -9,10 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const barBottom = document.querySelector('.bar-bottom');
   const navLinks = document.querySelectorAll('.nav-link');
   
-  // Initialize header state
   let headerVisible = true;
   
-  // Add active class to current page link
   const currentPath = window.location.pathname;
   navLinks.forEach(link => {
     const href = link.getAttribute('href');
@@ -26,39 +23,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Mobile menu toggle
   function toggleMobileMenu() {
     const isOpen = mobileMenuButton.getAttribute('aria-expanded') === 'true';
     
     if (isOpen) {
-      // Close menu
       mobileMenuButton.setAttribute('aria-expanded', 'false');
       mobileMenu.style.maxHeight = '0';
       
-      // Animate to hamburger
       gsapMenuIconToHamburger();
       
-      // Hide menu after animation
       setTimeout(() => {
         mobileMenu.classList.add('hidden');
       }, 300);
     } else {
-      // Open menu
       mobileMenuButton.setAttribute('aria-expanded', 'true');
       mobileMenu.classList.remove('hidden');
       
-      // Set max height to allow animation
       setTimeout(() => {
         const height = mobileMenu.scrollHeight;
         mobileMenu.style.maxHeight = `${height}px`;
       }, 10);
       
-      // Animate to X
       gsapMenuIconToX();
     }
   }
 
-  // Menu icon animations using GSAP-like vanilla JS
   function gsapMenuIconToX() {
     // Transform hamburger to X
     barTop.setAttribute('d', 'M6 6L18 18');
@@ -67,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function gsapMenuIconToHamburger() {
-    // Transform X back to hamburger
     barTop.setAttribute('d', 'M4 6h16');
     barMiddle.style.opacity = '1';
     barBottom.setAttribute('d', 'M4 18h16');
@@ -75,16 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function handleScroll() {
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScroll > 50) {
-      header.classList.add('shadow-md', 'bg-white'); // Пример: добавить тень и фон
-    } else {
-      header.classList.remove('shadow-md', 'bg-white');
-    }
   }
   
 
-  // Link hover effects
   navLinks.forEach(link => {
     const underline = link.querySelector('.absolute');
     
@@ -101,19 +82,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Event listeners
   mobileMenuButton.addEventListener('click', toggleMobileMenu);
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', () => {
     if (window.innerWidth >= 768) {
-      // Reset mobile menu styles on desktop
       mobileMenu.style.maxHeight = '';
       mobileMenuButton.setAttribute('aria-expanded', 'false');
       gsapMenuIconToHamburger();
     }
   });
   
-  // Initialize scroll effects
   handleScroll();
 });
 
