@@ -1,4 +1,4 @@
-<?
+<?php
 namespace App\Controllers;
 use Google_Client;
 use RedBeanPHP\R;
@@ -50,6 +50,7 @@ class AuthController extends BaseController {
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
         $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
+        $client->setState('teacher');
         $authUrl = $client->createAuthUrl();
 
         $this->renderPartial('auth/authTeacher', [
@@ -61,7 +62,7 @@ class AuthController extends BaseController {
     }
 
     public function showStudentAuth() {
-        
+
         if (isset($_COOKIE['user'])) {
             $userData = json_decode($_COOKIE['user'], true);
 
@@ -199,6 +200,11 @@ class AuthController extends BaseController {
             exit;
         }
 
+        if (isset($_GET['state']) && $_GET['state'] === 'teacher') {
+            header('Location: /auth/callback/teacher?code=' . urlencode($_GET['code']));
+            exit;
+        }
+
         $client = new Google_Client();
         $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
@@ -221,7 +227,7 @@ class AuthController extends BaseController {
                 $teacher->name = $userInfo->name;
                 $teacher->email = $userInfo->email;
                 $teacher->picture = $userInfo->picture;
-                $teacher->created_at = date('Y-m-d H:i:s');
+                $teacher->join_date = date('Y-m-d H:i:s');
                 R::store($teacher);
 
                 $userData = [
@@ -234,7 +240,7 @@ class AuthController extends BaseController {
                     'school' => $teacher->school,
                     'register' => true
                 ];
-    
+
                 $this->setCookie('user', json_encode($userData), time() + 604800);
                 header('Location: /auth/teacher/register/complete');
             } else {
@@ -248,13 +254,13 @@ class AuthController extends BaseController {
                     'school' => $teacher->school,
                     'register' => false
                 ];
-    
+
                 $this->setCookie('user', json_encode($userData), time() + 604800);
                 header('Location: /dashboard/teacher');
             }
             exit;
         } else {
-            header('Location: /auth/teacher/register/complete');
+            header('Location: /auth/teacher/auth');
         }
     }
 
@@ -283,9 +289,10 @@ class AuthController extends BaseController {
                 'school' => $teacher->school,
                 'register' => false
             ];
-    
+
             $this->setCookie('user', json_encode($userData), time() + 604800);
             header('Location: /dashboard/teacher');
+        }
     }
 
     public function loginWithGoogle()
@@ -307,6 +314,8 @@ class AuthController extends BaseController {
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
         $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
         $client->addScope('email');
+        $client->addScope('openid');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
 
         if (isset($_GET['code'])) {
             $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
@@ -321,7 +330,7 @@ class AuthController extends BaseController {
                 $user->name = $userInfo->email;
                 $user->email = $userInfo->email;
                 $user->picture = $userInfo->picture;
-                $user->created_at = date('Y-m-d H:i:s');
+                $user->join_date = date('Y-m-d H:i:s');
                 R::store($user);
             }
 
