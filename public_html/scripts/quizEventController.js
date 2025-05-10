@@ -157,7 +157,8 @@ const main = function() {
             location.reload();
         }
 
-        const isCorrect = answerData.status === 1;
+        const isCorrect = answerData.status == true;
+        // console.log(isCorrect);
         quizData.score = answerData.score;
         quizData.explanation = answerData.explanation;
 

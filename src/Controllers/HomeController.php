@@ -195,7 +195,13 @@ class HomeController extends BaseController {
             [$user->id]
         );
 
-        $statistics['time_spent']= $this->secondsToHours($statistics['time_spent']);
+        if (!$statistics) {
+            $statistics['time_spent'] = 0;
+            $statistics['quizzes_completed'] = 0;
+            $statistics['answers_completed'] = 0;
+        }
+
+        $statistics['time_spent'] = $this->secondsToHours($statistics['time_spent']);
 
         $this->renderPartial('dashboard/student/index', [
             'lang' => $this->lang,
@@ -302,14 +308,14 @@ class HomeController extends BaseController {
         
         if(!$quiz){
             header("Location: /dashboard/student/learn");
-            exit; 
+            return; 
         }
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ?', [$user->id, $quizid]);
         
         if ($progress && $progress->completed == 1) {
             header("Location: /quiz/complete/$quizid");
-            exit;
+            return;
         }
 
         $isNewQuiz = false;
@@ -364,20 +370,20 @@ class HomeController extends BaseController {
 
         if (!$user) {
             header("Location: /learn");
-            exit; 
+            return; 
         }
 
         $quiz = R::findOne('quizzes', 'id = ?', [$quizid]);
 
         if (!$quiz) {
             header("Location: /learn");
-            exit; 
+            return; 
         }
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = 1', [$user['id'], $quizid]);
         if (!$progress) {
             header("Location: /learn");
-            exit;
+            return;
         }
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = 1', [$user['id'], $quizid]);
@@ -477,14 +483,15 @@ class HomeController extends BaseController {
                         'bannedUsers' => $bannedUsers['bannedUsers'],
                         'usersGrowth' => $usersGrowth
                     ]);
-                    exit;
+                    return;
                 }
             } else {
                 header("Location: /auth/adminPanel");
-                exit;
+                return;
             }
-        }
+        } else {
         header("Location: /auth/adminPanel");
+        }
     }
 
     public function showLoginAdminPanel() {

@@ -114,5 +114,5 @@ $r->addRoute('GET', '/logout', function() {
         setcookie('user', '', time() - 604800, '/');
     }
     header('Location: /auth/signup');
-    exit;
+    return;
 });

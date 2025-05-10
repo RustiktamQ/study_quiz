@@ -95,7 +95,7 @@ class BaseController {
     protected function jsonError($code, $message) {
         http_response_code($code);
         echo json_encode(['error' => true, 'message' => $message]);
-        exit;
+        return;
     }
 
     protected function validateOwnership($userId) {

@@ -51,7 +51,6 @@ class AuthController extends BaseController {
         // $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
         $client->setRedirectUri($root . 'auth/callback/teacher');
         $client->addScope('email');
-        $client->setState('teacher');
         $authUrl = $client->createAuthUrl();
 
         $this->renderPartial('auth/authTeacher', [
@@ -198,12 +197,7 @@ class AuthController extends BaseController {
             } else {
                 header("Location: /dashboard/teacher");
             }
-            exit;
-        }
-
-        if (isset($_GET['state']) && $_GET['state'] === 'teacher') {
-            header('Location: /auth/callback/teacher?code=' . urlencode($_GET['code']));
-            exit;
+            return;
         }
 
         $client = new Google_Client();
@@ -211,7 +205,7 @@ class AuthController extends BaseController {
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
-        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        $client->setRedirectUri($root . 'auth/callback/teacher');
         $client->addScope('email');
 
         if (isset($_GET['code'])) {
@@ -221,10 +215,8 @@ class AuthController extends BaseController {
             $userInfo = $oauth2->userinfo->get();
 
             $teacher = R::findOne('teachers', 'email = ?', [$userInfo->email]);
-
             if (!$teacher) {
                 $teacher = R::dispense('teachers');
-                $teacher->id = $userInfo->id;
                 $teacher->name = $userInfo->name;
                 $teacher->email = $userInfo->email;
                 $teacher->picture = $userInfo->picture;
@@ -259,7 +251,7 @@ class AuthController extends BaseController {
                 $this->setCookie('user', json_encode($userData), time() + 604800);
                 header('Location: /dashboard/teacher');
             }
-            exit;
+            return;
         } else {
             header('Location: /auth/teacher/auth');
         }
@@ -274,7 +266,7 @@ class AuthController extends BaseController {
             } else {
                 header("Location: /dashboard/teacher");
             }
-            exit;
+            return;
         }
 
         if (true) {
@@ -305,7 +297,7 @@ class AuthController extends BaseController {
             } else {
                 header("Location: /dashboard/teacher");
             }
-            exit;
+            return;
         }
 
         $client = new Google_Client();
@@ -350,7 +342,7 @@ class AuthController extends BaseController {
         }
 
         header('Location: ' . $client->createAuthUrl());
-        exit;
+        return;
     }
 
     public function DEV_loginWithGoogle()
@@ -362,7 +354,7 @@ class AuthController extends BaseController {
             } else {
                 header("Location: /dashboard/teacher");
             }
-            exit;
+            return;
         }
 
 

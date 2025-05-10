@@ -263,7 +263,7 @@ class APIController extends BaseController {
 
         if (!$quiz) {
             header("Location: /learn");
-            exit; 
+            return; 
         }
 
         $progress = R::findOne('progress', 'student_id = ? AND quiz_id = ? AND completed = 1', [$userId, $quizId]);
