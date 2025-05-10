@@ -48,7 +48,8 @@ class AuthController extends BaseController {
         $client = new Google_Client();
         $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
         $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
-        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        // $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        $client->setRedirectUri($root . 'auth/callback/teacher');
         $client->addScope('email');
         $client->setState('teacher');
         $authUrl = $client->createAuthUrl();
