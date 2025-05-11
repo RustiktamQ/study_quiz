@@ -103,8 +103,75 @@ window.addEventListener('load', () => {
     if (typeof quicklink !== 'undefined') {
         quicklink.listen();
     }
+    hidePreloader();
 });
 document.documentElement.classList.replace('no-js', 'js');
+
+function initPreloader() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return;
+
+    preloader.style.position = 'fixed';
+    preloader.style.top = '0';
+    preloader.style.left = '0';
+    preloader.style.width = '100%';
+    preloader.style.height = '100%';
+    preloader.style.display = 'flex';
+    preloader.style.alignItems = 'center';
+    preloader.style.justifyContent = 'center';
+    preloader.style.backgroundColor = '#ffffff';
+    preloader.style.zIndex = '9999';
+    preloader.style.transition = 'opacity 0.5s ease-out';
+
+    const spinner = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    spinner.setAttribute('width', '50');
+    spinner.setAttribute('height', '50');
+    spinner.setAttribute('viewBox', '0 0 50 50');
+
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', '25');
+    circle.setAttribute('cy', '25');
+    circle.setAttribute('r', '20');
+    circle.setAttribute('fill', 'none');
+    circle.setAttribute('stroke', '#16a34a');
+    circle.setAttribute('stroke-width', '4');
+    circle.setAttribute('stroke-linecap', 'round');
+
+    const animateTransform = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
+    animateTransform.setAttribute('attributeName', 'transform');
+    animateTransform.setAttribute('type', 'rotate');
+    animateTransform.setAttribute('repeatCount', 'indefinite');
+    animateTransform.setAttribute('dur', '1s');
+    animateTransform.setAttribute('from', '0 25 25');
+    animateTransform.setAttribute('to', '360 25 25');
+
+    const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
+    animate.setAttribute('attributeName', 'stroke-dasharray');
+    animate.setAttribute('repeatCount', 'indefinite');
+    animate.setAttribute('dur', '1.5s');
+    animate.setAttribute('values', '0 150;120 150;120 150');
+    animate.setAttribute('keyTimes', '0;0.5;1');
+
+    circle.appendChild(animateTransform);
+    circle.appendChild(animate);
+    spinner.appendChild(circle);
+    preloader.appendChild(spinner);
+}
+
+function hidePreloader() {
+    const preloader = document.getElementById('preloader');
+    if (!preloader) return;
+
+    initPageFunctionality();
+
+    preloader.style.opacity = '0';
+
+    setTimeout(() => {
+        if (preloader.parentNode) {
+            preloader.parentNode.removeChild(preloader);
+        }
+    }, 600);
+}
 
 const swup = new Swup({
     plugins: [new SwupProgressPlugin()]
@@ -419,4 +486,6 @@ function initGeneralAnimations() {
 
 swup.hooks.on('visit:start', cleanupPageResources);
 swup.hooks.on('content:replace', initPageFunctionality);
-document.addEventListener('DOMContentLoaded', initPageFunctionality);
+document.addEventListener('DOMContentLoaded', () => {
+    initPreloader();
+});
