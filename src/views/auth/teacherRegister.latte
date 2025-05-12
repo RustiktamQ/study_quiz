@@ -1,26 +1,31 @@
-{* {include "../partials/header.latte"} *}
-<div class="bg-white">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+<style>html, body { font-family: 'Inter'; }</style>
+
+<div class="bg-white mt-24">
   <div class="px-6 lg:px-8">
     <div class="mx-auto max-w-2xl py-16">
         <div class="border rounded-xl p-10 ">
             <div class="mb-8">
-                <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
-                <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
+                <p class="text-xl font-semibold">Добро пожаловать в {$APP_NAME}App</p>
+                <p class="mt-2 text-gray-600">Прежде всего, расскажите нам немного о себе.</p>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
-                <label for="input-label" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
+                <label for="input-label" class="block text-sm font-medium mb-2">Установите пригласительный код <span class="text-red-500">*</span></label>
                 <input required type="text" id="token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
                 </div>
             </div>
             <div class="flex items-center justify-center mt-8">
                 <div class="w-full">
-                <label for="input-label" class="block text-sm font-medium mb-2">School name or organization</label>
+                <label for="input-label" class="block text-sm font-medium mb-2">Школа или организация</label>
                 <input required type="text" id="school" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
                 </div>
             </div>
             <button id="registerBtn" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
-                Finish registration
+                Продолжить
             </button>
         </div>
     </div>
