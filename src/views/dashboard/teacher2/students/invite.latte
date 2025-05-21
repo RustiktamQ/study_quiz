@@ -1,11 +1,7 @@
 {include '../partials/header.latte'}
 <main>
 <div class="p-4 mx-auto max-w-7xl md:p-6 2xl:p-10">
-<<<<<<< HEAD
-    <!-- Breadcrumb Start -->
-=======
     
->>>>>>> master
     <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
       <h2 class="text-2xl font-semibold text-gray-900">
         Пригласить ученика
@@ -18,11 +14,7 @@
         </ol>
       </nav>
     </div>
-<<<<<<< HEAD
-    <!-- Breadcrumb End -->
-=======
     
->>>>>>> master
 
     <div class="bg-white border border-gray-200 rounded-xl p-4 sm:p-6">
             <h2 class="text-lg font-semibold text-gray-800 mb-3">Ваш код приглашения</h2>
@@ -30,11 +22,7 @@
 
             <div class="max-w-2xl flex items-center gap-x-3 bg-gray-50 border border-dashed border-gray-400 rounded-lg p-4">
                 <span id="invite_code" class="flex-1 text-center font-mono text-2xl sm:text-3xl font-bold text-gray-800 tracking-widest">
-<<<<<<< HEAD
-                    <!-- Code will be loaded here by JS -->
-=======
                     
->>>>>>> master
                     <span class="text-sm text-gray-500">Загрузка...</span>
                 </span>
                 <button id="copy-button" onclick="copyInviteCode()" type="button" class="py-2.5 cursor-pointer px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
@@ -51,11 +39,7 @@
              <div class="mt-6 pt-6 border-t border-gray-200">
                  <h3 class="text-md font-semibold text-gray-800 mb-2">Нужен новый код?</h3>
                  <p class="text-sm text-gray-600 mb-3">Сгенерируйте новый код. Ученики, использующие старый код, не смогут присоединиться.</p>
-<<<<<<< HEAD
-                 <div> <!-- TODO: backend logic to generate new code -->
-=======
                  <div> 
->>>>>>> master
                     <input type="hidden" name="action" value="generate_new_code">
                     <div class="space-x-2">
                          <button id="newCode" type="button" class="cursor-pointer bg-green-500 py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl transition text-white shadow-sm hover:bg-green-600 focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
@@ -67,30 +51,18 @@
              </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- QR Share Modal -->
-    <div id="share-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
-        <div class="flex min-h-screen items-center justify-center p-4">
-            <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
-                <!-- Close Button (using the style from delete modal) -->
-=======
     
     <div id="share-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
         <div class="flex min-h-screen items-center justify-center p-4">
             <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
                 
->>>>>>> master
                 <button id="close-modal" type="button" class="cursor-pointer absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl text-gray-600 transition-all hover:bg-gray-100 hover:shadow-sm" aria-label="Close">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 18L12 12M18 6L12 12M12 12L6 6M12 12L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
 
-<<<<<<< HEAD
-                <!-- Modal Content -->
-=======
                 
->>>>>>> master
                 <div class="p-4 sm:p-7">
                      <div class="text-center mb-6">
                          <h3 id="share-modal-title" class="text-xl font-bold text-gray-800">
@@ -124,11 +96,7 @@
 
                          <div class="flex items-center gap-x-3 bg-gray-100 border border-dashed border-gray-400 rounded-lg p-3">
                              <span id="modal-invite_code" class="flex-1 text-center font-mono text-xl sm:text-2xl font-bold text-gray-800 tracking-widest">
-<<<<<<< HEAD
-                                 <!-- Code will be loaded here -->
-=======
                                  
->>>>>>> master
                              </span>
                              <button id="modal-copy-button" type="button" class="py-2 cursor-pointer px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
                                  <svg class="modal-copy-icon shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
@@ -140,29 +108,16 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-    <!-- End QR Share Modal -->
-
-=======
     
->>>>>>> master
 </div>
 </main>
 
 <style>
 .toastify{
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     transition:all .4s cubic-bezier(.215,.61,.355,1);
     border-radius:2px;
     cursor:pointer;
     text-decoration:none;
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     z-index:2147483647
 }
 .toastify.on{
@@ -212,17 +167,6 @@
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js" integrity="sha512-79j1YQOJuI8mLseq9icSQKT6bLlLtWknKwj1OpJZMdPt2pFBry3vQTt+NZuJw7NSd1pHhZlu0s12Ngqfa371EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<<<<<<< HEAD
-<!-- Include QR Code Styling Library -->
-<script src="/assets/teacher/js/qrcodestyling.js"></script>
-
-<script n:syntax=off>
-    // Global variable for the QR Code instance
-    let qrCodeInstance = null;
-    let showMessageTimeout; // For preloader
-
-    // --- Preloader Logic ---
-=======
 
 <script src="/assets/teacher/js/qrcodestyling.js"></script>
 
@@ -232,7 +176,6 @@
     let showMessageTimeout; 
 
     
->>>>>>> master
     window.addEventListener("load", () => {
         const preloader = document.getElementById("preloader");
          if (preloader) {
@@ -254,11 +197,7 @@
         }
     }, 10000);
 
-<<<<<<< HEAD
-    // --- Main Page Invite Code Copy Logic ---
-=======
     
->>>>>>> master
     function copyInviteCode() {
         const codeElement = document.getElementById('invite_code');
         if (!codeElement) return;
@@ -339,11 +278,7 @@
         });
     }
 
-<<<<<<< HEAD
-    // --- Invite Code Generation/Fetching Logic ---
-=======
     
->>>>>>> master
     document.addEventListener('DOMContentLoaded', () => {
         const newCodeButton = document.getElementById('newCode');
         const inviteCodeSpan = document.getElementById('invite_code');
@@ -434,11 +369,7 @@
                      if (inviteCodeSpan) inviteCodeSpan.textContent = data.code;
                  } else if (data.success && !data.code) {
                      console.log("No existing code found for teacher, generating initial code...");
-<<<<<<< HEAD
-                     await generateAndSetNewCode(); // Await this generation
-=======
                      await generateAndSetNewCode(); 
->>>>>>> master
                  }
                   else {
                       console.error("Failed to fetch initial code:", data.message);
@@ -486,11 +417,7 @@
              while (!isFree.success && attempts < maxAttempts) {
                  attempts++;
                  code = createRandomString(10);
-<<<<<<< HEAD
-                 // console.log(`Attempt ${attempts}: Trying code ${code}`); // Optional debug
-=======
                  
->>>>>>> master
                  isFree = await codeIsFree(teacher_id, code);
                  if (isFree === null || typeof isFree !== 'object') {
                       console.error("Error response from codeIsFree check.");
@@ -547,11 +474,7 @@
                  return;
              }
 
-<<<<<<< HEAD
-             // console.log(`Generated unique code: ${code}`); // Optional debug
-=======
              
->>>>>>> master
              const res = await setNewCode(teacher_id, code);
 
              if (res && res.success) {
@@ -592,29 +515,17 @@
             console.warn("Element with ID 'newCode' not found.");
         }
 
-<<<<<<< HEAD
-        // Fetch initial code when the page loads
-=======
         
->>>>>>> master
         fetchInitialCode(teacher_id);
 
     });
 
 
-<<<<<<< HEAD
-    // --- QR Modal Logic ---
-    document.addEventListener('DOMContentLoaded', () => {
-       const shareBtn = document.getElementById('share-button');
-       const modal = document.getElementById('share-modal');
-       const modalContent = modal?.querySelector('.modal-content'); // Use optional chaining
-=======
     
     document.addEventListener('DOMContentLoaded', () => {
        const shareBtn = document.getElementById('share-button');
        const modal = document.getElementById('share-modal');
        const modalContent = modal?.querySelector('.modal-content'); 
->>>>>>> master
        const closeBtn = document.getElementById('close-modal');
        const mainInviteCodeSpan = document.getElementById('invite_code');
        const modalInviteCodeSpan = document.getElementById('modal-invite_code');
@@ -626,21 +537,13 @@
 
        if (!modal || !modalContent || !closeBtn || !shareBtn || !qrcodeDiv || !qrcodeLoading || !qrcodeError || !qrcodeContainer || !modalCopyButton || !modalInviteCodeSpan || !mainInviteCodeSpan) {
             console.error("One or more essential modal elements are missing. Modal functionality might be compromised.");
-<<<<<<< HEAD
-            // Disable the share button if critical elements are missing
-=======
             
->>>>>>> master
             if (shareBtn) {
                 shareBtn.disabled = true;
                 shareBtn.title = "Ошибка: компоненты модального окна не найдены";
                 shareBtn.style.cursor = 'not-allowed';
             }
-<<<<<<< HEAD
-            return; // Stop initialization if elements are missing
-=======
             return; 
->>>>>>> master
        }
 
 
@@ -674,31 +577,13 @@
 
          modalInviteCodeSpan.innerText = inviteCode;
 
-<<<<<<< HEAD
-         // Reset QR display
-=======
          
->>>>>>> master
          qrcodeDiv.innerHTML = '';
          qrCodeInstance = null;
          qrcodeError.classList.add('hidden');
          qrcodeContainer.classList.remove('border-red-500');
          qrcodeLoading.classList.remove('hidden');
 
-<<<<<<< HEAD
-         // Start opening animation (using delete modal's style)
-         modal.classList.remove('hidden');
-         document.addEventListener('keydown', handleEscapeKey); // Add listener
-
-         requestAnimationFrame(() => { // Use requestAnimationFrame for smoother transition start
-           modal.classList.remove('bg-gray-900/0');
-           modal.classList.add('bg-gray-900/80'); // Add backdrop opacity
-           modalContent.classList.remove('scale-95', 'opacity-0');
-           modalContent.classList.add('scale-100', 'opacity-100'); // Scale/fade in content
-         });
-
-         // Generate QR Code
-=======
          
          modal.classList.remove('hidden');
          document.addEventListener('keydown', handleEscapeKey); 
@@ -711,7 +596,6 @@
          });
 
          
->>>>>>> master
          generateQRCode(inviteCode);
        }
 
@@ -725,52 +609,19 @@
                  return;
             }
 
-<<<<<<< HEAD
-            // Use setTimeout to ensure the modal is visible before QR rendering starts
-=======
             
->>>>>>> master
             setTimeout(() => {
                 try {
                     qrCodeInstance = new QRCodeStyling({
                         width: 230,
                         height: 230,
-<<<<<<< HEAD
-                        // Use a placeholder or actual logo URL
-                        image: "https://gorislavets.com/logo2.png",
-                        data: 'code', // Use the actual invite code
-=======
                         
                         image: "https://iili.io/3S9vTwQ.png",
-                        data: `https://aqyl.app/join?c=${code}`, 
->>>>>>> master
+                        data: `https://aqyl.app/join/${code}`, 
                         margin: 5,
                         qrOptions: {
                             typeNumber: 0,
                             mode: 'Byte',
-<<<<<<< HEAD
-                            errorCorrectionLevel: 'H' // High error correction
-                        },
-                        imageOptions: {
-                            hideBackgroundDots: true,
-                            imageSize: 0.4, // Adjust logo size
-                            margin: 10 // Margin around the logo
-                        },
-                        dotsOptions: {
-                            type: 'rounded', // Style of the dots
-                            color: '#000000' // Black dots
-                        },
-                        backgroundOptions: {
-                            color: '#ffffff', // White background
-                        },
-                         cornersSquareOptions: {
-                           type: 'extra-rounded', // Style of the corner squares
-                           color: '#000000' // Black corners
-                         },
-                         cornersDotOptions: {
-                           type: 'dot', // Style of the inner dots in corners
-                           color: '#000000' // Black inner dots
-=======
                             errorCorrectionLevel: 'H' 
                         },
                         imageOptions: {
@@ -792,46 +643,17 @@
                          cornersDotOptions: {
                            type: 'dot', 
                            color: '#000000' 
->>>>>>> master
                          }
                     });
 
                     qrCodeInstance.append(qrcodeDiv);
-<<<<<<< HEAD
-                    qrcodeLoading.classList.add('hidden'); // Hide loading spinner
-=======
                     qrcodeLoading.classList.add('hidden'); 
->>>>>>> master
 
                 } catch (error) {
                     console.error("Error generating QR Code:", error);
                     qrcodeLoading.classList.add('hidden');
                     qrcodeError.innerText = 'Не удалось создать QR-код. Попробуйте еще раз.';
                     qrcodeError.classList.remove('hidden');
-<<<<<<< HEAD
-                    qrcodeContainer.classList.add('border-red-500', 'border-dashed'); // Indicate error visually
-                }
-            }, 100); // Small delay
-       }
-
-       function closeModal() {
-         // Start closing animation
-         modal.classList.remove('bg-gray-900/80');
-         modal.classList.add('bg-gray-900/0'); // Remove backdrop opacity
-         modalContent.classList.remove('scale-100', 'opacity-100');
-         modalContent.classList.add('scale-95', 'opacity-0'); // Scale/fade out content
-         document.removeEventListener('keydown', handleEscapeKey); // Remove listener
-
-         setTimeout(() => {
-            modal.classList.add('hidden'); // Hide modal after animation
-             // Clean up QR code elements
-            if(qrcodeLoading) qrcodeLoading.classList.add('hidden');
-            if(qrcodeError) qrcodeError.classList.add('hidden');
-            if(qrcodeContainer) qrcodeContainer.classList.remove('border-red-500', 'border-dashed');
-            if(qrcodeDiv) qrcodeDiv.innerHTML = ''; // Clear the QR code SVG/Canvas
-            qrCodeInstance = null; // Release the instance
-         }, 300); // Match animation duration
-=======
                     qrcodeContainer.classList.add('border-red-500', 'border-dashed'); 
                 }
             }, 100); 
@@ -854,7 +676,6 @@
             if(qrcodeDiv) qrcodeDiv.innerHTML = ''; 
             qrCodeInstance = null; 
          }, 300); 
->>>>>>> master
        }
 
        const handleEscapeKey = (event) => {
@@ -889,11 +710,7 @@
             }).catch(err => {
                 console.error('Failed to copy modal text: ', err);
                  copyButton.classList.add('bg-red-100', 'border-red-500');
-<<<<<<< HEAD
-                 if (copyIcon) { // Simple visual error indication
-=======
                  if (copyIcon) { 
->>>>>>> master
                      copyIcon.classList.add('text-red-500');
                  }
                  if (checkIcon) checkIcon.classList.add('hidden');
@@ -905,32 +722,18 @@
             });
         };
 
-<<<<<<< HEAD
-       // Event Listeners
-=======
        
->>>>>>> master
        shareBtn.addEventListener('click', openModal);
        closeBtn.addEventListener('click', closeModal);
        modalCopyButton.addEventListener('click', copyModalCode);
 
-<<<<<<< HEAD
-       // Close modal if clicking outside the content
-       modal.addEventListener('click', (e) => {
-         if (e.target === modal) { // Check if the click is on the backdrop itself
-=======
        
        modal.addEventListener('click', (e) => {
          if (e.target === modal) { 
->>>>>>> master
            closeModal();
          }
        });
 
     });
 </script>
-<<<<<<< HEAD
 {include '../partials/footer.latte'}
-=======
-{include '../partials/footer.latte'}
->>>>>>> master

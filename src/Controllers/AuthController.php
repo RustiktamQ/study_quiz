@@ -30,6 +30,45 @@ class AuthController extends BaseController {
         ]);
     }
 
+    public function showJoin($params)
+    {
+        $invitedTeacher = R::findOne('teachers', 'invite_code = ?', [$params['code']]);
+
+        if (!$invitedTeacher) {
+            header('Location: /');
+        }
+
+        if ($this->user) {
+            $user = $this->user;
+            $student = R::findOne('users', 'google_id = ?', [$user['google_id']]);
+            $student->token = $params['code'];
+            $student->token_confirmed = 0;
+            R::store($student);
+            header('Location: /dashboard/student');
+            return;
+        }
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $client = new Google_Client();
+        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        // $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        $client->setRedirectUri($root . '/auth/callback/join?invite_code=' . $params['code']);
+        $client->addScope('email');
+        $authUrl = $client->createAuthUrl();
+
+        $this->renderPartial('join', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'teacher' => $invitedTeacher,
+            'uri' => $authUrl,
+            'devUri' => '/auth/callback/join?invite_code=' . $params['code']
+        ]);
+    }
 
     public function showTeacherAuth()
     {
@@ -123,6 +162,8 @@ class AuthController extends BaseController {
                 header("Location: /dashboard/student");
                 return;
             }
+        } else {
+            header('Location: /');
         }
 
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
@@ -270,7 +311,7 @@ class AuthController extends BaseController {
         }
 
         if (true) {
-            $teacher = R::findOne('teachers', 'email = ?', ["test@testmail.io"]);
+            $teacher = R::findOne('teachers', 'email = ?', ["aqylapp@gmail.com"]);
 
             $userData = [
                 'id' => $teacher->id,
@@ -286,6 +327,135 @@ class AuthController extends BaseController {
             $this->setCookie('user', json_encode($userData), time() + 604800);
             header('Location: /dashboard/teacher');
         }
+    }
+
+    public function joinWithGoogle()
+    {
+        if (isset($_COOKIE['user'])){
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+            } else {
+                header("Location: /dashboard/teacher");
+            }
+            return;
+        }
+
+        if (!isset($_GET['invite_code'])) {
+            header("Location: /");
+            return;
+        }
+
+        $invitedTeacher = R::findOne('teachers', 'invite_code = ?', [$_GET['invite_code']]);
+
+        if (!$invitedTeacher) {
+            header('Location: /');
+        }
+
+        $client = new Google_Client();
+        $client->setClientId($_ENV['GOOGLE_CLIENT_ID']);
+        $client->setClientSecret($_ENV['GOOGLE_CLIENT_SECRET']);
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+        $client->setRedirectUri($root.$_ENV['GOOGLE_REDIRECT_URI']);
+        $client->addScope('email');
+        $client->addScope('openid');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+
+        if (isset($_GET['code'])) {
+            $accessToken = $client->fetchAccessTokenWithAuthCode($_GET['code']);
+            $client->setAccessToken($accessToken);
+            $oauth2 = new \Google_Service_Oauth2($client);
+            $userInfo = $oauth2->userinfo->get();
+            $user = R::findOne('users', 'google_id = ?', [$userInfo->id]);
+
+            if (!$user) {
+                $user = R::dispense('users');
+                $user->google_id = $userInfo->id;
+                $user->name = $userInfo->email;
+                $user->email = $userInfo->email;
+                $user->picture = $userInfo->picture;
+                $user->token = $_GET['invite_code']; 
+                $user->token_confirmed = 0;
+                $user->join_date = date('Y-m-d H:i:s');
+                R::store($user);
+            } else {
+                $user->token = $_GET['invite_code']; 
+                $user->token_confirmed = 0;
+                R::store($user);
+            }
+
+            $userData = [
+                'id' => $user->id,
+                'google_id' => $user->google_id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'picture' => $user->picture,
+                'isStudent' => true,
+                'register' => true
+            ];
+            $this->setCookie('user', json_encode($userData), time() + 604800);
+            header('Location: /auth/student/complete');
+            return;
+        }
+
+        header('Location: ' . $client->createAuthUrl());
+        return;
+    }
+
+    public function DEV_joinWithGoogle($params)
+    {
+        if (isset($_COOKIE['user'])){
+            $userData = json_decode($_COOKIE['user'], true);
+            if ($userData['isStudent'] == true) {
+                header("Location: /dashboard/student");
+            } else {
+                header("Location: /dashboard/teacher");
+            }
+            return;
+        }
+
+        if (!isset($_GET['invite_code'])) {
+            header("Location: /");
+            return;
+        }
+
+        $invitedTeacher = R::findOne('teachers', 'invite_code = ?', [$_GET['invite_code']]);
+
+        if (!$invitedTeacher) {
+            header('Location: /');
+        }
+
+        $user = R::findOne('users', 'google_id = ?', ['114869489688930855296']);
+
+        if (!$user) {
+            $user = R::dispense('users');
+            $user->google_id = $userInfo->id;
+            $user->name = $userInfo->email;
+            $user->email = $userInfo->email;
+            $user->picture = $userInfo->picture;
+            $user->token = $_GET['invite_code']; 
+            $user->token_confirmed = 0;
+            $user->join_date = date('Y-m-d H:i:s');
+            R::store($user);
+        } else {
+            $user->token = $_GET['invite_code']; 
+            $user->token_confirmed = 0;
+            R::store($user);
+        }
+
+        $userData = [
+            'id' => $user->id,
+            'google_id' => $user->google_id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'picture' => $user->picture,
+            'isStudent' => true,
+            'register' => false
+        ];
+        $this->setCookie('user', json_encode($userData), time() + 604800);
+        header('Location: /auth/student/complete');
+        return;
     }
 
     public function loginWithGoogle()
