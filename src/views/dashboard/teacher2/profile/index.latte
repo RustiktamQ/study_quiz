@@ -1,0 +1,66 @@
+{include '../partials/header.latte'}
+
+<main>
+  <div class="p-4 mx-auto max-w-7xl md:p-6 2xl:p-10">
+    <!-- Breadcrumb Start -->
+    <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <h2 class="text-2xl font-semibold text-gray-900">
+        Мой профиль
+      </h2>
+      <nav>
+        <ol class="flex items-center gap-2">
+          <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+          <li class="font-medium text-green-500">Профиль</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <!-- Profile Card -->
+      <div class="col-span-1">
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+          <div class="flex flex-col items-center">
+            <div class="relative mb-4">
+              <img
+                src="{$teacher['picture']}"
+                alt="User Avatar"
+                class="w-32 h-32 rounded-full object-cover border-2 border-gray-200"
+              />
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900">{$teacher['name']}</h3>
+            <p class="text-sm text-gray-500">Преподаватель</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Details -->
+      <div class="col-span-1 md:col-span-2">
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+          <h3 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-3">
+            Информация о профиле
+          </h3>
+          <div class="space-y-4">
+            <div>
+              <label class="block mb-1 text-sm font-medium text-gray-600">Полное имя</label>
+              <p class="text-gray-800">{$teacher['name']}</p>
+            </div>
+             <div>
+              <label class="block mb-1 text-sm font-medium text-gray-600">Email</label>
+              <p class="text-gray-800">{$teacher['email']}</p>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-medium text-gray-600">Роль</label>
+              <p class="text-gray-800">Преподаватель</p>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-medium text-gray-600">Макс. лимит на учеников</label>
+              <p class="text-gray-800">{$teacher['students_limit']}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{include '../partials/footer.latte'}

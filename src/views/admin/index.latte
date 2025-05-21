@@ -1,0 +1,690 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+    <link href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/styles/index.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro/index.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { Calendar } = window.VanillaCalendarPro;
+            const calendarElement = document.querySelector('#calendar');
+            const calendar = new Calendar(calendarElement, {
+                type: 'multiple',
+                // сделать так, чтобы макс дата была текущая дата
+                // мин дата - 15 апреля 2025 года
+                dateMin: '2025-04-15',
+                dateMax: '2030-01-01',
+                displayMonthsCount: 2,
+                monthsToSwitch: 2,
+                displayDatesOutside: false,
+                disableDatesPast: true,
+                enableEdgeDatesOnly: true,
+                selectionDatesMode: 'multiple-ranged',
+            });
+            calendar.init();
+            calendarElement.addEventListener('calendar:dateSelected', (event) => {
+                const selectedDates = event.detail.selectedDates;
+                console.log('Selected Dates:', selectedDates);
+            });
+        });
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@4.5.0/dist/apexcharts.min.css">
+
+    <div class="w-full lg:ps-64 relative">
+        <img src="https://www.msccruises.co.za/-/media/global-contents/destinations/ports/bahamas/nassau/cruise-to-nassau-bahamas.jpg?bc=transparent&as=1&mh=1395&mw=2460&hash=866AAEA617D36448C0D7CD5A0F77746A" alt="" class="w-full h-96 object-cover custom-padding">
+    </div>
+    <div class="w-full max-w-[1632px] lg:ps-64 relative">
+        <div class="p-4 sm:p-6 space-y-6 sm:space-y-8">
+            <!-- Page Title -->
+            <div class="mb-6 border-b border-gray-200 pb-4">
+                <h1 class="text-2xl font-semibold text-gray-800">
+                    Statistics Overview
+                </h1>
+                <p class="text-sm text-gray-500">Insights into user activity, AI performance, and website traffic.</p>
+                <div class="mt-2">
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 24 hours</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 3 days</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 7 days</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 14 days</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 30 days</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Last 90 days</button>
+                <button class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">Custom timeline</button>
+                </div>
+            </div>
+
+
+            <!-- User Statistics Section -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-x-2">
+                    <svg class="w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/>
+                    </svg>
+                    User Statistics
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <!-- Card: Total Users -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-blue-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="size-5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Total Users</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">{$totalUsers}</h4>
+                            <p class="text-xs text-gray-500">All time total</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-stone-200 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-stone-200 text-stone-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="size-5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.18 15.296c-1.258.738-4.555 2.243-2.547 4.126c.982.92 2.074 1.578 3.448 1.578h7.838c1.374 0 2.467-.658 3.447-1.578c2.009-1.883-1.288-3.389-2.546-4.126a9.61 9.61 0 0 0-9.64 0M14 7a4 4 0 1 1-8 0a4 4 0 0 1 8 0m5.5-3v5M22 6.5h-5" color="currentColor"/></svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">USERS GROWTH</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">+{$usersGrowth}</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-green-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="size-5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor">
+                                        <path d="M14 18s1 0 2 2c0 0 3.177-5 6-6"/>
+                                        <path d="M13 22H6.59c-1.545 0-2.774-.752-3.877-1.803c-2.26-2.153 1.45-3.873 2.865-4.715c3.178-1.893 7.175-1.972 10.422-.239m.5-8.743a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Online right now</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">0</h4>
+                            <button class="text-xs text-gray-500 flex underline">
+                                <svg class="size-3.5 mr-1 my-auto text-gray-500 flex" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M6 12.05q0 1.125.425 2.188T7.75 16.2l.25.25V15q0-.425.288-.712T9 14t.713.288T10 15v4q0 .425-.288.713T9 20H5q-.425 0-.712-.288T4 19t.288-.712T5 18h1.75l-.4-.35q-1.3-1.15-1.825-2.625T4 12.05Q4 9.7 5.2 7.787T8.425 4.85q.35-.2.738-.025t.512.575q.125.375-.012.75t-.488.575q-1.45.8-2.312 2.213T6 12.05m12-.1q0-1.125-.425-2.187T16.25 7.8L16 7.55V9q0 .425-.288.713T15 10t-.712-.288T14 9V5q0-.425.288-.712T15 4h4q.425 0 .713.288T20 5t-.288.713T19 6h-1.75l.4.35q1.225 1.225 1.788 2.663T20 11.95q0 2.35-1.2 4.263t-3.225 2.937q-.35.2-.737.025t-.513-.575q-.125-.375.013-.75t.487-.575q1.45-.8 2.313-2.212T18 11.95"/></svg>    
+                            Update information
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-red-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-red-100 text-red-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="size-5 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 22H6.59c-1.545 0-2.774-.752-3.877-1.803c-2.26-2.153 1.45-3.873 2.865-4.715a10.67 10.67 0 0 1 7.922-1.187m3-7.795a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m-.45 9.55l4.9 4.9M22 18.5a3.5 3.5 0 1 0-7 0a3.5 3.5 0 0 0 7 0" color="currentColor"/>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Banned Users</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">{$bannedUsers}</h4>
+                            <p class="text-xs text-gray-500">All time total</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- AI Usage Statistics Section -->
+            <section class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-x-2">
+                    <svg class="my-auto mr-1 text-purple-600 shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="currentColor"/>
+                    </svg>
+                    AI Usage Statistics
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <!-- Card: AI Interactions -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-cyan-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-cyan-100 text-cyan-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-sky-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M20.25 7.572c-.41 0-.75-.34-.75-.75V5.678c-1.667 1.63-5.962 5.168-14.022 7.855a.7.7 0 0 1-.234.04a.75.75 0 0 1-.236-1.46c7.797-2.602 11.95-6.062 13.469-7.54H17.25c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h3c.41 0 .75.34.75.75v3c0 .41-.34.75-.75.75m-15.006 6h.004h-.01zm14.506 9c-.53 0-.85 0-1.17-.13c-.43-.18-.77-.52-.95-.95c-.13-.32-.13-.64-.13-1.17v-9c0-.53 0-.85.13-1.17c.18-.43.52-.77.95-.95c.32-.13.64-.13 1.17-.13s.85 0 1.17.13c.43.18.77.52.95.95c.13.32.13.64.13 1.17v9c0 .53 0 .85-.13 1.17c-.18.43-.52.77-.95.95c-.32.13-.64.13-1.17.13m0-12c-.26 0-.53 0-.6.02c-.06.02-.1.07-.13.13c-.02.06-.02.33-.02.6v9c0 .26 0 .53.02.6c.02.06.07.11.13.13c.13.04 1.06.04 1.2 0c.06-.02.1-.07.13-.13c.02-.06.02-.33.02-.6v-9c0-.26 0-.53-.02-.6a.21.21 0 0 0-.13-.13c-.06-.02-.33-.02-.6-.02m-7 12c-.53 0-.85 0-1.17-.13c-.43-.18-.77-.52-.95-.95c-.13-.32-.13-.64-.13-1.17v-5.5c0-.53 0-.85.13-1.17c.18-.43.52-.77.95-.95c.32-.13.64-.13 1.17-.13s.85 0 1.17.13c.43.18.77.52.95.95c.13.32.13.64.13 1.17v5.5c0 .53 0 .85-.13 1.17c-.18.43-.52.77-.95.95c-.32.13-.64.13-1.17.13m0-8.5c-.26 0-.53 0-.6.02c-.06.02-.1.07-.13.13c-.02.06-.02.33-.02.6v5.5c0 .26 0 .53.02.6c.02.06.07.11.13.13c.13.04 1.06.04 1.2 0c.06-.02.1-.07.13-.13c.02-.06.02-.33.02-.6v-5.5c0-.26 0-.53-.02-.6a.21.21 0 0 0-.13-.13c-.06-.02-.33-.02-.6-.02m-8.17 8.37c.32.13.64.13 1.17.13s.85 0 1.17-.13c.43-.18.77-.52.95-.95c.13-.32.13-.64.13-1.17v-3c0-.53 0-.85-.13-1.17c-.18-.43-.52-.77-.95-.95c-.32-.13-.64-.13-1.17-.13s-.85 0-1.17.13c-.43.18-.77.52-.95.95c-.13.32-.13.64-.13 1.17v3c0 .53 0 .85.13 1.17c.18.43.52.77.95.95m.57-5.85c.07-.02.34-.02.6-.02c.27 0 .54 0 .6.02s.11.07.13.13c.02.07.02.34.02.6v3c0 .27 0 .54-.02.6c-.03.06-.07.11-.13.13c-.14.04-1.07.04-1.2 0a.21.21 0 0 1-.13-.13c-.02-.07-.02-.34-.02-.6v-3c0-.27 0-.54.02-.6c.03-.06.07-.11.13-.13" color="currentColor"/></svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">AI TOKENS CONSUMPTION</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">1.9415M</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                    <!-- Card: Avg Response Time -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-lime-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-lime-100 text-lime-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-lime-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M14 16c.924 0 1.673-.512 1.673-1.143c0-1.22.014-1.723 1.082-2.453c.327-.223.327-.585 0-.808c-1.068-.73-1.082-1.232-1.082-2.453C15.673 8.512 14.924 8 14 8m-4 8c-.924 0-1.673-.512-1.673-1.143c0-1.22-.014-1.723-1.082-2.453c-.327-.223-.327-.585 0-.808c1.068-.73 1.082-1.232 1.082-2.453C8.327 8.512 9.076 8 10 8"/><path d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12"/></g></svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">AI TOKEN REQUESTS</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">928510</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                    <!-- Card: AI Cost -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-pink-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-pink-100 text-pink-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-pink-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10"/><path d="M14.71 10.061c-.099-.763-.975-1.995-2.55-1.995c-1.829 0-2.599 1.013-2.755 1.52c-.244.678-.195 2.071 1.95 2.223c2.68.19 3.754.506 3.618 2.147s-1.631 1.995-2.812 1.957s-3.113-.58-3.188-2.04m3-6.875V8.07m0 7.833v1.095"/></g></svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">AI COST (2.0 FLASH)</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">613.51$</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Website Statistics Section -->
+            <section>
+                <h2 class="text-xl font-semibold text-gray-700 mb-4 flex items-center gap-x-2">
+                    <svg class="w-5 h-5 text-orange-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                        <path fill="currentColor" fill-rule="evenodd" d="M9 21.072h12c.41 0 .75-.34.75-.75s-.34-.75-.75-.75H8.999c-2.62 0-3.929 0-4.589-.66s-.66-1.97-.66-4.59v-10c0-.41-.34-.75-.75-.75s-.75.34-.75.75v10c0 3.03 0 4.55 1.1 5.65s2.62 1.1 5.649 1.1zm-3.53-6.22c.15.15.34.22.53.22s.38-.07.53-.22l3.25-3.25c.48-.48.83-.83 1.02-.88c.13-.04.26-.04.41 0c.18.05.53.4 1.01.88c.72.72 1.11 1.11 1.66 1.26c.41.12.84.12 1.23 0c.56-.15.95-.54 1.67-1.26l3.75-3.75c.29-.29.29-.77 0-1.06a.754.754 0 0 0-1.06 0l-3.75 3.75l-.002.001c-.48.48-.829.83-1.019.88c-.13.04-.26.04-.41 0c-.18-.05-.529-.4-1.008-.88h-.002c-.72-.72-1.11-1.11-1.66-1.26c-.41-.12-.84-.12-1.23 0c-.56.15-.95.54-1.67 1.26l-3.25 3.25c-.29.29-.29.77 0 1.06" color="currentColor"/>
+                    </svg>
+                    Education Statistics
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <!-- Card: Total Page Views -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-orange-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-orange-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 8v4l2 2"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Total quizzes passed</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">179380</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                    <!-- Card: Unique Visitors -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-slate-200 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-slate-200 text-slate-800 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-slate-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 8v4l2 2"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Total time spent</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">19285 h.</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                    <!-- Card: Bounce Rate -->
+                    <div class="p-4 border border-gray-200 rounded-lg relative overflow-hidden bg-white shadow-sm">
+                        <div class="absolute -top-8 -left-8 w-28 h-28 bg-purple-100 rounded-full blur-xl opacity-70"></div>
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-3">
+                                <svg class="w-5 h-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 8v4l2 2"/>
+                                    </g>
+                                </svg>
+                            </div>
+                            <h3 class="mb-1 text-xs text-gray-500 uppercase tracking-wider">Total questions</h3>
+                            <h4 class="text-2xl font-semibold text-gray-800">791085</h4>
+                            <p class="text-xs text-gray-500">Last 30 Days</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Optional: Add Charts or Tables Here for more detailed views -->
+            <!-- Example: Placeholder for a chart -->
+
+
+
+        </div>
+        <!-- End Padding -->
+    </div>
+    <!-- End Main Content -->
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts@4.5.0/dist/apexcharts.min.js"></script>
+    <!-- Include necessary JS like Tailwind and Preline -->
+    
+    
+    <script src="https://preline.co/assets/js/hs-apexcharts-helpers.js"></script>
+    <script n:syntax=off>
+        window.addEventListener('load', () => {
+        // Apex Single Area Chart
+        (function () {
+            buildChart('#hs-single-area-chart', (mode) => ({
+            chart: {
+                height: 300,
+                type: 'area',
+                toolbar: {
+                show: false
+                },
+                zoom: {
+                enabled: false
+                }
+            },
+            series: [
+                {
+                name: 'Visitors',
+                data: [180, 51, 60, 38, 88, 50, 40, 52, 88, 80, 60, 70]
+                }
+            ],
+            legend: {
+                show: false
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2
+            },
+            grid: {
+                strokeDashArray: 2
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                type: 'vertical',
+                shadeIntensity: 1,
+                opacityFrom: 0.1,
+                opacityTo: 0.8
+                }
+            },
+            xaxis: {
+                type: 'category',
+                tickPlacement: 'on',
+                categories: [
+                '25 January 2023',
+                '26 January 2023',
+                '27 January 2023',
+                '28 January 2023',
+                '29 January 2023',
+                '30 January 2023',
+                '31 January 2023',
+                '1 February 2023',
+                '2 February 2023',
+                '3 February 2023',
+                '4 February 2023',
+                '5 February 2023'
+                ],
+                axisBorder: {
+                show: false
+                },
+                axisTicks: {
+                show: false
+                },
+                crosshairs: {
+                stroke: {
+                    dashArray: 0
+                },
+                dropShadow: {
+                    show: false
+                }
+                },
+                tooltip: {
+                enabled: false
+                },
+                labels: {
+                style: {
+                    colors: '#000',
+                    fontSize: '13px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                },
+                formatter: (title) => {
+                    let t = title;
+        
+                    if (t) {
+                    const newT = t.split(' ');
+                    t = `${newT[0]} ${newT[1].slice(0, 3)}`;
+                    }
+        
+                    return t;
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                align: 'left',
+                minWidth: 0,
+                maxWidth: 140,
+                style: {
+                    colors: '#9ca3af',
+                    fontSize: '13px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                },
+                formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+                }
+            },
+            tooltip: {
+                x: {
+                format: 'MMMM yyyy'
+                },
+                y: {
+                formatter: (value) => `${value >= 1000 ? `${value / 1000}k` : value}`
+                },
+                custom: function (props) {
+                const { categories } = props.ctx.opts.xaxis;
+                const { dataPointIndex } = props;
+                const title = categories[dataPointIndex].split(' ');
+                const newTitle = `${title[0]} ${title[1]}`;
+        
+                return buildTooltip(props, {
+                    title: newTitle,
+                    mode,
+                    valuePrefix: '',
+                    hasTextLabel: true,
+                    markerExtClasses: 'rounded-sm!',
+                    wrapperExtClasses: 'min-w-28'
+                });
+                }
+            },
+            responsive: [{
+                breakpoint: 568,
+                options: {
+                chart: {
+                    height: 300
+                },
+                labels: {
+                    style: {
+                    colors: '#9ca3af',
+                    fontSize: '11px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                    },
+                    offsetX: -2,
+                    formatter: (title) => title.slice(0, 3)
+                },
+                yaxis: {
+                    labels: {
+                    align: 'left',
+                    minWidth: 0,
+                    maxWidth: 140,
+                    style: {
+                        colors: '#9ca3af',
+                        fontSize: '11px',
+                        fontFamily: 'Inter',
+                        fontWeight: 400
+                    },
+                    formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+                    }
+                },
+                },
+            }]
+            }), {
+            colors: ['#00c951', '#9333ea'],
+            fill: {
+                gradient: {
+                shadeIntensity: .1,
+                opacityFrom: .5,
+                opacityTo: 0,
+                stops: [50, 100, 100, 100]
+                }
+            },
+            xaxis: {
+                labels: {
+                style: {
+                    colors: '#9ca3af'
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                style: {
+                    colors: '#9ca3af'
+                }
+                }
+            },
+            grid: {
+                borderColor: '#e5e7eb'
+            }
+            }, {
+            colors: ['#3b82f6', '#a855f7'],
+            fill: {
+                gradient: {
+                shadeIntensity: .1,
+                opacityFrom: .5,
+                opacityTo: 0,
+                stops: [50, 100, 100, 100]
+                }
+            },
+            xaxis: {
+                labels: {
+                style: {
+                    colors: '#a3a3a3',
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                style: {
+                    colors: '#a3a3a3'
+                }
+                }
+            },
+            grid: {
+                borderColor: '#404040'
+            }
+            });
+        })();
+        (function () {
+            buildChart('#hs-single-area-chart2', (mode) => ({
+            chart: {
+                height: 300,
+                type: 'area',
+                toolbar: {
+                show: false
+                },
+                zoom: {
+                enabled: false
+                }
+            },
+            series: [
+                {
+                name: 'Visitors',
+                data: [180, 51, 60, 38, 88, 50, 40, 52, 88, 80, 60, 70]
+                }
+            ],
+            legend: {
+                show: false
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'straight',
+                width: 2
+            },
+            grid: {
+                strokeDashArray: 2
+            },
+            fill: {
+                type: 'gradient',
+                gradient: {
+                type: 'vertical',
+                shadeIntensity: 1,
+                opacityFrom: 0.1,
+                opacityTo: 0.8
+                }
+            },
+            xaxis: {
+                type: 'category',
+                tickPlacement: 'on',
+                categories: [
+                '25 January 2023',
+                '26 January 2023',
+                '27 January 2023',
+                '28 January 2023',
+                '29 January 2023',
+                '30 January 2023',
+                '31 January 2023',
+                '1 February 2023',
+                '2 February 2023',
+                '3 February 2023',
+                '4 February 2023',
+                '5 February 2023'
+                ],
+                axisBorder: {
+                show: false
+                },
+                axisTicks: {
+                show: false
+                },
+                crosshairs: {
+                stroke: {
+                    dashArray: 0
+                },
+                dropShadow: {
+                    show: false
+                }
+                },
+                tooltip: {
+                enabled: false
+                },
+                labels: {
+                style: {
+                    colors: '#9ca3af',
+                    fontSize: '13px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                },
+                formatter: (title) => {
+                    let t = title;
+        
+                    if (t) {
+                    const newT = t.split(' ');
+                    t = `${newT[0]} ${newT[1].slice(0, 3)}`;
+                    }
+        
+                    return t;
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                align: 'left',
+                minWidth: 0,
+                maxWidth: 140,
+                style: {
+                    colors: '#9ca3af',
+                    fontSize: '13px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                },
+                formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+                }
+            },
+            tooltip: {
+                x: {
+                format: 'MMMM yyyy'
+                },
+                y: {
+                formatter: (value) => `${value >= 1000 ? `${value / 1000}k` : value}`
+                },
+                custom: function (props) {
+                const { categories } = props.ctx.opts.xaxis;
+                const { dataPointIndex } = props;
+                const title = categories[dataPointIndex].split(' ');
+                const newTitle = `${title[0]} ${title[1]}`;
+        
+                return buildTooltip(props, {
+                    title: newTitle,
+                    mode,
+                    valuePrefix: '',
+                    hasTextLabel: true,
+                    markerExtClasses: 'rounded-sm!',
+                    wrapperExtClasses: 'min-w-28'
+                });
+                }
+            },
+            responsive: [{
+                breakpoint: 568,
+                options: {
+                chart: {
+                    height: 300
+                },
+                labels: {
+                    style: {
+                    colors: '#9ca3af',
+                    fontSize: '11px',
+                    fontFamily: 'Inter, ui-sans-serif',
+                    fontWeight: 400
+                    },
+                    offsetX: -2,
+                    formatter: (title) => title.slice(0, 3)
+                },
+                yaxis: {
+                    labels: {
+                    align: 'left',
+                    minWidth: 0,
+                    maxWidth: 140,
+                    style: {
+                        colors: '#9ca3af',
+                        fontSize: '11px',
+                        fontFamily: 'Inter, ui-sans-serif',
+                        fontWeight: 400
+                    },
+                    formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
+                    }
+                },
+                },
+            }]
+            }), {
+            colors: ['#2563eb', '#9333ea'],
+            fill: {
+                gradient: {
+                shadeIntensity: .1,
+                opacityFrom: .5,
+                opacityTo: 0,
+                stops: [50, 100, 100, 100]
+                }
+            },
+            xaxis: {
+                labels: {
+                style: {
+                    colors: '#9ca3af'
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                style: {
+                    colors: '#9ca3af'
+                }
+                }
+            },
+            grid: {
+                borderColor: '#e5e7eb'
+            }
+            }, {
+            colors: ['#3b82f6', '#a855f7'],
+            fill: {
+                gradient: {
+                shadeIntensity: .1,
+                opacityFrom: .5,
+                opacityTo: 0,
+                stops: [50, 100, 100, 100]
+                }
+            },
+            xaxis: {
+                labels: {
+                style: {
+                    colors: '#a3a3a3',
+                }
+                }
+            },
+            yaxis: {
+                labels: {
+                style: {
+                    colors: '#a3a3a3'
+                }
+                }
+            },
+            grid: {
+                borderColor: '#404040'
+            }
+            });
+        })();
+        });
+    </script>
+    {include './partials/footer.latte'}

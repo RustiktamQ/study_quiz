@@ -1,0 +1,198 @@
+{include '../partials/header.latte'}
+
+<main id="swup" class="transition-fade bg-white">
+
+    <!-- Секция 1: Герой -->
+    <section class="relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 text-center">
+            <article class="flex flex-col items-center">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight animate-on-load">
+                    <span class="block">Устали от рутинной проверки ДЗ?</span>
+                    <span class="block text-green-600">Откройте эру AI в вашем классе!</span>
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto animate-on-load">
+                    AqylApp — это не просто платформа для обучения. Это ваш персональный AI-ассистент, который экономит ваше время, повышает успеваемость и зажигает интерес к учебе у каждого ученика.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 animate-on-load">
+                    <a href="#pricing"
+                       class="inline-block px-8 py-3 bg-green-500 text-white font-semibold rounded-2xl hover:bg-green-600 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 text-base md:text-lg"
+                       role="button">
+                        Начать бесплатно (Пробный период!)
+                    </a>
+                    <a href="#interactive-demo"
+                       class="inline-flex items-center px-6 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xl font-medium hover:bg-gray-100 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 text-base md:text-lg">
+                        Посмотреть, как это работает
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 13l-7 7-7-7m14-8l-7 7-7-7" />
+                        </svg>
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="relative overflow-hidden animate-on-load">
+    <div
+          class="bg-white rounded-2xl overflow-hidden flex items-center justify-center"
+        >
+          <img
+            src="/main/assets/mac.png"
+            alt="Dashboard preview"
+            class="w-1/3 h-auto rounded-lg"
+          />
+        </div>
+    </section>
+
+    <!-- Секция 2: Интерактивное "До и После" -->
+    <section id="interactive-demo" class="py-16 md:py-24 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12 animate-on-load">
+                Представьте: Два сценария вашей работы
+            </h2>
+
+            <div class="flex justify-center mb-8 animate-on-load">
+                <div class="inline-flex rounded-xl" role="group">
+                    <button id="btn-before"
+                            type="button"
+                            class="py-2 px-4 text-sm font-medium border border-gray-200 rounded-l-xl focus:z-10 focus:ring-2 focus:ring-green-500 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        Обычный день (До)
+                    </button>
+                    <button id="btn-after"
+                            type="button"
+                            class="py-2 px-4 text-sm font-medium border-t border-b border-r border-gray-200 rounded-r-xl focus:z-10 focus:ring-2 focus:ring-green-500 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        С AI-помощником (После)
+                    </button>
+                </div>
+            </div>
+
+            <div class=" grid-cols-1 md:grid-cols-2 gap-8 items-start justify-center flex mx-auto relative">
+                <!-- Состояние "До" -->
+                <div id="content-before" class="interactive-content p-6 bg-red-50 border border-red-200 rounded-2xl transition-all duration-300 ease-out w-full max-w-5xl">
+                    <h3 class="text-xl flex font-semibold text-red-800 mb-4">
+                        <svg class="mr-2 size-6 my-auto" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 11.5a2 2 0 0 0 2 2a3 3 0 0 0 3-3v-4a3 3 0 0 0-3-3a2 2 0 0 0-2 2zm13.479 4.694l-.267-.86c-.218-.705-.327-1.057-.243-1.336a.98.98 0 0 1 .42-.547c.251-.158.63-.158 1.39-.158h.404c2.57 0 3.855 0 4.462-.76q.104-.131.185-.277c.467-.848-.064-1.991-1.126-4.277c-.974-2.098-1.462-3.147-2.366-3.764a4 4 0 0 0-.27-.17c-.952-.545-2.132-.545-4.492-.545h-.511c-2.86 0-4.289 0-5.177.86C7 5.222 7 6.607 7 9.377v.974c0 1.455 0 2.183.258 2.85c.259.666.753 1.213 1.743 2.309l4.091 4.53c.103.114.154.17.2.21a1.033 1.033 0 0 0 1.442-.091c.04-.045.083-.108.17-.234a9 9 0 0 0 .261-.392a3.8 3.8 0 0 0 .446-2.89a8 8 0 0 0-.132-.448" color="currentColor"/></svg>
+                        Традиционный подход:</h3>
+                    <ul class="space-y-3 text-gray-700">
+                        <li class="flex items-start">
+                            <svg class="flex-shrink-0 h-5 w-5 text-red-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Часы на проверку ДЗ:</strong> Однотипные задания для всех, долгая ручная проверка.</span>
+                        </li>
+                         <li class="flex items-start">
+                           <svg class="flex-shrink-0 h-5 w-5 text-red-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Разный темп учеников:</strong> Сильные скучают, слабые отстают еще больше.</span>
+                        </li>
+                         <li class="flex items-start">
+                            <svg class="flex-shrink-0 h-5 w-5 text-red-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Поверхностная аналитика:</strong> Сложно понять <strong>почему</strong> ученик ошибается, только виден результат.</span>
+                        </li>
+                        <li class="flex items-start">
+                           <svg class="flex-shrink-0 h-5 w-5 text-red-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v4a1 1 0 102 0V7zm-1 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Снижение мотивации:</strong> Рутинные ДЗ кажутся скучными и оторванными от реальных знаний.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                 <div id="content-after" class="interactive-content p-6 bg-green-50 border border-green-200 rounded-2xl transition-all duration-300 ease-out w-full max-w-5xl">
+                    <h3 class="text-xl flex font-semibold text-green-800 mb-4">
+                        <svg class="mr-2 size-6 my-auto" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><circle cx="12" cy="12" r="10"/><path d="M8 15a5 5 0 0 0 4 2a5 5 0 0 0 4-2M8.009 9H8m8 0h-.009"/></g></svg>
+                        С AqylApp AI:</h3>
+                    <ul class="space-y-3 text-gray-700">
+                         <li class="flex items-start">
+                             <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Время для главного:</strong> AI автоматически проверяет задания и дает детальную обратную связь. Вы фокусируетесь на обучении!</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Персонализация на 100%:</strong> AI подбирает задания под уровень <strong>каждого</strong> ученика, помогая догнать или уйти вперед.</span>
+                        </li>
+                         <li class="flex items-start">
+                             <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Глубокие инсайты:</strong> Наглядные отчеты показывают пробелы в знаниях, прогресс класса и индивидуальные траектории.</span>
+                        </li>
+                        <li class="flex items-start">
+                             <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Рост вовлеченности:</strong> Интерактивные форматы и адаптивная сложность делают учебу увлекательной игрой.</span>
+                        </li>
+                        <li class="flex items-start">
+                             <svg class="flex-shrink-0 h-5 w-5 text-green-500 mr-2 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                            <span><strong class="font-semibold">Сертификаты:</strong> Уникальные цифровые и физические сертификаты для самых усердных учеников!</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+     <section class="py-16 md:py-24 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12 animate-on-load">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Как наш AI расширяет ваши возможности?</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Мы создали инструменты, которые работают на вас, а не наоборот.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl border border-gray-200 animate-on-load">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-green-100 text-green-600 mb-4">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></g></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Экономия до 10+ часов в неделю</h3>
+                    <p class="text-gray-600">Забудьте о ручной проверке! AI анализирует ответы, выявляет ошибки и экономит ваше драгоценное время для индивидуальной работы с учениками.</p>
+                </div>
+
+                 <div class="bg-white p-6 rounded-2xl border border-gray-200 animate-on-load">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-green-100 text-green-600 mb-4">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="currentColor"/></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Личный Ментор</h3>
+                    <p class="text-gray-600">AI помогает и объясняет решение задания индивидуально каждому ученику, закрывая пробелы и бросая вызов сильным.</p>
+                </div>
+
+                 <div class="bg-white p-6 rounded-2xl border border-gray-200 animate-on-load">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-green-100 text-green-600 mb-4">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M21 21H10c-3.3 0-4.95 0-5.975-1.025S3 17.3 3 14V3"/><path d="M5 20c.44-3.156 2.676-11.236 5.428-11.236c1.902 0 2.395 3.871 4.258 3.871C17.893 12.635 17.428 4 21 4"/></g></svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Глубокая аналитика прогресса</h3>
+                    <p class="text-gray-600">Получайте отчеты: какие темы вызывают трудности у класса, как растет каждый ученик, время проведенное в сервисе, на что обратить внимание.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="py-16 md:py-24 bg-white overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 animate-on-load">Больше, чем просто домашнее задание</h2>
+             <p class="text-lg md:text-xl text-gray-600 mb-8 animate-on-load">
+                AqylApp превращает обязательную рутину в увлекательный процесс открытия знаний. Задания, которые адаптируются. Прогресс, который виден. Ученики, которые хотят учиться.
+             </p>
+             <img src="placeholder.jpg" alt="Скриншот интерфейса или иллюстрация работы AI" class="rounded-2xl mx-auto w-full max-w-2xl animate-on-load">
+        </div>
+    </section> -->
+
+    <section id="pricing" class="py-16 md:py-24 bg-gradient-to-b from-green-50 to-white overflow-hidden">
+         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 animate-on-load">Готовы стать инновационным педагогом?</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8 animate-on-load">
+                Присоединяйтесь к тем учителям, которые уже экономят время и повышают результаты с помощью AI. Попробуйте все возможности бесплатно!
+            </p>
+            <a href="#"
+               class="inline-block px-10 py-4 bg-green-600 text-white font-bold rounded-2xl hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors duration-200 text-lg md:text-xl animate-on-load"
+               role="button">
+                Начать (Это бесплатно!)
+            </a>
+         </div>
+    </section>
+
+    <section class="py-12 bg-white overflow-hidden">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-3 animate-on-load">Наша миссия &#10024;</h3>
+            <p class="text-gray-600 animate-on-load">
+                Мы верим, что технологии должны помогать учителям раскрывать потенциал каждого ученика. Мы создаем инструменты, чтобы сделать образование более персонализированным, эффективным и вдохновляющим.
+            </p>
+        </div>
+    </section>
+
+</main>
+
+{include '../partials/footer.latte'}

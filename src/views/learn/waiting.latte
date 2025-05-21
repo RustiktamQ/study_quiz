@@ -1,0 +1,121 @@
+{include 'header.latte'}
+
+<div class="bg-white">
+  <div class="px-6 pt-14 lg:px-8">
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+      <div class="border rounded-xl p-10">
+        <div class="text-center">
+          <p class="text-2xl font-semibold">🎉 Waiting for teacher's confirmation!</p>
+          <p class="mt-2 text-gray-600">We have received your request and are now waiting for confirmation from the teacher. Please come back later.</p>
+          <button id="checkStatusBtn" class="mt-8 mr-2 px-6 py-2 bg-green-500 text-white transition rounded-xl hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+            <div class="flex">
+              <svg class="size-4 text-white my-auto mr-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                <path fill="currentColor" fill-rule="evenodd" d="M2.93 11.2c.072-4.96 4.146-8.95 9.149-8.95a9.16 9.16 0 0 1 7.814 4.357a.75.75 0 0 1-1.277.786a7.66 7.66 0 0 0-6.537-3.643c-4.185 0-7.575 3.328-7.648 7.448l.4-.397a.75.75 0 0 1 1.057 1.065l-1.68 1.666a.75.75 0 0 1-1.056 0l-1.68-1.666A.75.75 0 1 1 2.528 10.8zm16.856-.733a.75.75 0 0 1 1.055 0l1.686 1.666a.75.75 0 1 1-1.054 1.067l-.41-.405c-.07 4.965-4.161 8.955-9.18 8.955a9.2 9.2 0 0 1-7.842-4.356a.75.75 0 1 1 1.277-.788a7.7 7.7 0 0 0 6.565 3.644c4.206 0 7.61-3.333 7.68-7.453l-.408.403a.75.75 0 1 1-1.055-1.067z" clip-rule="evenodd"/>
+              </svg>
+              Check status
+            </div>
+          </button>
+          <div id="statusMessage" class="mt-4 text-gray-600"></div>
+          <a id="playGameBtn" class="text-gray-600 hover:underline cursor-pointer">Play game</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script>
+document.getElementById('checkStatusBtn').addEventListener('click', function() {
+    fetch('/api/check-token-status', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const statusMessage = document.getElementById('statusMessage');
+        if (data.confirmed) {
+            Toastify({
+              text: "Your token has been confirmed! Redirecting...",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+                  },
+            }).showToast();
+            setTimeout(() => {
+                window.location.href = '/learn';
+            }, 2000);
+        } else {
+            Toastify({
+              text: "Your token is still pending. Please try again later.",
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right,rgb(62, 197, 197),rgb(61, 105, 201))",
+                  },
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Toastify({
+          text: "An error occurred. Please try again later.",
+          duration: 3000,
+          newWindow: true,
+          close: true,
+          gravity: "top",
+          position: "right",
+          stopOnFocus: true,
+          style: {
+                  background: "linear-gradient(to right,rgb(179, 0, 0),rgb(201, 61, 61))",
+              },
+        }).showToast();
+    });
+});
+</script>
+
+<!-- Modal for the Game -->
+<div id="gameModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden justify-center items-center transition-all duration-500 opacity-0 transform scale-95">
+    <div class="bg-white p-8 rounded-xl w-full sm:w-96 relative">
+        <div class="text-center">
+            <h2 class="text-2xl font-semibold mb-4">Tic Tac Toe</h2>
+            <div id="ticTacToeGame" class="grid grid-cols-3 gap-2 mb-4 justify-center items-center max-w-[192px]">
+                <!-- Grid cells for the game -->
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="0"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="1"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="2"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="3"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="4"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="5"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="6"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="7"></button>
+                <button class="w-16 h-16 bg-gray-200 text-xl rounded-lg transform transition duration-200 hover:scale-105" data-cell="8"></button>
+            </div>
+            <p id="gameResult" class="mt-2 text-lg text-gray-700"></p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <button id="restartGameBtn" class="px-6 py-2 bg-green-500 text-white rounded-lg transition hover:bg-green-600">Restart Game</button>
+                <button id="closeGameBtn" class="px-6 py-2 bg-red-500 text-white rounded-lg transition hover:bg-red-600">Close Game</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script n:syntax=off>
+// tik tak toe game
+document.getElementById("playGameBtn").addEventListener("click",function(){document.getElementById("gameModal").classList.remove("hidden"),document.getElementById("gameModal").classList.add("opacity-100","scale-100")}),document.getElementById("closeGameBtn").addEventListener("click",function(){document.getElementById("gameModal").classList.add("hidden"),document.getElementById("gameModal").classList.remove("opacity-100","scale-100")}),document.getElementById("restartGameBtn").addEventListener("click",function(){resetGame()});const cells=document.querySelectorAll("[data-cell]");let board=["","","","","","","","",""],currentPlayer="X",gameOver=!1;function aiMove(){let e=board.map((e,t)=>""===e?t:null).filter(e=>null!==e),t=e[Math.floor(Math.random()*e.length)];board[t]="O",cells[t].textContent="O",cells[t].disabled=!0,checkWinner("O")?(document.getElementById("gameResult").textContent="AI won! \uD83E\uDD16",gameOver=!0):board.every(e=>""!==e)&&(document.getElementById("gameResult").textContent="It's a draw!",gameOver=!0),currentPlayer="X"}function checkWinner(e){return[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]].some(t=>t.every(t=>board[t]===e))}function resetGame(){board=["","","","","","","","",""],cells.forEach(e=>{e.textContent="",e.disabled=!1}),document.getElementById("gameResult").textContent="",gameOver=!1,currentPlayer="X"}cells.forEach(e=>{e.addEventListener("click",function(){if(gameOver)return;let t=e.getAttribute("data-cell");if(""===board[t]){if(board[t]=currentPlayer,e.textContent=currentPlayer,e.disabled=!0,checkWinner(currentPlayer)){document.getElementById("gameResult").textContent="You won! \uD83C\uDF89",gameOver=!0;return}if(board.every(e=>""!==e)){document.getElementById("gameResult").textContent="It's a draw!",gameOver=!0;return}"O"==(currentPlayer="X"===currentPlayer?"O":"X")&&aiMove()}})});
+</script>
+
+<script src="tailwind.js"></script>
+
+{include 'footer.latte'}

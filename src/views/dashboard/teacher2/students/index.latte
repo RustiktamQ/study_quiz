@@ -1,0 +1,388 @@
+{include '../partials/header.latte'}
+
+<main>
+  <div class="p-4 mx-auto md:p-6 2xl:p-10">
+    <!-- Breadcrumb Start -->
+    <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <h2 class="text-3xl font-semibold text-gray-900">
+        Ученики
+      </h2>
+      <nav>
+        <ol class="flex items-center gap-2">
+          <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+          <li class="font-medium text-green-500">Ученики</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="mb-6 flex justify-between items-center">
+       <h3 class="text-lg font-semibold text-gray-800">Список учеников</h3>
+       <a href="/dashboard/teacher/students/invite" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-green-500 transition rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300">
+         <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.5 22H6.59c-1.545 0-2.774-.752-3.877-1.803c-2.26-2.153 1.45-3.873 2.865-4.715A10.65 10.65 0 0 1 15 14.78m1.5-8.28a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m2 15.5v-7M15 18.5h7" color="currentColor"/></svg>
+         Пригласить ученика
+       </a>
+     </div>
+
+                  <div id="delete-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
+                     <div class="flex min-h-screen items-center justify-center p-4">
+                        <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
+                           <button id="close-modal" type="button" class="cursor-pointer absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl text-gray-600 transition-all hover:bg-gray-100 hover:shadow-sm">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M6 18L12 12M18 6L12 12M12 12L6 6M12 12L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                           </button>
+                           <div class="p-6 text-center">
+                              <svg class="mx-auto mb-4 h-10 w-10 text-red-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                 <!-- Icon from Huge Icons by Hugeicons - undefined -->
+                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.322 9.683c2.413-4.271 3.62-6.406 5.276-6.956a4.45 4.45 0 0 1 2.804 0c1.656.55 2.863 2.685 5.276 6.956c2.414 4.27 3.62 6.406 3.259 8.146c-.2.958-.69 1.826-1.402 2.48C19.241 21.5 16.827 21.5 12 21.5s-7.241 0-8.535-1.19a4.66 4.66 0 0 1-1.402-2.48c-.362-1.74.845-3.876 3.259-8.147M11.992 16h.009M12 13V9" color="currentColor"/>
+                              </svg>
+                              <h3 class="mb-2 text-lg font-semibold text-gray-800">Удалить аккаунт?</h3>
+                              <p class="mb-4 text-sm text-gray-600">Вы уверены, что хотите отвязать ученика?</p>
+                              <div class="flex justify-center gap-4">
+                                 <button id="cancel-btn" type="button" class="cursor-pointer flex items-center rounded-xl border border-gray-300 px-8 py-1.5 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-100 hover:shadow-sm">
+                                 ОТМЕНИТЬ ДЕЙСТВИЕ
+                                 </button>
+                                 <button 
+                                    id="confirm-delete" 
+                                    type="button" 
+                                    class="cursor-pointer flex items-center rounded-xl border border-red-500 bg-red-500 px-4 py-1.5 text-sm font-semibold text-white transition-all disabled:bg-red-300 disabled:border-red-300 disabled:cursor-not-allowed hover:bg-red-600 hover:shadow-sm"
+                                    >
+                                 ОТВЯЗАТЬ
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+    <!-- Students Table -->
+    <div class="overflow-hidden border border-gray-200 rounded-2xl shadow-sm">
+        <div class="overflow-x-auto bg-white">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Имя
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Часов
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Квизов
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Вопросов
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Онлайн
+                        </th>
+                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Статус
+                        </th>
+                        <th scope="col" class="relative px-6 py-3">
+                            <span class="sr-only">Действия</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {foreach $notConfirmed as $nc}
+                    <tr class="bg-gray-100">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="{$nc['picture']}" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">{$nc['name']}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Неизвестно
+                            </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Неизвестно
+                            </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Неизвестно
+                            </span>
+                            </div>
+                        </td>
+                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Неизвестно
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                Ожидает
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <button data-id="{$nc['id']}" class="confirmBtn text-white transition py-1.5 rounded-lg px-4 bg-green-600 hover:bg-green-700">ПРИНЯТЬ</button>
+                            <button data-id="{$nc['id']}" class="denyBtn ml-4 text-red-600 hover:text-red-900">Отклонить</button>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    <!-- Sample Row 1 -->
+                    {foreach $students as $student}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">{$student['name']}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{$student['time_spent']}ч.</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{$student['quizzes_completed']}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{$student['answers_completed']}</div>
+                        </td>
+                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                ОНЛАЙН
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Активен
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="/dashboard/teacher/students/view/{$student['id']}" class="text-white transition py-1.5 rounded-lg px-4 bg-green-500 hover:bg-green-700">Статистика</a>
+                            <button data-id="{$student['id']}" class="unlink ml-4 text-red-600 hover:text-red-900">Отвязать</button>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+     <!-- Pagination (Optional) -->
+      <div class="flex items-center justify-between mt-6 py-3">
+            <div class="flex flex-1 justify-between sm:hidden">
+              <a href="#" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"> Previous </a>
+              <a href="#" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"> Next </a>
+            </div>
+            <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+              <div>
+                <p class="text-sm text-gray-700">
+                  Показано
+                  <span class="font-medium">1</span>
+                  до
+                  <span class="font-medium">10</span>
+                  из
+                  <span class="font-medium">97</span>
+                  результатов
+                </p>
+              </div>
+              <div>
+                <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+                  <a href="#" class="relative inline-flex items-center rounded-l-md border border-gray-300 transition bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"> <span class="sr-only">Previous</span> <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" /> </svg> </a>
+                  <a href="#" aria-current="page" class="relative z-10 inline-flex items-center border border-green-500 bg-green-50 transition px-4 py-2 text-sm font-medium text-green-600 focus:z-20">1</a>
+                  <a href="#" class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium transition text-gray-500 hover:bg-gray-50 focus:z-20">2</a>
+                  <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">...</span>
+                  <a href="#" class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium transition text-gray-500 hover:bg-gray-50 focus:z-20">12</a>
+                  <a href="#" class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 transition hover:bg-gray-50 focus:z-20"> <span class="sr-only">Next</span> <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"> <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" /> </svg> </a>
+                </nav>
+              </div>
+            </div>
+        </div>
+        <!-- End Pagination -->
+  </div>
+</main>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+    async function confirm(user_id, student_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/teacher/confirm`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    student_id
+                })
+            });
+        
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function deny(user_id, student_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/teacher/deny`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    student_id
+                })
+            });
+        
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function unlink(teacher_id, student_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/teacher/student/unlink`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    teacher_id,
+                    student_id
+                })
+            });
+        
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    function getUserData() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('user='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    const user_id = getUserData().id;
+    const deleteBtns = document.querySelectorAll('.unlink');
+    const modal = document.getElementById('delete-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const closeBtn = document.getElementById('close-modal');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const confirmUnlinkBtn = document.getElementById('confirm-delete');
+   
+    let temp_student_id;
+    function openModal() {
+        temp_student_id = this.getAttribute('data-id');
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+        modal.classList.remove('bg-gray-900/0');
+        modal.classList.add('bg-gray-900/80');
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+    
+    function closeModal() {
+        modal.classList.remove('bg-gray-900/80');
+        modal.classList.add('bg-gray-900/0');
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        setTimeout(() => {
+        modal.classList.add('hidden');
+        }, 300);
+    }
+    
+    deleteBtns.forEach(deleteBtn => {
+        deleteBtn.addEventListener('click', openModal);
+    })
+    closeBtn.addEventListener('click', closeModal);
+    cancelBtn.addEventListener('click', closeModal);
+    
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+        closeModal();
+        }
+    });
+   
+   confirmUnlinkBtn.addEventListener('click', async function() {
+     if (!confirmUnlinkBtn.disabled) {
+        const res = await unlink(user_id, temp_student_id);
+
+        if (res.success) {
+            location.reload();
+        }
+       closeModal();
+     }
+   });
+
+
+    const confirmBtn = document.querySelectorAll('.confirmBtn');
+    confirmBtn.forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const student_id = this.getAttribute('data-id');
+            const res = await confirm(user_id, student_id);
+            
+            if (res.success) {
+                window.location.href = '/dashboard/teacher/students/list/0';
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+        });
+    })
+
+    const denyBtn = document.querySelectorAll('.denyBtn');
+    denyBtn.forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const student_id = this.getAttribute('data-id');
+            const res = await deny(user_id, student_id);
+
+            if (res.success) {
+                window.location.href = '/dashboard/teacher/students/list/0';
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+        });
+    });
+</script>
+{include '../partials/footer.latte'}

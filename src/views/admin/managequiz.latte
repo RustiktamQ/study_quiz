@@ -1,0 +1,922 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+<!-- Add Question Modal Backdrop -->
+<div id="add-question-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<!-- Add Question Modal (Multiple Choice Only) -->
+<div id="add-question-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="add-question-modal-title">
+   <div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+      <button id="close-add-question-modal-button" type="button" class="absolute top-3 end-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+         <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+         </svg>
+      </button>
+      <div class="mb-6 text-center">
+         <h3 id="add-question-modal-title" class="text-xl font-bold text-gray-800">
+            Add New Multiple Choice Question
+         </h3>
+         <p class="text-sm text-gray-600 mt-1">
+            Enter the question text and provide answer options.
+         </p>
+      </div>
+      <form id="add-question-form" class="space-y-4">
+          <!-- Question Type Info (Readonly or hidden if preferred) -->
+          <div>
+              <label class="block text-sm font-medium mb-2 text-gray-700">Question Type:</label>
+              <span class="py-3 px-4 block w-full border border-gray-200 bg-gray-100 rounded-lg text-sm text-gray-500">Multiple Choice</span>
+              <!-- Hidden input if needed for form submission -->
+              <input type="hidden" name="question_type" value="multiple-choice">
+          </div>
+
+          <!-- Question Text -->
+          <div>
+              <label for="add-question-text" class="block text-sm font-medium mb-2 text-gray-700">Question Text:</label>
+              <textarea id="add-question-text" name="question_text" placeholder="Enter the question..." rows="3" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+          </div>
+
+          <!-- Multiple Choice Section ADD-->
+          <div id="add-mc-section" class="space-y-3 border-t pt-4">
+              <h4 class="text-sm font-medium text-gray-600">Multiple Choice Options:</h4>
+               <p class="text-xs text-gray-500 -mt-2">Select the radio button for the correct answer. At least two options are required.</p>
+              <div id="add-mc-options-container" class="space-y-2">
+                  <!-- Option 1 (Example) -->
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="option 1" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                      <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
+                  
+                  <!-- Option 2 (Example) -->
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 2" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                       <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
+
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 3" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                      <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
+
+                  <div class="flex items-center gap-x-3 mc-option-row">
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 4" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                      <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
+                  </div>
+              </div>
+          </div>
+
+          <!-- Optional Explanation Field -->
+          <div class="border-t pt-4 space-y-3">
+              <h4 class="text-sm font-medium text-gray-600">Optional Details:</h4>
+              <div>
+                   <label for="add-question-explanation" class="block text-xs font-medium mb-1 text-gray-700">Explanation (Optional):</label>
+                   <textarea id="add-question-explanation" name="explanation" placeholder="Explain the correct answer (optional)..." rows="2" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+              </div>
+          </div>
+
+          <!-- JSON Field -->
+          <div class="border-t pt-4 space-y-3">
+               <h4 class="text-sm font-medium text-gray-600">JSON:</h4>
+               <div>
+                   <label for="add-question-json" class="block text-xs font-medium mb-1 text-gray-700">JSON format</label>
+                   <textarea id="add-question-json" name="json_questions" placeholder="JSON" rows="2" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+               </div>
+           </div>
+
+          <!-- Action Buttons -->
+          <div class="mt-6 flex justify-end gap-x-2 pt-4 border-t">
+              <button type="button" id="cancel-add-question-button" class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
+                  Cancel
+              </button>
+              <button type="submit" id="save-add-question-button" class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700">
+                  Save Question
+              </button>
+          </div>
+      </form>
+   </div>
+</div>
+
+<!-- Edit Question Modal Backdrop -->
+<div id="edit-question-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<!-- Edit Question Modal (Multiple Choice Only) -->
+<div id="edit-question-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="edit-question-modal-title">
+   <div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
+      <button id="close-edit-question-modal-button" type="button" class="absolute top-3 end-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+         <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+         </svg>
+      </button>
+      <div class="mb-6 text-center">
+         <h3 id="edit-question-modal-title" class="text-xl font-bold text-gray-800">
+            Edit Multiple Choice Question
+         </h3>
+         <p class="text-sm text-gray-600 mt-1">
+            Modify the question details below.
+         </p>
+      </div>
+       <form id="edit-question-form" class="space-y-4">
+           <input type="hidden" id="edit-question-id" name="question_id" value=""> <!-- Will be populated by JS -->
+
+            <!-- Question Type Info (Readonly or hidden) -->
+           <div>
+               <label class="block text-sm font-medium mb-2 text-gray-700">Question Type:</label>
+               <span class="py-3 px-4 block w-full border border-gray-200 bg-gray-100 rounded-lg text-sm text-gray-500">Multiple Choice</span>
+               <input type="hidden" name="question_type" value="multiple-choice">
+           </div>
+
+           <!-- Question Text -->
+           <div>
+               <label for="edit-question-text" class="block text-sm font-medium mb-2 text-gray-700">Question Text:</label>
+               <textarea id="edit-question-text" name="question_text" placeholder="Enter the question..." rows="3" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
+           </div>
+
+           <!-- Multiple Choice Section -->
+           <div id="edit-mc-section" class="space-y-3 border-t pt-4">
+               <h4 class="text-sm font-medium text-gray-600">Multiple Choice Options:</h4>
+               <p class="text-xs text-gray-500 -mt-2">Select the radio button for the correct answer. At least two options are required.</p>
+               <div id="edit-mc-options-container" class="space-y-2">
+                   <!-- Options will be populated by JS -->
+               </div>
+           </div>
+
+            <!-- Optional Explanation Field -->
+           <div class="border-t pt-4 space-y-3">
+               <h4 class="text-sm font-medium text-gray-600">Optional Details:</h4>
+               <div>
+                   <label for="edit-question-explanation" class="block text-xs font-medium mb-1 text-gray-700">Explanation (Optional):</label>
+                   <textarea id="edit-question-explanation" name="explanation" placeholder="Explain the correct answer (optional)..." rows="2" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+               </div>
+           </div>
+
+           <!-- Action Buttons -->
+           <div class="mt-6 flex justify-end gap-x-2 pt-4 border-t">
+               <button type="button" id="cancel-edit-question-button" class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
+                   Cancel
+               </button>
+               <button type="submit" id="save-edit-question-button" class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+                   Save Changes
+               </button>
+           </div>
+       </form>
+   </div>
+</div>
+
+
+<!-- Delete Confirmation Modal Backdrop -->
+<div id="delete-confirm-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<!-- Delete Confirmation Modal -->
+<div id="delete-confirm-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-modal-title">
+   <div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-md mx-4">
+       <!-- Close button added to Delete Modal as well -->
+       <button id="close-delete-confirm-modal-button" type="button" class="absolute top-3 end-3 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+         <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+         </svg>
+      </button>
+        <div class="text-center">
+             <div class="mx-auto flex items-center justify-center size-12 rounded-full bg-red-100">
+               <svg class="size-6 text-red-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v2m0 4h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+            </div>
+            <h3 id="delete-confirm-modal-title" class="mt-4 text-lg font-semibold text-gray-800">
+                Delete Question?
+            </h3>
+            <p class="mt-2 text-sm text-gray-600">
+                Are you sure you want to delete this question? This action cannot be undone.
+            </p>
+            <input type="hidden" id="delete-question-id-input" value=""> <!-- To store which question ID to delete -->
+        </div>
+        <div class="mt-6 grid grid-cols-2 gap-x-4">
+            <button type="button" id="cancel-delete-button" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
+                Cancel
+            </button>
+            <button type="button" id="confirm-delete-button" class="py-2 px-3 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700">
+                Delete
+            </button>
+        </div>
+   </div>
+</div>
+
+
+<div class="w-full max-w-[1632px] lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Page Title -->
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Manage Quiz: <span class="text-blue-600">{$quiz['name']}</span> <!-- Static Example Title -->
+            </h1>
+            <p class="text-sm text-gray-500">Edit quiz details and manage its questions.</p>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- Edit Quiz Details Form -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Quiz Details</h2>
+            <div> <!-- Action points to "#" or placeholder processing script -->
+                <input type="hidden" name="quiz_id" value="QZ001"> <!-- Static Example Quiz ID -->
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <!-- Quiz Title -->
+                    <div class="sm:col-span-2">
+                        <label for="quiz-title" class="block text-sm font-medium mb-2">Quiz Title</label>
+                        <input type="text" id="title" name="quiz_title" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" value="{$quiz['name']}"> <!-- Static example value -->
+                    </div>
+
+                     <!-- Subject/Topic -->
+                     <div>
+                         <label for="quiz-status" class="block text-sm font-medium mb-2">Category</label>
+                         <select id="category" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                            {foreach $categories as $category}
+                                {if $category['name'] == $quiz['category']}
+                                    <option selected value="{$category['id']}">{$category['name']}</option>
+                                {else}
+                                    <option value="{$category['id']}">{$category['name']}</option>
+                                {/if}
+                            {/foreach}
+                         </select>
+                    </div>
+
+                    <div>
+                         <label for="quiz-status" class="block text-sm font-medium mb-2">Sub Category</label>
+                         <select id="subCategory" name="quiz_status" class="py-3 px-4 pe-9 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                            {foreach $subCategories as $sub}
+                                {if $sub['name'] == $quiz['subCategory']}
+                                    <option selected value="{$sub['id']}">{$sub['name']}</option>
+                                {else}
+                                    <option value="{$sub['id']}">{$sub['name']}</option>
+                                {/if}
+                            {/foreach}
+                         </select>
+                    </div>
+
+                    <div>
+                        <label for="grade" class="text-sm font-medium mb-2">Grade</label>
+                        <select id="grade" name="grade" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option n:attr="selected => $quiz['grade'] == 0" value="0">Дошкольный</option>
+                            <option n:attr="selected => $quiz['grade'] == 1" value="1">Детский сад</option>
+                            <option n:attr="selected => $quiz['grade'] == 2" value="2">Первый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 3" value="3">Второй класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 4" value="4">Третий класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 5" value="5">Четвертый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 6" value="6">Пятый класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 7" value="7">Шестой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 8" value="8">Седьмой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 9" value="9">Восьмой класс</option>
+                            <option n:attr="selected => $quiz['grade'] == 10" value="10">Старшая школа</option>
+                        </select>
+                    </div>
+
+                </div> <!-- End grid -->
+
+                 <!-- Form Action Buttons -->
+                 <div class="mt-6 flex justify-end gap-x-2 border-t pt-4">
+                     <button id="deleteBtn" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent text-red-600 hover:bg-red-100 disabled:opacity-50 disabled:pointer-events-none">
+                         Delete Quiz
+                    </button>
+                     <a href="/adminPanel/quizzes" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Cancel
+                    </a>
+                    <button id="saveQuizBtn" type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Save Quiz Details
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End Edit Quiz Details Form -->
+
+
+        <!-- Manage Questions Section -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6 mt-6">
+             <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-gray-700">Questions ({count($questions)})</h2> <!-- Updated Static Example Count -->
+                <button id="add-question-button" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                    Add New Question
+                </button>
+            </div>
+
+            <!-- List of Questions -->
+            <div id="questions-list" class="space-y-3">
+                <!-- Static Example Question 1 -->
+
+                {foreach $questions as $question}
+                    <div class="p-4 border rounded-lg flex justify-between items-center question-item" data-question-id="{$question['id']}" data-question-type="multiple-choice">
+                        <div>
+                            <p class="text-sm font-medium text-gray-800">{$question['id']}. {$question['question_text']}</p>
+                            <p class="text-xs text-gray-500">Type: Multiple Choice</p>
+                        </div>
+                        <div class="flex gap-x-2">
+                            <button type="button" class="edit-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none">
+                                Edit
+                            </button>
+                            <button type="button" class="delete-question-button inline-flex items-center gap-x-1 text-sm font-semibold rounded-lg border border-transparent text-red-600 hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                {/foreach}
+
+                <!-- Example Empty State (Uncomment if needed) -->
+                <!--
+                 <div id="no-questions-message" class="p-4 text-center text-gray-500 hidden">
+                     No questions have been added to this quiz yet.
+                 </div>
+                 -->
+
+            </div>
+            <!-- End List of Questions -->
+
+        </div>
+        <!-- End Manage Questions Section -->
+
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+document.addEventListener('DOMContentLoaded', () => {
+   // --- General Modal Handling ---
+   const openModal = (modal, backdrop) => {
+       if (!modal || !backdrop) return;
+       backdrop.classList.remove('hidden');
+       modal.classList.remove('hidden');
+       requestAnimationFrame(() => {
+           backdrop.classList.remove('opacity-0');
+           modal.classList.remove('opacity-0', 'scale-95');
+           modal.classList.add('opacity-100', 'scale-100');
+       });
+       // REMOVED: Escape key listener
+       // document.addEventListener('keydown', handleEscapeKey);
+   };
+
+   const closeModal = (modal, backdrop) => {
+       if (!modal || !backdrop) return;
+       backdrop.classList.add('opacity-0');
+       modal.classList.remove('opacity-100', 'scale-100');
+       modal.classList.add('opacity-0', 'scale-95');
+       setTimeout(() => {
+           backdrop.classList.add('hidden');
+           modal.classList.add('hidden');
+       }, 300); // Corresponds to duration-300
+       // REMOVED: Escape key listener removal
+       // document.removeEventListener('keydown', handleEscapeKey);
+   };
+
+    // REMOVED: handleEscapeKey function
+    /*
+    const handleEscapeKey = (event) => {
+        if (event.key === 'Escape') {
+            // Find the currently visible modal and close it
+            const visibleModal = document.querySelector('.fixed.z-\\[999\\]:not(.hidden)');
+            if (visibleModal) {
+                const backdropId = visibleModal.id.replace('-modal', '-backdrop');
+                const backdrop = document.getElementById(backdropId);
+                closeModal(visibleModal, backdrop);
+            }
+        }
+    };
+    */
+
+    // REMOVED: Backdrop click handler
+    /*
+    const handleBackdropClick = (event) => {
+        // Check if the click is directly on a backdrop
+        if (event.target.id.endsWith('-backdrop')) {
+            const modalId = event.target.id.replace('-backdrop', '-modal');
+            const modal = document.getElementById(modalId);
+            if (modal && !modal.classList.contains('hidden')) {
+                closeModal(modal, event.target);
+            }
+        }
+    };
+    document.body.addEventListener('click', handleBackdropClick);
+    */
+
+    async function getQuestion(question_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/getQuestion`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    question_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;;
+        }
+    }
+
+
+   // --- Add Question Modal ---
+   const addQuestionModal = document.getElementById('add-question-modal');
+   const addQuestionBackdrop = document.getElementById('add-question-backdrop');
+   const addQuestionButton = document.getElementById('add-question-button');
+   const closeAddQuestionButton = document.getElementById('close-add-question-modal-button');
+   const cancelAddQuestionButton = document.getElementById('cancel-add-question-button');
+   const addQuestionForm = document.getElementById('add-question-form');
+   // REMOVED: addQuestionTypeSelect
+   const addMcSection = document.getElementById('add-mc-section');
+   const addMcOptionsContainer = document.getElementById('add-mc-options-container');
+   const addMcOptionButton = document.getElementById('add-mc-option-button');
+
+   const openAddModal = () => {
+       addQuestionForm.reset(); // Clear form on open
+       // Reset MC options to default 2
+       openModal(addQuestionModal, addQuestionBackdrop);
+   };
+   const closeAddModal = () => closeModal(addQuestionModal, addQuestionBackdrop);
+
+   if (addQuestionButton) addQuestionButton.addEventListener('click', openAddModal);
+   if (closeAddQuestionButton) closeAddQuestionButton.addEventListener('click', closeAddModal);
+   if (cancelAddQuestionButton) cancelAddQuestionButton.addEventListener('click', closeAddModal);
+   if (addQuestionForm) addQuestionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('Add Question Form Submitted (Frontend Only)');
+        // Add logic here to gather form data (it's always multiple choice)
+        const formData = new FormData(addQuestionForm);
+        // TODO: Send data to backend, then update UI
+        closeAddModal();
+   });
+
+   // --- Edit Question Modal ---
+   const editQuestionModal = document.getElementById('edit-question-modal');
+   const editQuestionBackdrop = document.getElementById('edit-question-backdrop');
+   const editQuestionButtons = document.querySelectorAll('.edit-question-button');
+   const closeEditQuestionButton = document.getElementById('close-edit-question-modal-button');
+   const cancelEditQuestionButton = document.getElementById('cancel-edit-question-button');
+   const editQuestionForm = document.getElementById('edit-question-form');
+   // REMOVED: editQuestionTypeSelect
+   const editMcSection = document.getElementById('edit-mc-section');
+   const editMcOptionButton = document.getElementById('edit-mc-option-button');
+   const editQuestionIdInput = document.getElementById('edit-question-id');
+   const editQuestionTextInput = document.getElementById('edit-question-text');
+   const editQuestionExplanationInput = document.getElementById('edit-question-explanation');
+    const qwe = document.getElementById('edit-mc-options-container');
+
+
+   const openEditModal = async (questionId) => {
+        editQuestionForm.reset(); // Reset form first
+        qwe.innerHTML = '';
+        localStorage.setItem("tempEdit", questionId);
+        
+        const questionData = await getQuestion(questionId);
+
+        // Populate common fields
+        editQuestionIdInput.value = questionId;
+        editQuestionTextInput.value = questionData.question_text;
+        editQuestionExplanationInput.value = questionData.explanation || '';
+
+        // Populate MC options
+        if (questionData.options && questionData.options.length > 0) {
+             JSON.parse(questionData.options).forEach((opt, index) => {
+                addMcOption('edit', opt, questionData.correct_answer, index);
+             });
+             updateRemoveButtonVisibility('edit'); // Update visibility after populating
+        } else {
+            // Add default 2 options if fetched data has none (shouldn't happen ideally)
+             addMcOption('edit', '', false, 0);
+             addMcOption('edit', '', false, 1);
+             updateRemoveButtonVisibility('edit');
+        }
+
+
+        openModal(editQuestionModal, editQuestionBackdrop);
+   };
+   const closeEditModal = () => closeModal(editQuestionModal, editQuestionBackdrop);
+
+   editQuestionButtons.forEach(button => {
+       button.addEventListener('click', async (e) => {
+           const questionContainer = e.target.closest('[data-question-id]');
+           const questionId = questionContainer ? questionContainer.dataset.questionId : null;
+           if (questionId) {
+               // Check if the question type is appropriate (though filtering happens in openEditModal now)
+               const questionType = questionContainer ? questionContainer.dataset.questionType : null;
+               if (questionType === 'multiple-choice') {
+                    await openEditModal(questionId);
+               } else {
+                   // Optionally show a message to the user
+                   // alert("Editing is only supported for Multiple Choice questions currently.");
+               }
+           } else {
+               console.error("Could not find question ID for edit button.");
+           }
+       });
+   });
+   if (closeEditQuestionButton) closeEditQuestionButton.addEventListener('click', closeEditModal);
+   if (cancelEditQuestionButton) cancelEditQuestionButton.addEventListener('click', closeEditModal);
+    if (editQuestionForm) editQuestionForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(editQuestionForm);
+        // TODO: Send data to backend, then update UI
+        closeEditModal();
+   });
+
+
+    // --- Delete Confirmation Modal ---
+    const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+    const deleteConfirmBackdrop = document.getElementById('delete-confirm-backdrop');
+    const deleteQuestionButtons = document.querySelectorAll('.delete-question-button');
+    const closeDeleteConfirmButton = document.getElementById('close-delete-confirm-modal-button'); // Added close button
+    const cancelDeleteButton = document.getElementById('cancel-delete-button');
+    const confirmDeleteButton = document.getElementById('confirm-delete-button');
+    const deleteQuestionIdInput = document.getElementById('delete-question-id-input');
+    const questionsListContainer = document.getElementById('questions-list'); // Container for questions
+
+    function getToken() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        ).token;
+    }
+
+    const openDeleteModal = (questionId) => {
+       deleteQuestionIdInput.value = questionId; // Store the ID
+       openModal(deleteConfirmModal, deleteConfirmBackdrop);
+    };
+    const closeDeleteModal = () => closeModal(deleteConfirmModal, deleteConfirmBackdrop);
+
+    deleteQuestionButtons.forEach(button => {
+       button.addEventListener('click', (e) => {
+           const questionContainer = e.target.closest('[data-question-id]');
+           const questionId = questionContainer ? questionContainer.dataset.questionId : null;
+           if (questionId) {
+                openDeleteModal(questionId);
+           } else {
+               console.error("Could not find question ID for delete button.");
+           }
+       });
+    });
+    // Add listener for the new close button on the delete modal
+    if (closeDeleteConfirmButton) closeDeleteConfirmButton.addEventListener('click', closeDeleteModal);
+    if (cancelDeleteButton) cancelDeleteButton.addEventListener('click', closeDeleteModal);
+    if (confirmDeleteButton) confirmDeleteButton.addEventListener('click', async () => {
+        const questionIdToDelete = deleteQuestionIdInput.value;
+
+        // --- Frontend Deletion (Example) ---
+        const questionElementToRemove = questionsListContainer.querySelector(`.question-item[data-question-id="`+questionIdToDelete+`"]`);
+        if (questionElementToRemove) {
+            const res = await deleteQuestion(questionIdToDelete, getToken());
+            if (res.success) questionElementToRemove.remove();
+            if (res.error) alert(res.message);
+        }
+        // TODO: Make API call to backend to actually delete
+        // --- End Frontend Deletion ---
+
+        closeDeleteModal();
+    });
+
+   // --- Multiple Choice Option Handling (Add & Edit) ---
+
+   // Helper to make remove buttons visible/invisible based on count
+    const updateRemoveButtonVisibility = (prefix) => {
+        const container = document.getElementById(prefix+`-mc-options-container`);
+        if (!container) return;
+        const optionRows = container.querySelectorAll('.mc-option-row');
+        optionRows.forEach((row, index) => {
+            const removeButton = row.querySelector('.remove-mc-option');
+            if (removeButton) {
+                // Make remove buttons visible only if there are more than 2 options
+                removeButton.classList.toggle('invisible', optionRows.length <= 2);
+            }
+        });
+    };
+
+    const addMcOption = (prefix, value = '', checked = false, index = -1) => {
+        const container = document.getElementById(prefix+`-mc-options-container`);
+        if (!container) return;
+
+        const optionCount = container.children.length;
+        const currentIndex = index !== -1 ? index : optionCount;
+
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-x-3 mc-option-row';
+
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.value = currentIndex;
+        radio.className = 'radiosEdit shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500';
+        radio.required = true;
+        if (value == checked) {
+            radio.checked = true;
+        }
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = `Option ` + currentIndex+1;
+        input.className = 'editOption py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500';
+        input.value = value;
+        input.required = true; // Options text should not be empty
+
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.innerHTML = '×';
+        removeButton.className = 'text-red-500 hover:text-red-700 remove-mc-option';
+        removeButton.setAttribute('aria-label', 'Remove option');
+        removeButton.addEventListener('click', (e) => {
+             e.target.closest('.mc-option-row').remove();
+             // After removing, update visibility of remaining remove buttons
+             updateRemoveButtonVisibility(prefix);
+             // Optional: Renumber radio values if necessary (complex)
+        });
+
+        div.appendChild(radio);
+        div.appendChild(input);
+        div.appendChild(removeButton);
+        container.appendChild(div);
+
+        // Update visibility after adding
+        updateRemoveButtonVisibility(prefix);
+    };
+});
+</script>
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    function getQuizId() {
+        const currentUrl = window.location.pathname;
+        const quizId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        return quizId;
+    }
+
+    async function deleteQuiz(quizId, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/quizzes/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizId,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function saveQuiz(id, title, category, subCategory, grade, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/quizzes/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    title,
+                    category,
+                    subCategory,
+                    grade,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function addQuestion(quizId, text, options, correct, explanation, json, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    quizId,
+                    text,
+                    options,
+                    correct,
+                    explanation,
+                    json,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function editQuestion(questionId, text, options, correct, explanation, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    questionId,
+                    text,
+                    options,
+                    correct,
+                    explanation,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function deleteQuestion(questionId, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/questions/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    questionId,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const token = getAdmin().token;
+
+    deleteBtn.addEventListener('click', async () => {
+            const res = await deleteQuiz(getQuizId(), token);
+
+            if (res.success) {
+                location.href = '/adminPanel/quizzes';
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+    });
+
+    saveQuizBtn.addEventListener('click', async () => {
+            const res = await saveQuiz(getQuizId(), title.value, category.value, subCategory.value, grade.value, token);
+
+            if (res.success) {
+				Toastify({
+                    text: "Success",
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                            background: "linear-gradient(to right,rgb(34, 197, 94),rgb(34, 197, 94))",
+                        },
+				}).showToast();
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                        background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+    });
+
+    const radios = document.getElementsByClassName('radio-add');
+
+    Array.from(radios).forEach(e => {
+        e.addEventListener('click', () => {
+            e.checked = true;
+        });
+    });
+
+    document.getElementById('save-add-question-button').addEventListener('click', async () => {
+        const qText = document.getElementById('add-question-text').value;
+        const options = document.getElementsByClassName('option');
+        const exp = document.getElementById('add-question-explanation').value;
+        const jsonRaw = document.getElementById('add-question-json').value;
+        let correctIndex;
+
+        for(let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                correctIndex = i;
+            }
+        }
+        const arrOptions = Array.from(options).map(x => x.value);
+
+        let parsedJson = null;
+        if (jsonRaw.trim() !== "") {
+            try {
+                parsedJson = JSON.parse(jsonRaw);
+            } catch (e) {
+                Toastify({
+                    text: "Ошибка в JSON: " + e.message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, red, orange)",
+                    },
+                }).showToast();
+                return;
+            }
+        }
+
+        const res = await addQuestion(getQuizId(), qText, arrOptions, arrOptions[correctIndex], exp, parsedJson, token);
+
+        if (res.success) {
+            location.reload();
+        } else if (res.error) {
+            Toastify({
+                text: res.message,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                },
+            }).showToast();
+        }
+    });
+
+    document.getElementById('save-edit-question-button').addEventListener('click', async (e) => {
+        const qText = document.getElementById('edit-question-text').value;
+        const options = document.getElementsByClassName('editOption');
+        const exp = document.getElementById('edit-question-explanation').value;
+        const questionId = localStorage.getItem("tempEdit");
+        const radiosEdit = document.getElementsByClassName('radiosEdit');
+
+        let correctIndex;
+
+        for(let i = 0; i < radiosEdit.length; i++) {
+            if (radiosEdit[i].checked) {
+                correctIndex = i;
+            }
+        }
+        const arrOptions = Array.from(options).map(x => x.value);
+        const res = await editQuestion(questionId, qText, arrOptions, arrOptions[correctIndex], exp, token);
+
+        if (res.success) {
+            location.reaload();
+        } else if (res.error) {
+            Toastify({
+                text: res.message,
+                duration: 3000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                },
+            }).showToast();
+        }
+    })
+</script>
+{include './partials/footer.latte'}

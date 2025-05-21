@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AqylApp - Революционное AI обучение для учителей и учеников.</title>
+    <link rel="stylesheet" href="/main/css/output.css" media="all">
+    <link rel="stylesheet" href="/main/css/input.css" media="all">
+    <meta name="description" content="Используйте возможности AI в образовательных целях. Отслеживайте прогресс учеников, получайте сертификаты и многое другое!" />
+    <meta name="robots" content="index, follow, max-snippet: -1, max-image-preview:large, max-video-preview: -1" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="AqylApp - Образование с AI." />
+    <meta property="og:description" content="Используйте возможности AI в образовательных целях. Отслеживайте прогресс учеников, получайте сертификаты и многое другое!" />
+    <meta property="og:url" content="https://aqyl.app/" />
+    <meta property="og:site_name" content="✨ AqylApp" />
+
+    <script src="https://cdn.jsdelivr.net/combine/npm/gsap@3,npm/gsap@3/dist/Flip.min.js,npm/gsap@3/dist/TextPlugin.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@swup/progress-plugin@3/dist/index.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quicklink@2/dist/quicklink.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swup@4/dist/Swup.umd.min.js"></script>
+
+    <style> html.is-changing .transition-fade { transition: opacity 0.25s; opacity: 1; } html.is-animating .transition-fade { opacity: 0; } </style>
+
+    <!-- todo finish till may -->
+    <!--
+    <meta property="og:image" content="images//hom-banner-compressed.jpg" />
+    <meta property="og:image:secure_url" content="images//hom-banner-compressed.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="660" />
+    <meta name="twitter:site" content="@" />
+    <meta name="twitter:image" content="images/hom-banner-compressed.jpg" />
+    <meta name="twitter:creator" content="@MGorislavets" />
+    -->
+
+    <meta name="twitter:description" content="Используйте возможности AI в образовательных целях. Отслеживайте прогресс учеников, получайте сертификаты и многое другое!" />
+    <meta name="twitter:title" content="AqylApp - Образование с AI." />
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="px-4 md:px-0">
+
+<header class="sticky top-4 inset-x-0 z-50 w-full">
+    <nav class="relative max-w-[1440px] w-full bg-white/80 backdrop-blur-md rounded-xl border border-gray-200 mx-auto py-2.5 px-4 md:flex md:items-center md:justify-between md:py-3 md:px-6 lg:px-8 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="/" class="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200" aria-label="Logo">
+                    <img src="/main/assets/logo.png" alt="Logo" class="w-28 md:w-32">
+                </a>
+            </div>
+            <div class="md:hidden">
+                <button type="button" class="mobile-menu-button flex justify-center items-center w-10 h-10 rounded-full bg-green-500 hover:bg-green-600 text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-500" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation">
+                    <svg class="menu-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path class="bar-top" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16"></path>
+                        <path class="bar-middle" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h16"></path>
+                        <path class="bar-bottom" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu hidden overflow-hidden transition-all duration-300 max-h-0 basis-full grow md:flex md:items-center md:justify-end md:max-h-full">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-end gap-y-6 py-6 md:py-0 md:gap-x-7">
+                <!-- <a href="/main/about/" class="nav-link group px-2 py-2 md:py-4 text-base md:text-sm font-medium text-black hover:text-green-600 transition-colors duration-300 focus:outline-none focus:text-green-600">
+                  <span class="relative inline-block">
+                    О Нас
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                  </span>
+                </a> -->
+                <a href="/students" class="nav-link group px-2 py-2 md:py-4 text-base md:text-sm font-medium text-black hover:text-green-600 transition-colors duration-300 focus:outline-none focus:text-green-600">
+              <span class="relative inline-block">
+                Для учеников
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+              </span>
+                </a>
+                <a href="/teachers" class="nav-link group px-2 py-2 md:py-4 text-base md:text-sm font-medium text-black hover:text-green-600 transition-colors duration-300 focus:outline-none focus:text-green-600">
+              <span class="relative inline-block">
+                Для учителей
+                <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+              </span>
+                </a>
+                <!-- страница (для школ) будет но не щас) летом доделаем нахуй -->
+                <!-- <a href="/main/school/" class="nav-link group px-2 py-2 md:py-4 text-base md:text-sm font-medium text-black hover:text-green-600 transition-colors duration-300 focus:outline-none focus:text-green-600">
+                  <span class="relative inline-block">
+                    Для школ
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                  </span>
+                </a> -->
+                <a href="/ai" class="nav-link group px-2 py-2 md:py-4 text-base md:text-sm font-medium text-black hover:text-green-600 transition-colors duration-300 focus:outline-none focus:text-green-600">
+              <span class="flex items-center justify-between">
+                <span class="relative inline-block">
+                  AqylAI
+                  <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 transition-all duration-300 group-hover:w-full"></span>
+                </span>
+                <svg class="w-4 ml-1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#00c951" stroke="#00c951" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286-.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="#00c951"/></svg>
+              </span>
+                </a>
+
+                <div class="mt-2 md:mt-0 md:ml-6">
+                    <a class="inline-flex items-center justify-center gap-x-2 py-2.5 px-6 bg-green-500 hover:bg-green-600 active:bg-green-700 transition-colors duration-300 font-medium text-sm text-white rounded-full focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2" href="/select">
+                        Зарегистрироваться
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- ========== END HEADER ========== -->

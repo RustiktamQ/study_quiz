@@ -1,0 +1,23 @@
+<?php
+return [
+    'welcome' => 'Қош келдіңіз',
+    'home_title' => 'Басты бет',
+    'account' => 'Аккаунт',
+    'settings' => 'Settings',
+    'logout' => 'Log Out',
+    'login' => 'Log in',
+    'create_profile' => 'Create Profile',
+    'about' => 'About',
+    'dashboard' => 'Dashboard',
+    'features' => 'Features',
+    'skills' => 'Skills',
+    'school' => 'School',
+    'language' => 'Kazakh',
+    'free' => 'is absolutely free, try it now!',
+    'read_more' => 'Read more',
+    'immersive' => 'Immersive learning experience',
+    'personalized_1' => 'is personalized learning. With a comprehensive K-12 curriculum, individualized guidance, and real-time analytics,',
+    'personalized_2' => 'meets the unique needs of each learner.',
+    'get_started' => 'Get started',
+    'learn_more' => 'Learn more',
+];

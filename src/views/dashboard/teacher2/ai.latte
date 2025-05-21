@@ -1,0 +1,308 @@
+<?php include 'partials/header.php'; ?>
+<main>
+    <div class="p-4 mx-auto max-w-7xl md:p-6 lg:p-8">
+        <!-- Секция Hero -->
+        <section class="mb-12 text-center md:mb-16 lg:mb-20">
+            <h1 class="text-4xl mt-24 font-bold tracking-tight sm:text-5xl md:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-green-500 to-teal-500">
+                Раскройте потенциал учеников с помощью AqylAI
+            </h1>
+            <p class="mt-4 text-lg leading-8 text-gray-600 md:mt-6 max-w-2xl mx-auto">
+                Улучшите свое преподавание с помощью передового метода помощи искусственного интеллекта. Смотрите статистику, адаптируйте свой подход для максимального эффекта.
+            </p>
+        </section>
+
+        <section class="mb-4">
+            <div class="max-w-5xl p-4 mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm text-center md:p-8 lg:p-10">
+                100% Средств пойдут на развитие, обновление и поддержку проекта. Мы верим в прозрачность и честность, поэтому вся информация о расходах будет <a href="" class="underline">доступна для просмотра.</a>
+            </div>
+        </section>
+
+        <!-- Секция тарифов -->
+        <section class="mb-12 md:mb-16 lg:mb-20">
+            <div class="max-w-5xl p-6 mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm md:p-8 lg:p-10">
+                <h2 class="mb-6 text-3xl font-semibold text-center text-gray-900">
+                    Гибкие тарифы для ваших потребностей
+                </h2>
+
+                <!-- Переключатель цикла оплаты -->
+                <div class="flex justify-center mb-8 space-x-2 bg-gray-100 p-1 rounded-lg max-w-md mx-auto">
+                    <button id="monthlyBtn" data-cycle="monthly" class="billing-cycle-btn cursor-pointer flex-1 px-4 py-2 text-sm font-medium rounded-md transition duration-200 ease-in-out">Ежемесячно</button>
+                    <button id="quarterlyBtn" data-cycle="quarterly" class="billing-cycle-btn cursor-pointer flex-1 px-4 py-2 text-sm font-medium rounded-md transition duration-200 ease-in-out">3 месяца</button>
+                    <button id="semiAnnualBtn" data-cycle="semiAnnual" class="billing-cycle-btn cursor-pointer flex-1 px-4 py-2 text-sm font-medium rounded-md transition duration-200 ease-in-out">6 мес.</button>
+                    <button id="annualBtn" data-cycle="annual" class="billing-cycle-btn cursor-pointer flex-1 px-4 py-2 text-sm font-medium rounded-md transition duration-200 ease-in-out">Годовой</button>
+                </div>
+
+                <!-- Ползунок количества студентов -->
+                <div class="mb-8">
+                    <label for="studentSlider" class="block mb-2 text-sm font-medium text-center text-gray-700">Количество студентов: <span id="studentCount" class="font-semibold text-gray-900">50</span></label>
+                    <input id="studentSlider" type="range" min="10" max="50" value="10" step="1" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-600">
+                     <div class="flex justify-between text-xs text-gray-500 mt-1 px-1">
+                        <span>10</span>
+                        <span>500</span>
+                    </div>
+                </div>
+
+                <!-- Отображение цены -->
+                <div class="text-center mb-8">
+                    <div class="flex items-baseline justify-center gap-x-2">
+                        <span class="text-5xl font-bold tracking-tight text-gray-900" id="priceDisplay">$0.00</span>
+                        <span class="text-base font-medium text-gray-500" id="priceSuffix">/ студент</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2" id="billingNotice">Оплата ежемесячно</p>
+                     <!-- Опционально: Отображение общей стоимости за период -->
+                    <p class="text-xs text-gray-400 mt-1" id="totalCostNotice"></p>
+                </div>
+
+                <!-- Кнопка призыва к действию -->
+                <div class="flex justify-center">
+                    <a href="#" class="px-8 py-2.5 text-base font-medium text-white bg-green-600 border border-transparent rounded-2xl shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+                        Начать работу с ИИ
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 md:mb-16 lg:mb-20">
+    <h2 class="mb-8 text-3xl font-semibold text-center text-gray-900 lg:mb-12">
+        Функции, которые действительно важны
+    </h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6">
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl sm:col-span-2 lg:col-span-2">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-sky-600 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M4 16.5a3 3 0 0 0 3 3a2.5 2.5 0 0 0 5 0a2.5 2.5 0 1 0 5 0a3 3 0 0 0 2.567-4.553a3.001 3.001 0 0 0 0-5.893A3 3 0 0 0 17 4.5a2.5 2.5 0 1 0-5 0a2.5 2.5 0 0 0-5 0a3 3 0 0 0-2.567 4.553a3.001 3.001 0 0 0 0 5.893A3 3 0 0 0 4 16.5"/><path d="m7.5 14.5l1.842-5.526a.694.694 0 0 1 1.316 0L12.5 14.5m3-6v6m-7-2h3"/></g></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Мгновенная обратная связь</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Студенты получают моментальную и конструктивную обратную связь по результатам тестов, что позволяет учиться на ошибках в реальном времени.
+            </p>
+        </div>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-green-600 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z" color="currentColor"/></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Аналитика от ИИ</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Искусственный интеллект анализирует индивидуальные результаты студентов и предлагает рекомендации для повышения эффективности обучения.
+            </p>
+        </div>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-blue-600 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M21 8.333C20.075 7.032 18.865 6 16.978 6C8.468 6 12.92 20.5 5 20.5"/><path d="M21 21H10c-3.3 0-4.95 0-5.975-1.025S3 17.3 3 14V3"/></g></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Анализ вовлеченности</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Следите за активностью студентов: как часто и насколько долго они работают с материалами. Это помогает вовремя выявить снижение интереса.
+            </p>
+        </div>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl lg:col-span-2">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-red-600 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M4 12v4.18c0 1.694 0 2.54.268 3.217c.43 1.088 1.342 1.945 2.497 2.35c.718.253 1.618.253 3.417.253c3.148 0 4.722 0 5.98-.442c2.02-.71 3.615-2.21 4.37-4.113c.468-1.184.468-2.666.468-5.63V9.27c0-3.07 0-4.605-.848-5.672a4.1 4.1 0 0 0-.855-.805C18.385 2.15 17.15 2.024 15 2"/><path d="M21 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 11 22M4.142 2.442c1.207-.732 2.26-.437 2.893.032c.259.193.389.289.465.289s.206-.096.465-.289c.633-.469 1.686-.764 2.893-.032c1.584.959 1.942 4.124-1.71 6.795C8.45 9.745 8.103 10 7.5 10s-.951-.255-1.647-.763C2.2 6.567 2.558 3.4 4.142 2.442"/></g></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Сертификаты</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Индивидуальные сертификаты достижений для каждого ученика — отличный способ поддержать мотивацию и признание успехов.
+            </p>
+        </div>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl lg:col-span-2">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-yellow-500 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.017 20.305c1.13 1.614 6.042 2.882 8.362-.14c2.51 1.2 6.65.828 10.02-1.052c.468-.261.912-.591 1.183-1.054c.613-1.045.628-2.495-.49-4.634c-1.865-4.655-5.218-8.74-6.572-10.383c-.278-.254-2.052-.614-3.133-.96c-.478-.147-1.367-.246-2.431 1.156c-.505.665-2.796 2.297.111 3.395c.45.115.782.326 2.836-.05c.268-.046.936 0 1.407.827l.983 1.406a.96.96 0 0 1 .17.44c.172 1.5.166 3.376 1.002 4.326c-1.291-.933-4.664-2.042-7.206 1.113M2.001 12.94a6.714 6.714 0 0 1 8.416-.419" color="currentColor"/></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Цели и прогресс</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Отслеживайте активность учеников по дням. Стрики (серии непрерывных дней с занятиями) мотивируют регулярно учиться. Особые награды — для самых упорных.
+            </p>
+        </div>
+
+        <div class="p-6 bg-white border border-gray-200 rounded-2xl lg:col-span-4">
+            <div class="flex items-center mb-3 space-x-3">
+                <!-- icon -->
+                <svg class="w-8 h-8 text-violet-500 shrink-0" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></g></svg>
+                <h3 class="text-lg font-semibold text-gray-800">Сервис доступен 24/7</h3>
+            </div>
+            <p class="text-sm text-gray-600">
+                Благодаря ИИ, вы можете обучаться в любое удобное для вас время — без ограничений и ожиданий.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+        <section>
+             <div class="bg-gradient-to-br from-green-50 via-white to-green-50 p-8 md:p-12 lg:p-16 rounded-3xl border border-gray-200">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                         <h2 class="text-3xl font-semibold text-gray-900 mb-4">Готовы поднять ваше преподавание на новый уровень?</h2>
+                         <p class="text-gray-600 mb-6 leading-relaxed">
+                             Хватит догадываться, начните знать наверняка. Наш ИИ обеспечивает ясность, необходимую для принятия обоснованных решений и помощи каждому студенту в достижении успеха. Попробуйте сегодня и увидите разницу, которую могут принести инструменты с использованием ИИ.
+                         </p>
+                         <a href="#" class="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-green-600 border border-transparent rounded-2xl shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200 ease-in-out">
+                             Перейти к покупке
+                             <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M6.6 11.923c5.073-9.454 11.39-9.563 13.913-8.436c1.127 2.524 1.018 8.84-8.436 13.913c-.098-.564-.643-2.04-2.04-3.437s-2.873-1.942-3.437-2.04"/><path d="M13.35 16.95c1.839.9 2.035 2.514 2.29 4.05c0 0 3.85-2.846 1.387-6.75M7.05 10.727C6.15 8.888 4.536 8.692 3 8.437c0 0 2.847-3.85 6.75-1.387m-3.732 7.862c-.512.511-1.382 1.996-.768 3.838c1.843.614 3.327-.256 3.84-.767M17.3 8.45a1.75 1.75 0 1 0-3.5 0a1.75 1.75 0 0 0 3.5 0"/></g></svg>
+                         </a>
+                    </div>
+                     <div class="hidden lg:block text-center">
+                         <svg class="w-full h-64 text-green-300" fill="none" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                             <path d="M10 140 Q 50 80, 100 90 T 190 60" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="5 5"/>
+                             <path d="M15 130 Q 60 120, 110 100 T 185 110" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.6"/>
+                             <path d="M5 100 Q 40 10, 90 50 T 195 20" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="5 5" opacity="0.8"/>
+                             <circle cx="90" cy="50" r="5" fill="currentColor"/>
+                             <circle cx="190" cy="60" r="5" fill="currentColor"/>
+                             <circle cx="185" cy="110" r="5" fill="currentColor"/>
+                             <circle cx="195" cy="20" r="5" fill="currentColor"/>
+                         </svg>
+                         <p class="mt-2 text-sm text-gray-500 italic">Визуализация прогресса на основе ИИ</p>
+                     </div>
+                </div>
+             </div>
+        </section>
+
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const slider = document.getElementById('studentSlider');
+    const studentCountDisplay = document.getElementById('studentCount');
+    const priceDisplay = document.getElementById('priceDisplay');
+    // const priceSuffix = document.getElementById('priceSuffix'); // Суффикс больше не нужен явно в JS, если он статичен в HTML
+    const billingNotice = document.getElementById('billingNotice');
+    const totalCostNotice = document.getElementById('totalCostNotice');
+    const monthlyBtn = document.getElementById('monthlyBtn');
+    const quarterlyBtn = document.getElementById('quarterlyBtn');
+    const semiAnnualBtn = document.getElementById('semiAnnualBtn');
+    const annualBtn = document.getElementById('annualBtn');
+    const billingCycleButtons = document.querySelectorAll('.billing-cycle-btn');
+
+    // --- Конфигурация цен ---
+    const basePricePerStudentMonthly = 700; // Базовая цена за студента для ежемесячного плана в тенге
+
+    const billingCycles = {
+        monthly: { discount: 0, months: 1, label: "Оплата ежемесячно" },
+        quarterly: { discount: 0.05, months: 3, label: "Оплата каждые 3 месяца" },
+        semiAnnual: { discount: 0.1, months: 6, label: "Оплата каждые 6 месяцев" },
+        annual: { discount: 0.2, months: 12, label: "Оплата ежегодно" }
+    };
+
+    let currentCycle = 'monthly'; // Цикл по умолчанию
+    let currentTotalMonthlyCost = 0; // Общая месячная стоимость для отслеживания анимации
+    let animationFrameId = null; // Для контроля кадра анимации
+
+    /**
+     * Форматирует число как валюту KZT без копеек и с символом ₸.
+     * @param {number} amount - Сумма для форматирования.
+     * @returns {string} - Отформатированная строка валюты (e.g., "500 ₸").
+     */
+    function formatKZT(amount) {
+        // 1. Округляем до ближайшего целого тенге.
+        const roundedAmount = Math.round(amount);
+
+        // 2. Форматируем число с использованием локали 'ru-RU' для правильных пробелов в качестве разделителей тысяч.
+        const numberPart = roundedAmount.toLocaleString('ru-RU', {
+            minimumFractionDigits: 0, // Без копеек
+            maximumFractionDigits: 0  // Без копеек
+        });
+
+        // 3. Добавляем символ тенге (₸) с неразрывным пробелом ( ) перед ним.
+        return `${numberPart} ₸`;
+    }
+
+    function calculatePrice() {
+        const studentCount = parseInt(slider.value, 10);
+        const cycleData = billingCycles[currentCycle];
+
+        // Расчет эффективной месячной цены за студента после скидки
+        const effectiveMonthlyPricePerStudent = basePricePerStudentMonthly * (1 - cycleData.discount);
+
+        // Расчет общей эффективной месячной стоимости для всех студентов
+        const targetTotalMonthlyCost = effectiveMonthlyPricePerStudent * studentCount;
+
+        // Обновление отображения
+        studentCountDisplay.textContent = studentCount;
+        billingNotice.textContent = cycleData.label;
+
+        // Расчет общей суммы счета за период
+        const totalBilledAmount = effectiveMonthlyPricePerStudent * cycleData.months * studentCount;
+        // Используем innerHTML для корректного отображения символа ₸
+        totalCostNotice.innerHTML = `Всего: ${formatKZT(totalBilledAmount)} за ${cycleData.months} месяц(ев)`;
+
+        // Запускаем анимацию обновления цены (которая отображает цену за студента)
+        animatePriceUpdate(targetTotalMonthlyCost);
+    }
+
+     // --- Функция анимации цены ---
+    function animatePriceUpdate(targetTotalMonthlyCost) {
+        const startTotalMonthlyCost = currentTotalMonthlyCost;
+        const difference = targetTotalMonthlyCost - startTotalMonthlyCost;
+        let startTime = null;
+        const duration = 300; // Продолжительность анимации в миллисекундах
+
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+
+        function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            currentTotalMonthlyCost = startTotalMonthlyCost + difference * progress;
+
+             // Расчитываем и отображаем цену *за студента* на текущем шаге анимации
+             const studentCount = parseInt(slider.value, 10);
+             const currentEffectiveMonthlyPricePerStudent = studentCount > 0 ? currentTotalMonthlyCost / studentCount : 0;
+             // Используем innerHTML для корректного отображения символа ₸
+             priceDisplay.innerHTML = formatKZT(currentEffectiveMonthlyPricePerStudent);
+
+            if (progress < 1) {
+                animationFrameId = requestAnimationFrame(step);
+            } else {
+                 // Убедимся, что финальная цена точная
+                 const finalEffectiveMonthlyPricePerStudent = studentCount > 0 ? targetTotalMonthlyCost / studentCount : 0;
+                 // Используем innerHTML для корректного отображения символа ₸
+                 priceDisplay.innerHTML = formatKZT(finalEffectiveMonthlyPricePerStudent);
+                 currentTotalMonthlyCost = targetTotalMonthlyCost; // Обновляем сохраненное значение
+                 animationFrameId = null;
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(step);
+    }
+
+
+    function updateButtonStates(selectedButton) {
+        billingCycleButtons.forEach(btn => {
+            btn.classList.remove('bg-green-600', 'text-white', 'font-semibold');
+            btn.classList.add('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+        });
+        selectedButton.classList.add('bg-green-600', 'text-white', 'font-semibold');
+        selectedButton.classList.remove('bg-gray-100', 'text-gray-700', 'hover:bg-gray-200');
+    }
+
+    // --- Слушатели событий ---
+    slider.addEventListener('input', calculatePrice);
+
+    billingCycleButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            currentCycle = button.dataset.cycle;
+            updateButtonStates(button);
+            calculatePrice();
+        });
+    });
+
+    // --- Начальная настройка ---
+    updateButtonStates(monthlyBtn); // Установка ежемесячного как активного по умолчанию
+    calculatePrice(); // Расчет начальной цены
+
+});
+</script>
+<?php include 'partials/footer.php'; ?>

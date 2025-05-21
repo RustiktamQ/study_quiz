@@ -1,0 +1,260 @@
+<!-- текущий header -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-learning Dashboard</title>
+  <link rel="stylesheet" href="accord/stylesheet.css">
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+    @import url(https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
+
+    body {
+      background-color: #f3f4f6;
+      font-family: 'Nunito'!important;
+      font-weight: 900;
+    }
+    .inter {
+      font-family: 'Inter'!important;
+    }
+    .progress-bar {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #e9e9e9;
+    }
+    .progress-fill {
+      height: 6px;
+      border-radius: 3px;
+      background-color: #000;
+    }
+    .card-stats {
+      min-height: 130px;
+    }
+    .avatar-robot {
+      background-color: #ffd7e0;
+    }
+    .calendar-day {
+      width: 40px;
+      height: 40px;
+    }
+    .calendar-item {
+      border-radius: 14px;
+    }
+
+  </style>
+  
+</head>
+<body class="font-sans">
+  <div class="container mx-auto p-4">
+    <div class="max-w-[1632px] bg-white rounded-3xl p-6 border mx-auto">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-8">
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gradient-to-br from-green-100 to-green-300 rounded-full flex items-center justify-center mr-4">
+            <a href="{$ROOT_URL}">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-800" width="32" height="32" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.25 9.25V6L8 2.75L1.75 6L8 9.25l3.25-1.5v3.5c0 1-1.5 2-3.25 2s-3.25-1-3.25-2v-3.5"/></svg>
+            </a>  
+          </div>
+          <nav class="hidden xl:flex">
+            <a href="{$ROOT_URL}dashboard/student" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                Панель
+            </a>
+            <a href="{$ROOT_URL}dashboard/student/learn" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg>
+                Изучать
+            </a>
+            <a href="{$ROOT_URL}dashboard/student/teacher" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+                Мой учитель
+            </a>
+            
+            <!--<a href="{$ROOT_URL}dashboard/student/analytics" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M20.5 15.828c-2.501 5.928-10.636 7.656-15.299 3.036C.63 14.334 2.045 6.13 8.057 3.5"/><path d="M17.683 12.5c1.888 0 2.832 0 3.441-.845c.023-.032.06-.088.081-.121c.548-.887.266-1.568-.299-2.93a10.18 10.18 0 0 0-5.51-5.51c-1.362-.565-2.043-.847-2.93-.3c-.033.021-.09.06-.121.082c-.845.61-.845 1.553-.845 3.44v2.111c0 1.92 0 2.88.596 3.477c.597.596 1.557.596 3.476.596z"/></g></svg>
+                Аналитика
+            </a>-->
+            <a href="{$ROOT_URL}dashboard/student/settings" class="flex items-center font-semibold px-4 py-2 text-gray-800">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                Настройки
+            </a>
+            <a href="#" class="hidden flex items-center font-semibold px-4 py-2 text-gray-800">
+              <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258">
+                <defs>
+                    <radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)">
+                      <stop offset="0%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset=".01%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset="30.022%" stop-color="oklch(0.723 0.219 149.579)"/>
+                      <stop offset="54.552%" stop-color="oklch(0.648 0.2 131.684)"/>
+                      <stop offset="82.537%" stop-color="oklch(0.527 0.154 150.069)"/>
+                      <stop offset="100%" stop-color="oklch(0.448 0.119 151.328)"/>
+                    </radialGradient>
+                    <radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)">
+                      <stop offset="0%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset=".01%" stop-color="oklch(0.792 0.209 151.711)"/>
+                      <stop offset="30.022%" stop-color="oklch(0.723 0.219 149.579)"/>
+                      <stop offset="54.552%" stop-color="oklch(0.648 0.2 131.684)"/>
+                      <stop offset="82.537%" stop-color="oklch(0.527 0.154 150.069)"/>
+                      <stop offset="100%" stop-color="oklch(0.448 0.119 151.328)"/>
+                    </radialGradient>
+                </defs>
+                <path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/>
+                <path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/>
+              </svg>
+              AI
+            </a>
+          </nav>
+        </div>
+        <div class="flex items-center">
+          <div class="mr-6 text-right hidden md:block">
+            <p class="font-medium">Привет, {$firstname}</p>
+            <div class="w-3 h-0.5 bg-green-500 rounded-full ml-auto"></div>
+          </div>
+
+          <div class="relative">
+            <button id="burgerButton" class="w-10 xl:hidden flex mr-3 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+              <svg class="text-gray-600 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16M4 12h16M4 19h16" color="currentColor"/></svg>
+            </button>
+            
+            <div id="burgerDropdown" class="font-['Inter'] font-normal absolute left-0 mt-2 border z-50 py-2 w-40 bg-white rounded-lg shadow-lg hidden opacity-0 transform -translate-y-2 transition-all duration-300">
+              <a href="{$ROOT_URL}dashboard/student" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                  Панель
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/learn" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg>
+                  Изучать
+                </div>
+              </a>
+              <a href="{$ROOT_URL}dashboard/student/teacher" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+                  Мой учитель
+                </div>
+              </a>
+              <!--<a href="{$ROOT_URL}dashboard/student/analytics" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M20.5 15.828c-2.501 5.928-10.636 7.656-15.299 3.036C.63 14.334 2.045 6.13 8.057 3.5"/><path d="M17.683 12.5c1.888 0 2.832 0 3.441-.845c.023-.032.06-.088.081-.121c.548-.887.266-1.568-.299-2.93a10.18 10.18 0 0 0-5.51-5.51c-1.362-.565-2.043-.847-2.93-.3c-.033.021-.09.06-.121.082c-.845.61-.845 1.553-.845 3.44v2.111c0 1.92 0 2.88.596 3.477c.597.596 1.557.596 3.476.596z"/></g></svg>
+                  Аналитика
+                </div>
+              </a>-->
+              <a href="{$ROOT_URL}dashboard/student/settings" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                  Настройки
+                </div>
+              </a><hr>
+              <a href="#" class="hidden block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                <svg class="mr-2 size-4" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258"><defs><radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient><radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient></defs><path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/><path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/></svg>
+                AI
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!--<button class="w-10  mr-3 h-10 rounded-full border border-gray-300 flex items-center justify-center">
+            <svg class="text-gray-600 size-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M2.53 14.77c-.213 1.394.738 2.361 1.902 2.843c4.463 1.85 10.673 1.85 15.136 0c1.164-.482 2.115-1.45 1.902-2.843c-.13-.857-.777-1.57-1.256-2.267c-.627-.924-.689-1.931-.69-3.003C19.525 5.358 16.157 2 12 2S4.475 5.358 4.475 9.5c0 1.072-.062 2.08-.69 3.003c-.478.697-1.124 1.41-1.255 2.267"/><path d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3"/></g></svg>
+          </button>-->
+          
+          <div class="relative font-['Inter'] font-normal ">
+            <div id="profileButton" class="w-10 h-10 rounded-full bg-orange-200 overflow-hidden cursor-pointer">
+              <img src="{$picture}" alt="Profile" class="w-full h-full object-cover">
+            </div>
+            
+            <div id="profileDropdown" class="absolute right-0 mt-2 border z-50 w-48 bg-white rounded-lg shadow-lg py-2 hidden opacity-0 transform -translate-y-2 transition-all duration-300">
+              <a href="{$ROOT_URL}dashboard/student/settings" class="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-3" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M20.79 9.152C21.598 10.542 22 11.237 22 12s-.403 1.458-1.21 2.848l-1.923 3.316c-.803 1.384-1.205 2.076-1.865 2.456s-1.462.38-3.065.38h-3.874c-1.603 0-2.405 0-3.065-.38s-1.062-1.072-1.865-2.456L3.21 14.848C2.403 13.458 2 12.763 2 12s.403-1.458 1.21-2.848l1.923-3.316C5.936 4.452 6.338 3.76 6.998 3.38S8.46 3 10.063 3h3.874c1.603 0 2.405 0 3.065.38s1.062 1.072 1.865 2.456z"/></g></svg>
+                  Настройки
+                </div>
+              </a>
+              <hr class="my-2">
+              <a href="{$ROOT_URL}logout" class="block px-4 py-2 text-red-600 hover:bg-gray-100">
+                <div class="flex items-center">
+                  <svg class="w-4 h-4 mr-3" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.023 5.5a9 9 0 1 0 9.953 0M12 2v8" color="currentColor"/></svg>
+                  Выйти
+                </div>
+              </a>
+            </div>
+          </div>
+
+          
+        </div>
+      </header>
+      <script>
+        const profileButton = document.getElementById('profileButton');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const burgerButton = document.getElementById('burgerButton');
+        const burgerDropdown = document.getElementById('burgerDropdown');
+        let isProfileDropdownOpen = false;
+        let isBurgerDropdownOpen = false;
+
+        profileButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isProfileDropdownOpen = !isProfileDropdownOpen;
+          
+          if (isProfileDropdownOpen) {
+            // Close burger dropdown if open
+            if (isBurgerDropdownOpen) {
+              closeBurgerDropdown();
+            }
+            
+            profileDropdown.classList.remove('hidden');
+            setTimeout(() => {
+              profileDropdown.classList.remove('opacity-0', '-translate-y-2');
+            }, 50);
+          } else {
+            closeProfileDropdown();
+          }
+        });
+
+        burgerButton.addEventListener('click', (e) => {
+          e.stopPropagation();
+          isBurgerDropdownOpen = !isBurgerDropdownOpen;
+          
+          if (isBurgerDropdownOpen) {
+            // Close profile dropdown if open
+            if (isProfileDropdownOpen) {
+              closeProfileDropdown();
+            }
+            
+            burgerDropdown.classList.remove('hidden');
+            setTimeout(() => {
+              burgerDropdown.classList.remove('opacity-0', '-translate-y-2');
+            }, 50);
+          } else {
+            closeBurgerDropdown();
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (isProfileDropdownOpen && !profileDropdown.contains(e.target) && e.target !== profileButton) {
+            closeProfileDropdown();
+          }
+          
+          if (isBurgerDropdownOpen && !burgerDropdown.contains(e.target) && e.target !== burgerButton) {
+            closeBurgerDropdown();
+          }
+        });
+
+        function closeProfileDropdown() {
+          isProfileDropdownOpen = false;
+          profileDropdown.classList.add('opacity-0', '-translate-y-2');
+          setTimeout(() => {
+            profileDropdown.classList.add('hidden');
+          }, 300);
+        }
+
+        function closeBurgerDropdown() {
+          isBurgerDropdownOpen = false;
+          burgerDropdown.classList.add('opacity-0', '-translate-y-2');
+          setTimeout(() => {
+            burgerDropdown.classList.add('hidden');
+          }, 300);
+        }
+      </script>

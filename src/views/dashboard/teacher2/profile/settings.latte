@@ -1,0 +1,209 @@
+{include '../partials/header.latte'}
+<main>
+  <div class="p-4 mx-auto max-w-7xl md:p-6 2xl:p-10">
+    <!-- Breadcrumb Start -->
+    <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <h2 class="text-2xl font-semibold text-gray-900">
+        Настройки
+      </h2>
+      <nav>
+        <ol class="flex items-center gap-2">
+          <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+          <li><a class="font-medium" href="/dashboard/teacher/profile">Профиль /</a></li>
+          <li class="font-medium text-green-500">Настройки</li>
+        </ol>
+      </nav>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <div class="p-6 bg-white border border-gray-200 rounded-2xl">
+      <div class="my-4 p-4 border border-gray-200 rounded-xl flex justify-between items-center">
+                  <div class="flex">
+                     <h1>Удалить мой аккаунт</h1>
+                     <span class="my-auto text-xs text-yellow-600 bg-yellow-100 px-2 py-1 ml-2 rounded-full">Вы можете потерять оплаченную подписку</span>
+                  </div>
+                  <button type="button" class="cursor-pointer whitespace-nowrap flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-8 bg-red-500 text-white border-red-500 hover:border-red-600 disabled:bg-red-400 disabled:border-red-400 hover:bg-red-600 shadow-10 hover:shadow-15">
+                  Удалить
+                  </button>
+                  <div id="delete-modal" class="fixed inset-0 z-[10000] hidden overflow-y-auto transition-all duration-300 ease-in-out bg-gray-900/0">
+                     <div class="flex min-h-screen items-center justify-center p-4">
+                        <div class="relative w-full max-w-md transform transition-all duration-300 ease-in-out scale-95 opacity-0 modal-content bg-white rounded-2xl shadow-xl">
+                           <button id="close-modal" type="button" class="cursor-pointer absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-xl text-gray-600 transition-all hover:bg-gray-100 hover:shadow-sm">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                 <path d="M6 18L12 12M18 6L12 12M12 12L6 6M12 12L18 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                           </button>
+                           <div class="p-6 text-center">
+                              <svg class="mx-auto mb-4 h-10 w-10 text-red-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                                 <!-- Icon from Huge Icons by Hugeicons - undefined -->
+                                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.322 9.683c2.413-4.271 3.62-6.406 5.276-6.956a4.45 4.45 0 0 1 2.804 0c1.656.55 2.863 2.685 5.276 6.956c2.414 4.27 3.62 6.406 3.259 8.146c-.2.958-.69 1.826-1.402 2.48C19.241 21.5 16.827 21.5 12 21.5s-7.241 0-8.535-1.19a4.66 4.66 0 0 1-1.402-2.48c-.362-1.74.845-3.876 3.259-8.147M11.992 16h.009M12 13V9" color="currentColor"/>
+                              </svg>
+                              <h3 class="mb-2 text-lg font-semibold text-gray-800">Удалить аккаунт?</h3>
+                              <p class="mb-4 text-sm text-gray-600">Вы уверены, что хотите удалить свою учетную запись? Это действие нельзя отменить, и все ваши данные будут удалены навсегда.</p>
+                              <div class="mb-6">
+                                 <input 
+                                    id="confirm-input" 
+                                    type="text" 
+                                    placeholder="Введите ПОДТВЕРДИТЬ, чтобы продолжить" 
+                                    class="w-full rounded-lg py-2 px-4 border transition outline-none border-gray-200 text-sm focus:border-red-500 focus:ring-red-500 disabled:opacity-50 disabled:pointer-events-none"
+                                    >
+                              </div>
+                              <div class="flex justify-center gap-4">
+                                 <button id="cancel-btn" type="button" class="cursor-pointer flex items-center rounded-xl border border-gray-300 px-8 py-1.5 text-sm font-semibold text-gray-700 transition-all hover:bg-gray-100 hover:shadow-sm">
+                                 ОТМЕНИТЬ ДЕЙСТВИЕ
+                                 </button>
+                                 <button 
+                                    id="confirm-delete" 
+                                    type="button" 
+                                    disabled 
+                                    class="cursor-pointer flex items-center rounded-xl border border-red-500 bg-red-500 px-4 py-1.5 text-sm font-semibold text-white transition-all disabled:bg-red-300 disabled:border-red-300 disabled:cursor-not-allowed hover:bg-red-600 hover:shadow-sm"
+                                    >
+                                 Удалить
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+    </div>
+  </div>
+</main>
+<script>
+   
+   document.addEventListener('DOMContentLoaded', () => {
+   const deleteBtn = document.querySelector('.bg-red-500');
+   const modal = document.getElementById('delete-modal');
+   const modalContent = modal.querySelector('.modal-content');
+   const closeBtn = document.getElementById('close-modal');
+   const cancelBtn = document.getElementById('cancel-btn');
+   const confirmBtn = document.getElementById('confirm-delete');
+   const confirmInput = document.getElementById('confirm-input');
+   
+   function openModal() {
+     modal.classList.remove('hidden');
+     confirmInput.value = '';
+     confirmBtn.disabled = true;
+     setTimeout(() => {
+       modal.classList.remove('bg-gray-900/0');
+       modal.classList.add('bg-gray-900/80');
+       modalContent.classList.remove('scale-95', 'opacity-0');
+       modalContent.classList.add('scale-100', 'opacity-100');
+     }, 10);
+   }
+   
+   function closeModal() {
+     modal.classList.remove('bg-gray-900/80');
+     modal.classList.add('bg-gray-900/0');
+     modalContent.classList.remove('scale-100', 'opacity-100');
+     modalContent.classList.add('scale-95', 'opacity-0');
+     setTimeout(() => {
+       modal.classList.add('hidden');
+     }, 300);
+   }
+   
+   confirmInput.addEventListener('input', () => {
+     const inputValue = confirmInput.value.trim().toUpperCase();
+     confirmBtn.disabled = inputValue !== 'ПОДТВЕРДИТЬ';
+   });
+   
+   deleteBtn.addEventListener('click', openModal);
+   closeBtn.addEventListener('click', closeModal);
+   cancelBtn.addEventListener('click', closeModal);
+   
+   modal.addEventListener('click', (e) => {
+     if (e.target === modal) {
+       closeModal();
+     }
+   });
+   
+   confirmBtn.addEventListener('click', () => {
+     if (!confirmBtn.disabled) {
+       console.log('Account deletion confirmed');
+       closeModal();
+     }
+   });
+   });
+   
+</script>
+<script src="https://cdn.jsdelivr.net/npm/preline@3.0.0/dist/preline.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+   function getUserData() {
+      return JSON.parse(
+      decodeURIComponent(
+          document.cookie.split('; ')
+          .find(row => row.startsWith('user='))
+          ?.split('=')[1] || '{}'
+          )   
+      );
+   }
+
+   const userId = getUserData().id;
+
+   async function updateTeacherData(user_id, data) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/settings/teacher/update`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    data
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+   async function deleteTeacherAccount(user_id) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/settings/teacher/delete`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+   document.getElementById('confirm-delete').addEventListener('click', async () => {
+      const res = await deleteTeacherAccount(userId);
+
+      if (res.success) {
+         document.cookie.split(";").forEach(cookie => {
+            const name = cookie.split("=")[0].trim();
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+         });
+         localStorage.clear();
+
+         window.location.replace('/');
+      } else if (res.error) {
+            Toastify({
+              text: res.message,
+              duration: 3000,
+              newWindow: true,
+              close: true,
+              gravity: "top",
+              position: "right",
+              stopOnFocus: true,
+              style: {
+                      background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                  },
+            }).showToast();
+      }
+   });
+</script>
+{include '../partials/footer.latte'}

@@ -1,0 +1,92 @@
+{* {include "../partials/header.latte"} *}
+<div class="bg-white">
+  <div class="px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl py-16">
+        <div class="border rounded-xl p-10 ">
+            <div class="mb-8">
+                <p class="text-xl font-semibold">Welcome to {$APP_NAME}</p>
+                <p class="mt-2 text-gray-600">Firt things first, tell us a bit about yourself.</p>
+            </div>
+            <div class="flex items-center justify-center mt-8">
+                <div class="w-full">
+                <label for="input-label" class="block text-sm font-medium mb-2">Teacher's invitation token <span class="text-red-500">*</span></label>
+                <input required type="text" id="token" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. MyGreatTeacher">
+                </div>
+            </div>
+            <div class="flex items-center justify-center mt-8">
+                <div class="w-full">
+                <label for="input-label" class="block text-sm font-medium mb-2">School name or organization</label>
+                <input required type="text" id="school" class="py-2.5 px-4 w-full shadow-sm transition outline-none block border border-gray-200 rounded-lg text-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none" placeholder="e.g. Seitzhan School">
+                </div>
+            </div>
+            <button id="registerBtn" class="mt-4 whitespace-nowrap flex items-center justify-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-10 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
+                Finish registration
+            </button>
+        </div>
+    </div>
+  </div>
+</div>
+{* <script src="/node_modules/lodash/lodash.min.js"></script>
+<script src="/node_modules/dropzone/dist/dropzone-min.js"></script> *}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+   async function registerTeacher(user_id, token, school) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/register-teacher`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user_id,
+                    token,
+                    school
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+   }
+
+    function getUserData() {
+      return JSON.parse(
+      decodeURIComponent(
+          document.cookie.split('; ')
+          .find(row => row.startsWith('user='))
+          ?.split('=')[1] || '{}'
+          )   
+      );
+    }
+
+    const user_id = getUserData().id;
+
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+        const res = await registerTeacher(
+            user_id,
+            token.value,
+            school.value
+        );
+
+      if (res.success) {
+        
+        window.location.href = '/dashboard/teacher';
+      } else if (res.error) {
+         Toastify({
+            text: res.message,
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
+            style: {
+               background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+            },
+         }).showToast();
+      }
+    });
+</script>
+{include "../partials/footer.latte"}
