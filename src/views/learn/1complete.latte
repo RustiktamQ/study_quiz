@@ -1,0 +1,100 @@
+{include '../partials/header.latte'}
+
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<div class="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
+    <div class="grid grid-cols-1">
+        <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl border text-center pointer-events-auto max-w-3xl w-full mx-4">
+            <div class="flex justify-center mb-6">
+                <svg class="text-green-500 size-16 animate-bounce" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="m8 12.5l2.5 2.5L16 9"/></g></svg>
+            </div>
+            <h1 class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-emerald-500 to-teal-600 mb-4 flex items-center justify-center gap-x-3">Awesome Job!</h1>
+            <p class="text-lg text-gray-700 mb-8">You totally smashed that Math quiz! Keep those brain muscles flexing!</p>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 lg:gap-32 mb-8">
+
+                <div class="flex flex-col items-center my-4 md:my-0">
+                    <div class="p-3 border rounded-full">
+                        <svg class="text-blue-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                            <path fill="currentColor" fill-rule="evenodd" d="M13.5 8a5.5 5.5 0 1 1-11 0a5.5 5.5 0 0 1 11 0M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0M8.75 4.5a.75.75 0 0 0-1.5 0V8a.75.75 0 0 0 .3.6l2 1.5a.75.75 0 1 0 .9-1.2l-1.7-1.275z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h1 class="font-normal mt-2">
+                        Время <br>
+                        <span class="font-bold">{$elapsed_time}</span>
+                    </h1>
+                </div>
+
+                <div class="flex flex-col items-center my-4 md:my-0">
+                    <div class="p-3 border rounded-full animate-pulse">
+                        <svg class="text-yellow-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                            <path fill="currentColor" fill-rule="evenodd" d="m9.194 5l.351.873l.94.064l3.197.217l-2.46 2.055l-.722.603l.23.914l.782 3.108l-2.714-1.704L8 10.629l-.798.5l-2.714 1.705l.782-3.108l.23-.914l-.723-.603l-2.46-2.055l3.198-.217l.94-.064l.35-.874L8 2.025zm-7.723-.292l3.943-.268L6.886.773C7.29-.231 8.71-.231 9.114.773l1.472 3.667l3.943.268c1.08.073 1.518 1.424.688 2.118L12.185 9.36l.964 3.832c.264 1.05-.886 1.884-1.802 1.31L8 12.4l-3.347 2.101c-.916.575-2.066-.26-1.802-1.309l.964-3.832L.783 6.826c-.83-.694-.391-2.045.688-2.118" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h1 class="font-normal mt-2">
+                        Итоговый счет <br>
+                        <span class="font-bold">{$score}</span>
+                    </h1>
+                </div>
+
+                <div class="flex flex-col items-center my-4 md:my-0">
+                    <div class="p-3 border rounded-full">
+                        <svg class="text-purple-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16">
+                            <path fill="currentColor" fill-rule="evenodd" d="M8 13.5a5.5 5.5 0 1 0 0-11a5.5 5.5 0 0 0 0 11M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14M6.44 4.54c.43-.354.994-.565 1.56-.565c1.217 0 2.34.82 2.34 2.14c0 .377-.078.745-.298 1.1c-.208.339-.513.614-.875.867c-.217.153-.325.257-.379.328c-.038.052-.038.07-.038.089a.75.75 0 0 1-1.5 0c0-.794.544-1.286 1.057-1.645c.28-.196.4-.332.458-.426a.54.54 0 0 0 .075-.312c0-.3-.244-.641-.84-.641a1 1 0 0 0-.608.223c-.167.138-.231.287-.231.418a.75.75 0 0 1-1.5 0c0-.674.345-1.22.78-1.577M8 12a1 1 0 1 0 0-2a1 1 0 0 0 0 2" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <h1 class="font-normal mt-2">
+                        Вопросов <br>
+                        <span class="font-bold">{$question_count}</span>
+                    </h1>
+                </div>
+
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md mx-auto">
+                <button id="dashboardBtn" class="w-full px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-150 ease-in-out">
+                    Back to Dashboard
+                </button>
+                <button id="nextChallengeBtn" class="w-full px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full transition-all hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    Next Challenge!
+                </button>
+            </div>
+
+            <div class="mt-8 text-xs text-gray-400 hover:text-gray-600 cursor-pointer select-none" title="Psst! Hover over the score card!">
+                Leave feedback
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes pulse-score {
+    0%, 100% { transform: scale(1);}
+    50% { transform: scale(1.07);}
+}
+.animate-pulse { animation: pulse-score 2s infinite; }
+</style>
+
+<script>
+    function launchConfetti() {
+        const duration = 5 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        const interval = setInterval(function() {
+            const timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) return clearInterval(interval);
+            const particleCount = 50 * (timeLeft / duration);
+            window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+            window.confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+        }, 250);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(launchConfetti, 300);
+    });
+</script>
+
+{include '../partials/footer.latte'}

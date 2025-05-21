@@ -132,7 +132,7 @@ class AuthController extends BaseController {
 
         $isDeny = false;
         if ($student->token_confirmed == 1) {
-            header('Location: /');
+            header('Location: /dashboard/student');
         } else if ($student->token_confirmed == -1) {
             $isDeny = true;
             $student->token_confirmed = 0;

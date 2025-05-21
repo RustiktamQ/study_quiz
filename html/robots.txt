@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+Disallow: /adminPanel
+Sitemap: https://aqyl.app/sitemap.xml

@@ -827,41 +827,108 @@ class APIController extends BaseController {
 
     public function addAdminQuestions($params) {
         header('Content-Type: application/json; charset=utf-8');
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
         $input = file_get_contents('php://input');
         $params = json_decode($input, true);
-
-        if (
-            !isset($params['quizId']) ||
-            !isset($params['text']) ||
-            !isset($params['options']) ||
-            !isset($params['correct']) ||
-            !isset($params['explanation']) ||
-            !isset($params['token'])
-        ) {
+        if (empty($params['token'])) {
             http_response_code(400);
-            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            echo json_encode(['error' => true, 'message' => 'Missing token']);
             return;
         }
         $this->validateAdmin($params['token']);
 
-        R::exec(
-            'INSERT INTO `questions`(`question_text`, `correct_answer`, `options`, `explanation`) VALUES (?, ?, ?, ?)',
-            [$params['text'], $params['correct'], json_encode($params['options']), $params['explanation']]
-        );
+        if (empty($params['quizId'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing quizId']);
+            return;
+        }
+        $quizId = (int)$params['quizId'];
 
-        $question = R::findOne('questions', 
-        'question_text = ? AND
-        correct_answer = ? AND
-        options = ? AND
-        explanation = ?', [$params['text'], $params['correct'], json_encode($params['options']), $params['explanation']]);
+        $quiz = R::findOne('quizzes', 'id = ?', [$quizId]);
+        if (!$quiz) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => "Quiz with id {$quizId} does not exist"]);
+            return;
+        }
 
-        R::exec(
-            'INSERT INTO `questions_quizzes`(`quiz_id`, `question_id`) VALUES (?, ?)',
-            [$params['quizId'], $question->id]
-        );
+        $questions = [];
+        if (isset($params['json'])) {
+            if (is_string($params['json'])) {
+                $decoded = json_decode($params['json'], true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    http_response_code(400);
+                    echo json_encode(['error' => true, 'message' => 'Invalid JSON format: ' . json_last_error_msg()]);
+                    return;
+                }
+                $questions = $decoded;
+            } elseif (is_array($params['json'])) {
+                $questions = $params['json'];
+            } else {
+                http_response_code(400);
+                echo json_encode(['error' => true, 'message' => 'Parameter json must be an array or a JSON string']);
+                return;
+            }
+        } else {
+            $questions[] = [
+                'text'        => $params['text']        ?? '',
+                'options'     => $params['options']     ?? [],
+                'correct'     => $params['correct']     ?? '',
+                'explanation' => $params['explanation'] ?? ''
+            ];
+        }
 
-        http_response_code(200);
-        echo json_encode(['success' => true]);
+        $successCount = 0;
+        $errors = [];
+        foreach ($questions as $i => $q) {
+            $required = ['text','options','correct','explanation'];
+            $missing  = array_diff($required, array_keys($q));
+            if ($q['text']==='' || $q['correct']==='' || !is_array($q['options']) || empty($q['options'])) {
+                $missing = array_merge($missing, ['text/correct/options cannot be empty or invalid']);
+            }
+            if (!empty($missing)) {
+                $errors[] = ['index'=>$i,'error'=>'Missing or invalid: '.implode(', ',$missing)];
+                continue;
+            }
+
+            try {
+                R::exec(
+                    'INSERT INTO `questions` (`question_text`,`correct_answer`,`options`,`explanation`) VALUES (?,?,?,?)',
+                    [
+                        $q['text'],
+                        $q['correct'],
+                        json_encode($q['options'], JSON_UNESCAPED_UNICODE),
+                        $q['explanation']
+                    ]
+                );
+                $questionId = R::getInsertID();
+
+                R::exec(
+                    'INSERT INTO `questions_quizzes` (`quiz_id`,`question_id`) VALUES (?,?)',
+                    [$quizId, $questionId]
+                );
+
+                $successCount++;
+            } catch (Exception $e) {
+                $errors[] = ['index'=>$i,'error'=>$e->getMessage()];
+            }
+        }
+
+        $response = [
+            'success' => $successCount > 0,
+            'added'   => $successCount,
+            'total'   => count($questions),
+        ];
+        if (!empty($errors)) {
+            $response['errors'] = $errors;
+            http_response_code($successCount>0 ? 207 : 400);
+        } else {
+            http_response_code(200);
+        }
+
+        echo json_encode($response);
     }
 
     public function editAdminQuestions($params) {

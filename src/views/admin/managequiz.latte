@@ -33,7 +33,11 @@
           <!-- Question Text -->
           <div>
               <label for="add-question-text" class="block text-sm font-medium mb-2 text-gray-700">Question Text:</label>
+<<<<<<< HEAD
               <textarea id="add-question-text" name="question_text" placeholder="Enter the question..." rows="3" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required></textarea>
+=======
+              <textarea id="add-question-text" name="question_text" placeholder="Enter the question..." rows="3" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+>>>>>>> master
           </div>
 
           <!-- Multiple Choice Section ADD-->
@@ -43,27 +47,46 @@
               <div id="add-mc-options-container" class="space-y-2">
                   <!-- Option 1 (Example) -->
                   <div class="flex items-center gap-x-3 mc-option-row">
+<<<<<<< HEAD
                       <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
                       <input type="text" name="add_mc_option[]" placeholder="option 1" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+=======
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="option 1" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+>>>>>>> master
                       <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
                   
                   <!-- Option 2 (Example) -->
                   <div class="flex items-center gap-x-3 mc-option-row">
                       <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+<<<<<<< HEAD
                       <input type="text" name="add_mc_option[]" placeholder="Option 2" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+=======
+                      <input type="text" name="add_mc_option[]" placeholder="Option 2" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+>>>>>>> master
                        <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
 
                   <div class="flex items-center gap-x-3 mc-option-row">
+<<<<<<< HEAD
                       <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
                       <input type="text" name="add_mc_option[]" placeholder="Option 3" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+=======
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 3" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+>>>>>>> master
                       <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
 
                   <div class="flex items-center gap-x-3 mc-option-row">
+<<<<<<< HEAD
                       <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500" required>
                       <input type="text" name="add_mc_option[]" placeholder="Option 4" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+=======
+                      <input type="radio" name="add_correct_answer" class="radio-add shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500">
+                      <input type="text" name="add_mc_option[]" placeholder="Option 4" class="option radio py-2 px-3 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+>>>>>>> master
                       <button type="button" class="text-red-500 hover:text-red-700 remove-mc-option invisible" aria-label="Remove option">×</button> <!-- Invisible for first 2 -->
                   </div>
               </div>
@@ -78,6 +101,18 @@
               </div>
           </div>
 
+<<<<<<< HEAD
+=======
+          <!-- JSON Field -->
+          <div class="border-t pt-4 space-y-3">
+               <h4 class="text-sm font-medium text-gray-600">JSON:</h4>
+               <div>
+                   <label for="add-question-json" class="block text-xs font-medium mb-1 text-gray-700">JSON format</label>
+                   <textarea id="add-question-json" name="json_questions" placeholder="JSON" rows="2" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+               </div>
+           </div>
+
+>>>>>>> master
           <!-- Action Buttons -->
           <div class="mt-6 flex justify-end gap-x-2 pt-4 border-t">
               <button type="button" id="cancel-add-question-button" class="py-2 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
@@ -694,7 +729,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+<<<<<<< HEAD
     async function addQuestion(quizId, text, options, correct, explanation, token) {
+=======
+    async function addQuestion(quizId, text, options, correct, explanation, json, token) {
+>>>>>>> master
         try {
             const response = await fetch(`${window.location.origin}/adminPanel/questions/add`, {
                 method: "POST",
@@ -707,6 +746,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     options,
                     correct,
                     explanation,
+<<<<<<< HEAD
+=======
+                    json,
+>>>>>>> master
                     token
                 })
             });
@@ -826,6 +869,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const qText = document.getElementById('add-question-text').value;
         const options = document.getElementsByClassName('option');
         const exp = document.getElementById('add-question-explanation').value;
+<<<<<<< HEAD
+=======
+        const jsonRaw = document.getElementById('add-question-json').value;
+>>>>>>> master
         let correctIndex;
 
         for(let i = 0; i < radios.length; i++) {
@@ -834,10 +881,36 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         const arrOptions = Array.from(options).map(x => x.value);
+<<<<<<< HEAD
         const res = await addQuestion(getQuizId(), qText, arrOptions, arrOptions[correctIndex], exp, token);
 
         if (res.success) {
             location.reaload();
+=======
+
+        let parsedJson = null;
+        if (jsonRaw.trim() !== "") {
+            try {
+                parsedJson = JSON.parse(jsonRaw);
+            } catch (e) {
+                Toastify({
+                    text: "Ошибка в JSON: " + e.message,
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, red, orange)",
+                    },
+                }).showToast();
+                return;
+            }
+        }
+
+        const res = await addQuestion(getQuizId(), qText, arrOptions, arrOptions[correctIndex], exp, parsedJson, token);
+
+        if (res.success) {
+            location.reload();
+>>>>>>> master
         } else if (res.error) {
             Toastify({
                 text: res.message,
