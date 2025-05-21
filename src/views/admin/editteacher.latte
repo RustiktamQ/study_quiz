@@ -1,0 +1,147 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Page Title -->
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Edit Teacher ({$teacher['name']})
+            </h1>
+            <p class="text-sm text-gray-500">Edit exsisting teacher.</p>
+        </div>
+        <!-- End Page Title -->
+
+        <!-- Add Teacher Form -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+             <div> <!-- Replace with your processing script -->
+                 <!-- Optional: Add CSRF token here -->
+                <input type="hidden" name="role" value="Teacher"> <!-- Set the role -->
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <!-- Full Name -->
+                    <div>
+                        <label for="fullname" class="block text-sm font-medium mb-2">Full Name</label>
+                        <input value="{$teacher['name']}" type="text" id="fullname" name="fullname" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                        <!-- Display validation error if any -->
+                    </div>
+
+                     <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium mb-2">Email Address</label>
+                        <input value="{$teacher['email']}" type="email" id="email" name="email" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                         <!-- Display validation error if any -->
+                    </div>
+
+                     <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium mb-2">School</label>
+                        <input value="{$teacher['school']}" id="school" name="password" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                        <!-- Display validation error if any -->
+                    </div>
+
+                    <!-- Confirm Password -->
+                     <div>
+                        <label for="password_confirmation" class="block text-sm font-medium mb-2">Invite code</label>
+                        <input value="{$teacher['invite_code']}" id="inviteCode" name="password_confirmation" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                         <!-- Display validation error if any -->
+                    </div>
+
+                     <!-- Optional: Subject -->
+                    <div class="sm:col-span-2">
+                        <label for="subject" class="block text-sm font-medium mb-2">Specialization</label>
+                        <input value="{$teacher['specialization']}" type="text" id="specialization" name="subject" class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none">
+                    </div>
+
+                 </div> <!-- End grid -->
+
+                 <!-- Submit Button -->
+                 <div class="mt-6 flex justify-end gap-x-2">
+                    <a href="/adminPanel/users" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border transition border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Cancel
+                    </a>
+                    <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border transition border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Edit Teacher Account
+                    </button>
+                </div>
+             </div>
+        </div>
+        <!-- End Add Teacher Form -->
+
+    </div>
+</div>
+
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('admin='))?.split('=')[1] || '{}'
+            )
+        );
+    }
+
+    function getTeacherId() {
+        const currentUrl = window.location.pathname;
+        const teacherId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+        return teacherId;
+    }
+
+    async function editTeacher(id, token) {
+        const name = document.getElementById('fullname').value;
+        const email = document.getElementById('email').value;
+        const invite_code = document.getElementById('inviteCode').value;
+        const school = document.getElementById('school').value;
+        const specialization = document.getElementById('specialization').value;
+
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/teacher/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    name,
+                    email,
+                    invite_code,
+                    school,
+                    specialization,
+                    token
+                })
+            });
+
+            const res = await response.json();
+
+            if (res.success) {
+                window.location.href = '/adminPanel/users';
+            } else {
+                throw new Error(res.message || 'Something went wrong');
+            }
+        } catch (error) {
+            Toastify({
+                text: error.message,
+                duration: 3000,
+                close: true,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }
+            }).showToast();
+        }
+    }
+
+    const token = getAdmin().token;
+    const teacherId = getTeacherId();
+
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        editTeacher(teacherId, token);
+    });
+</script>
+
+
+
+{include './partials/footer.latte'}

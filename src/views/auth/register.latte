@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать!</title>
+
+    <!-- ЗАМЕНИТЬ ЭТО ГОВНИЩЕ -->
+    <script src="/tailwind.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .font-fredoka {
+            font-family: 'Fredoka One', cursive;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(15deg); }
+        }
+        .sparkle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2300a63e"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>'); /* Simple star SVG */
+            background-size: contain;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+    </style>
+
+</head>
+<body class="p-6 min-h-screen flex items-center justify-center relative">
+
+    <!-- Sparkles floating around -->
+    <div class="absolute inset-0 pointer-events-none z-0">
+        <div class="sparkle" style="top: 10%; left: 15%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="top: 30%; left: 85%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="top: 70%; left: 10%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="top: 85%; left: 75%; animation-delay: 0.2s;"></div>
+        <div class="sparkle hidden md:block" style="top: 50%; left: 50%; animation-delay: 0.8s;"></div>
+        <div class="sparkle hidden md:block" style="top: 20%; left: 40%; animation-delay: 1.2s;"></div>
+        <div class="sparkle hidden lg:block" style="top: 60%; left: 60%; animation-delay: 0.4s;"></div>
+        <div class="sparkle hidden lg:block" style="top: 40%; left: 20%; animation-delay: 0.9s;"></div>
+    </div>
+
+    <div class="container mx-auto max-w-xl relative z-10">
+         <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-16 text-center border-t-4 border-b-4 border-green-400">
+
+            <div class="flex flex-col items-center">
+
+
+
+                <h1 class="font-fredoka text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-500 via-teal-500 to-emerald-500 mb-4 leading-tight">
+                Let's start!
+                </h1>
+                <p class="text-lg md:text-xl text-gray-700 mb-10 md:mb-12 px-4">
+                    Введите токен учителя ✨
+                </p>
+
+                <div class="w-full max-w-sm">
+                    <input
+                        id="token"
+                        type="text" 
+                        placeholder="Введите токен..." 
+                        class="w-full px-6 py-3 rounded-full border-2 border-green-300 focus:border-green-500 outline-none text-lg text-gray-700 placeholder-gray-400 shadow-md transition-all duration-300 focus:shadow-lg"
+                    />
+                    <button 
+                        id="submit"
+                        class="mt-6 w-full px-6 py-3 rounded-full bg-gradient-to-r from-green-400 via-teal-400 to-emerald-500 text-white font-fredoka text-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                        Подключиться
+                    </button>
+
+                </div>
+
+                <p class="text-xs text-gray-400 mt-10">
+                    Подключаясь, ты соглашаешься с нашими космическими правилами (<a href="#" class="text-green-500 hover:underline">Условия сервиса</a>) и не кормить космического монстра после полуночи (<a href="#" class="text-green-500 hover:underline">Политика конфиденциальности</a>).
+                </p>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        if ({$isDeny}) {
+            Toastify({
+                text: 'Ваш запрос был отклонен',
+                duration: 6000,
+                newWindow: true,
+                close: true,
+                gravity: "top",
+                position: "right",
+                stopOnFocus: true,
+                style: {
+                background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                },
+            }).showToast();
+        }
+    </script>
+    <script n:syntax=off>
+        async function registerStudent(user_id, token) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/register-student`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_id,
+                        token
+                    })
+                });
+        
+                return await response.json();
+            } catch (error) {
+                return error.message;
+            }
+        }
+
+        function getUserData() {
+            return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('user='))
+                ?.split('=')[1] || '{}'
+                )   
+            );
+        }
+
+        const user_id = getUserData().id;
+
+        submit.addEventListener('click', async () => {
+            const res = await registerStudent(user_id, token.value);
+
+            if (res.success) {
+                window.location.href = '/dashboard/student';
+            } else if (res.error) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+        });
+    </script>
+</body>
+</html>

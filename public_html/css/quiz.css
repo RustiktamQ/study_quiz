@@ -1,0 +1,84 @@
+.answer-btn {
+  transition: all 0.2s ease;
+  position: relative;
+}
+  
+.answer-btn[selected] {
+  border-color: rgba(75, 187, 235, 0.8) !important;
+  background-color:rgba(75, 187, 235, 0.8) !important;
+  color: white;
+}
+  
+.answer-btn:hover:not([selected]) {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+  
+.answer-btn:after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  color: white;
+  font-size: 1.2em;
+}
+  
+.answer-btn[selected]:after {
+  opacity: 1;
+}
+
+.question-title-container {
+  display: flex;
+  gap: 12px;
+}
+
+.option-button:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.option-button:focus {
+  outline: none;
+  /* Maintain focus style even if disabled for consistency */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+.option-button {
+   transition: all 0.2s ease-in-out;
+}
+.chat-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.chat-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+.chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+/* Add styles for answered state */
+.correct-answer {
+   border-color: #10B981 !important; /* Tailwind emerald-500 */
+   background-color: #A7F3D0 !important; /* Tailwind emerald-200 */
+   color: #065F46 !important; /* Tailwind emerald-800 */
+   transform: scale(1.02);
+   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.4); /* emerald-500 @ 40% */
+}
+.bad-answer {
+  border-color: #F59E0B !important; 
+  background-color: #FEF3C7 !important;
+  color: #92400E !important;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4); /* Полупрозрачный жёлтый */
+}
+
+.incorrect-answer {
+   border-color: #E5E7EB !important; /* Tailwind gray-200 */
+   background-color: #F9FAFB !important; /* Tailwind gray-50 */
+   color: #9CA3AF !important; /* Tailwind gray-400 */
+   opacity: 0.7;
+}

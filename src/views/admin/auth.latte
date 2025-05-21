@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="/tailwind.js"></script>
+</head>
+<body class="bg-gray-100">
+
+<div class="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md space-y-8">
+        <div class="bg-white border border-gray-200 rounded-3xl p-8 space-y-6">
+
+            <div>
+                <label for="email-input" class="block text-sm font-medium text-gray-700 mb-1">E-Mail</label>
+                <input
+                    type="email"
+                    id="email-input"
+                    name="email"
+                    required
+                    class="w-full px-3 py-2 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out sm:text-sm disabled:opacity-50 disabled:pointer-events-none"
+                    placeholder="you@youremail.com"
+                >
+            </div>
+
+            <div class="relative">
+                <label for="password-input" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input
+                    type="password"
+                    id="password-input"
+                    name="password"
+                    required
+                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out sm:text-sm disabled:opacity-50 disabled:pointer-events-none"
+                    placeholder="••••••"
+                >
+                <button
+                    type="button"
+                    id="password-toggle"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 pt-6 text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600 transition duration-150 ease-in-out"
+                    aria-label="Toggle password visibility"
+                >
+                    <svg id="toggle-icon-show" class="hidden h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M22 8s-4 6-10 6S2 8 2 8m13 5.5l1.5 2.5m3.5-5l2 2M2 13l2-2m5 2.5L7.5 16" color="currentColor"/></svg>
+                    <svg id="toggle-icon-hide" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M21.544 11.045c.304.426.456.64.456.955c0 .316-.152.529-.456.955C20.178 14.871 16.689 19 12 19c-4.69 0-8.178-4.13-9.544-6.045C2.152 12.529 2 12.315 2 12c0-.316.152-.529.456-.955C3.822 9.129 7.311 5 12 5c4.69 0 8.178 4.13 9.544 6.045"/><path d="M15 12a3 3 0 1 0-6 0a3 3 0 0 0 6 0"/></g></svg>
+                </button>
+            </div>
+
+            <div>
+                <button
+                    id="authBtn"
+                    type="submit"
+                    class="mt-2 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out disabled:opacity-50 disabled:pointer-events-none"
+                >
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script n:syntax=off>
+    async function authAdmin(email, password) {
+        try {
+            const response = await fetch(`${window.location.origin}/auth/adminPanel`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const emailInput = document.getElementById('email-input');
+    const passwordInput = document.getElementById('password-input');
+    const passwordToggle = document.getElementById('password-toggle');
+    const toggleIconShow = document.getElementById('toggle-icon-show');
+    const toggleIconHide = document.getElementById('toggle-icon-hide');
+    const loginForm = document.querySelector('form');
+
+    passwordToggle.addEventListener('click', function() {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        toggleIconShow.classList.toggle('hidden', !isPassword);
+        toggleIconHide.classList.toggle('hidden', isPassword);
+    });
+
+    authBtn.addEventListener('click', async function() {
+        const res = await authAdmin(emailInput.value, passwordInput.value);
+
+        if (res.success) {
+            window.location.href = `${window.location.origin}/adminPanel`;
+        } else {
+            alert(res.message);
+        }
+    });
+</script>

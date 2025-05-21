@@ -1,0 +1,474 @@
+{include '../../partials/header.latte'}
+<!-- <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script> -->
+
+<!-- ADD the new QR Code Styling Library -->
+<script src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+
+
+<!-- Preloader HTML -->
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+    <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+    <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>
+
+{include '../../partials/sidebar.latte'}
+
+
+<!-- Content -->
+<div class="max-w-6xl w-full lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Заголовок страницы -->
+        <div class="mb-4">
+             <h1 class="font-bold text-black text-2xl">Пригласить учеников</h1>
+             <p class="text-gray-600 text-sm">Поделитесь вашим уникальным кодом, чтобы ученики могли присоединиться к вашему классу.</p>
+        </div>
+
+        <!-- Карточка с кодом приглашения -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Ваш код приглашения</h2>
+            <p class="text-sm text-gray-600 mb-4">Ученики могут использовать этот код при регистрации, чтобы подключиться к вашему аккаунту.</p>
+
+            <div class="max-w-xl flex items-center gap-x-3 bg-gray-50 border border-dashed border-gray-400 rounded-lg p-4">
+                <span id="invite_code" class="flex-1 text-center font-mono text-2xl sm:text-3xl font-bold text-gray-800 tracking-widest">
+                    {htmlspecialchars($invite_code)}
+                </span>
+                <button id="copy-button" onclick="copyInviteCode()" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                    <svg id="copy-icon" class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <svg id="check-icon" class="shrink-0 size-4 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span class="copy-text">Скопировать код</span>
+                </button>
+                <!-- Changed this button to specifically open the share modal -->
+                <button id="share-button" type="button" class="py-2.5 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                    <!-- Share Icon -->
+                    <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3m5 0v.01M12 7v3a2 2 0 0 1-2 2H7m-4 0h.01M12 3h.01M12 16v.01M16 12h1m4 0v.01M12 21v-1"/></g></svg>
+                     <span class="hidden sm:inline">QR</span> <!-- Hide text on small screens -->
+                </button>
+            </div>
+
+             <div class="mt-6 pt-6 border-t border-gray-200">
+                 <h3 class="text-md font-semibold text-gray-800 mb-2">Нужен новый код?</h3>
+                 <p class="text-sm text-gray-600 mb-3">Сгенерируйте новый код. Ученики, использующие старый код, не смогут присоединиться.</p>
+                 <div> <!-- TODO: Add backend logic to generate new code -->
+                    <input type="hidden" name="action" value="generate_new_code">
+                    <!-- TODO: Add CSRF token -->
+                    <div class="space-x-2">
+                         <button type="submit" class="hidden py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl transition border bg-green-500 text-white shadow-sm hover:bg-green-600 focus:outline-none focus:bg-green-700 disabled:opacity-50 disabled:pointer-events-none">
+                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v8m4-4H8m-5.5 0c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12" color="currentColor"/></svg>
+                             Свой код
+                         </button>
+                         <!-- Note: Having two identical "Generate New Code" buttons is unusual UI. Translating as is. -->
+                         <button id="newCode" type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-xl transition border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none">
+                             <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+                             Сгенерировать новый код
+                         </button>
+                     </div>
+                 </div>
+             </div>
+
+        </div>
+        <!-- Конец карточки с кодом приглашения -->
+    </div>
+</div>
+<!-- End Content -->
+
+
+<!-- Share Modal HTML -->
+<div id="share-modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<div id="share-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+    <div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-md mx-4">
+        <!-- Close Button -->
+        <button id="close-modal-button" type="button" class="absolute top-2 end-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+            <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+
+        <!-- Modal Header -->
+        <div class="text-center mb-6">
+            <h3 id="share-modal-title" class="text-xl font-bold text-gray-800 ">
+                Поделиться кодом приглашения
+            </h3>
+            <p class="text-sm text-gray-600 mt-1">
+                Ученики могут отсканировать QR-код или скопировать текстовый код.
+            </p>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="space-y-4">
+            <!-- QR Code Section -->
+            <div class="flex justify-center">
+                 <div id="qrcode-container" class="p-3 bg-white border border-gray-200 rounded-lg inline-block relative min-h-[150px] min-w-[150px]"> 
+                     <div id="qrcode" class="absolute inset-0 flex items-center justify-center"></div>
+                     <p id="qrcode-loading" class="absolute inset-0 flex items-center justify-center text-xs text-gray-500 text-center mt-1">Generating QR Code...</p>
+                     <p id="qrcode-error" class="absolute inset-0 flex items-center justify-center text-xs text-red-500 text-center mt-1 hidden">Could not generate QR Code.</p>
+                 </div>
+            </div>
+            <p class="text-xs text-gray-500 text-center">Или скопируйте код:</p>
+
+            <!-- Invite Code Display & Copy -->
+            <div class="flex items-center gap-x-3 bg-gray-100 border border-dashed border-gray-400 rounded-lg p-3">
+                <span id="modal-invite_code" class="flex-1 text-center font-mono text-xl sm:text-2xl font-bold text-gray-800 tracking-widest">
+                    <!-- Code will be inserted by JS -->
+                </span>
+                <button id="modal-copy-button" type="button" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-300 bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none transition-colors">
+                    <svg class="modal-copy-icon shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>
+                    <svg class="modal-check-icon shrink-0 size-4 hidden text-green-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span class="modal-copy-text">Копировать</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Share Modal -->
+
+
+<!-- Consolidated JavaScript Block -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+    // --- Preloader Logic ---
+    let showMessageTimeout;
+
+    window.addEventListener("load", () => {
+        const preloader = document.getElementById("preloader");
+         if (preloader) {
+            if (showMessageTimeout) {
+                clearTimeout(showMessageTimeout);
+            }
+            preloader.style.transition = "opacity 0.5s ease";
+            preloader.style.opacity = "0";
+            setTimeout(() => {
+                preloader.style.display = "none";
+            }, 500);
+        }
+    });
+
+    showMessageTimeout = setTimeout(() => {
+        const loadingMessage = document.getElementById("loading-message");
+         if (loadingMessage) {
+           loadingMessage.style.opacity = "1";
+        }
+    }, 10000);
+
+    // --- Original Copy Function (for the main card) ---
+    function copyInviteCode() {
+        const codeElement = document.getElementById('invite_code');
+        if (!codeElement) return;
+        const codeToCopy = codeElement.innerText;
+        const copyButton = document.getElementById('copy-button');
+        if (!copyButton) return;
+        const copyIcon = document.getElementById('copy-icon');
+        const checkIcon = document.getElementById('check-icon');
+        const copyTextSpan = copyButton.querySelector('.copy-text');
+
+        navigator.clipboard.writeText(codeToCopy).then(() => {
+            copyButton.classList.add('bg-green-100', 'text-green-700');
+            if(copyIcon) copyIcon.classList.add('hidden');
+            if(checkIcon) checkIcon.classList.remove('hidden');
+            if (copyTextSpan) copyTextSpan.textContent = 'Скопировано!';
+
+            setTimeout(() => {
+                copyButton.classList.remove('bg-green-100', 'text-green-700');
+                if(copyIcon) copyIcon.classList.remove('hidden');
+                if(checkIcon) checkIcon.classList.add('hidden');
+                if (copyTextSpan) copyTextSpan.textContent = 'Скопировать код';
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+            alert('Failed to copy code.');
+        });
+    }
+
+    // --- MODAL SCRIPT ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const shareButton = document.getElementById('share-button'); // Changed from extra-button
+        const shareModal = document.getElementById('share-modal');
+        const backdrop = document.getElementById('share-modal-backdrop');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const modalInviteCodeSpan = document.getElementById('modal-invite_code');
+        const mainInviteCodeSpan = document.getElementById('invite_code');
+        const modalCopyButton = document.getElementById('modal-copy-button');
+        const qrcodeDiv = document.getElementById('qrcode'); // The div where the QR code canvas will be appended
+        const qrcodeLoading = document.getElementById('qrcode-loading');
+        const qrcodeError = document.getElementById('qrcode-error');
+        const qrcodeContainer = document.getElementById('qrcode-container'); // The outer wrapper
+
+        let qrCodeInstance = null; // To hold the QRCodeStyling object
+
+        const openModal = () => {
+            // Add checks for essential elements
+            if (!shareModal || !backdrop || !mainInviteCodeSpan || !modalInviteCodeSpan || !qrcodeDiv || !qrcodeLoading || !qrcodeError || !qrcodeContainer) {
+                console.error('Modal elements not found! Cannot open modal.');
+                return;
+            }
+
+            const inviteCode = mainInviteCodeSpan.innerText.trim();
+            modalInviteCodeSpan.innerText = inviteCode; // Set text code first
+
+             // Clear previous QR code visuals and messages immediately
+            qrcodeDiv.innerHTML = ''; // Clear the target div for the canvas
+            qrCodeInstance = null;    // Discard old instance reference
+            qrcodeLoading.classList.remove('hidden');
+            qrcodeError.classList.add('hidden');
+            qrcodeContainer.classList.remove('border-red-500'); // Remove error border if present
+
+
+            // Show modal backdrop and structure immediately, before QR generation starts
+            backdrop.classList.remove('hidden');
+            shareModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                backdrop.classList.remove('opacity-0');
+                shareModal.classList.remove('opacity-0', 'scale-95');
+                shareModal.classList.add('opacity-100', 'scale-100');
+            });
+            document.addEventListener('keydown', handleEscapeKey); // Add listener early
+
+
+            // --- QR Code Generation using qr-code-styling ---
+            if (!inviteCode) {
+                console.error('Invite code is empty! Cannot generate QR code.');
+                modalInviteCodeSpan.innerText = 'Ошибка';
+                qrcodeError.innerText = 'Код приглашения не найден.';
+                qrcodeLoading.classList.add('hidden');
+                qrcodeError.classList.remove('hidden');
+                qrcodeContainer.classList.add('border-red-500'); // Visual indication
+                return; // Stop further execution
+            }
+
+
+            // Check if QRCodeStyling library is loaded
+            if (typeof QRCodeStyling === 'undefined') {
+                 console.error("QRCodeStyling library is not loaded!");
+                 qrcodeLoading.classList.add('hidden');
+                 qrcodeError.innerText = 'Ошибка загрузки QR-генератора.';
+                 qrcodeError.classList.remove('hidden');
+                 qrcodeContainer.classList.add('border-red-500');
+                 return; // Stop if library missing
+            }
+
+            try {
+                 // Use setTimeout to allow the loading indicator to show and modal animation to start smoothly
+                setTimeout(() => {
+                    qrCodeInstance = new QRCodeStyling({
+                        width: 150,  // Adjust size as needed - container has padding
+                        height: 150, // Adjust size as needed
+                        data: `${location.origin}/api/student/join/${inviteCode}`,
+                        margin: 0, // Margin inside the QR code itself (around the dots)
+                        qrOptions: {
+                            typeNumber: '0', // Auto detect
+                            mode: 'Byte',
+                            errorCorrectionLevel: 'H' // High correction level
+                        },
+                        imageOptions: {
+                            hideBackgroundDots: true,
+                            imageSize: 0.4, // No image for now
+                            margin: 0
+                        },
+                        dotsOptions: {
+                            type: 'rounded', // <<< This creates the rounded modules
+                            color: '#000000'
+                            // gradient: { // Example gradient
+                            //   type: 'linear',
+                            //   rotation: 0,
+                            //   colorStops: [{ offset: 0, color: '#000' }, { offset: 1, color: '#555' }]
+                            // },
+                        },
+                        backgroundOptions: {
+                            color: '#ffffff', // White background
+                        },
+                         cornersSquareOptions: {
+                           type: 'extra-rounded', // <<< Rounded finder patterns (corners)
+                           color: '#000000',
+                         },
+                         cornersDotOptions: {
+                           type: 'dot', // Rounded alignment pattern (smaller square) - 'dot' often looks good
+                           color: '#000000'
+                         }
+                    });
+
+                    // Append the generated QR code (as a canvas) to the div
+                    qrCodeInstance.append(qrcodeDiv);
+
+                    // Hide loading, show QR
+                    qrcodeLoading.classList.add('hidden');
+
+                }, 50); // Short delay seems sufficient
+
+            } catch (error) {
+                console.error("Error generating QR Code:", error);
+                qrcodeLoading.classList.add('hidden');
+                qrcodeError.innerText = 'Не удалось создать QR-код.';
+                qrcodeError.classList.remove('hidden');
+                qrcodeContainer.classList.add('border-red-500');
+                // Modal is already shown, just display error
+            }
+            // --- End QR Code Generation ---
+        };
+
+        const closeModal = () => {
+            if (!shareModal || !backdrop) return;
+
+            backdrop.classList.add('opacity-0');
+            shareModal.classList.remove('opacity-100', 'scale-100');
+            shareModal.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+                shareModal.classList.add('hidden');
+
+                // Reset QR code state fully
+                if(qrcodeLoading) qrcodeLoading.classList.add('hidden'); // Ensure loading hidden
+                if(qrcodeError) qrcodeError.classList.add('hidden');
+                if(qrcodeContainer) qrcodeContainer.classList.remove('border-red-500');
+                if(qrcodeDiv) qrcodeDiv.innerHTML = ''; // Clear the generated canvas/svg
+                qrCodeInstance = null; // Clear instance reference
+
+
+            }, 300);
+
+            document.removeEventListener('keydown', handleEscapeKey);
+        };
+
+        const handleEscapeKey = (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        };
+
+        const copyModalCode = () => {
+            if(!modalInviteCodeSpan) return;
+            const codeToCopy = modalInviteCodeSpan.innerText;
+            const copyButton = modalCopyButton;
+            if (!copyButton) return;
+            const copyIcon = copyButton.querySelector('.modal-copy-icon');
+            const checkIcon = copyButton.querySelector('.modal-check-icon');
+            const copyTextSpan = copyButton.querySelector('.modal-copy-text');
+
+            navigator.clipboard.writeText(codeToCopy).then(() => {
+                copyButton.classList.add('bg-green-100', 'text-green-700');
+                if(copyIcon) copyIcon.classList.add('hidden');
+                if(checkIcon) checkIcon.classList.remove('hidden');
+                if(copyTextSpan) copyTextSpan.textContent = 'Скопировано!';
+
+                setTimeout(() => {
+                    copyButton.classList.remove('bg-green-100', 'text-green-700',);
+                    if(copyIcon) copyIcon.classList.remove('hidden');
+                    if(checkIcon) checkIcon.classList.add('hidden');
+                    if(copyTextSpan) copyTextSpan.textContent = 'Копировать';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy modal text: ', err);
+                alert('Failed to copy code.');
+            });
+        };
+
+        // --- Event Listeners ---
+        // Use the 'Share' button to open the modal now
+        if (shareButton) {
+            shareButton.addEventListener('click', openModal);
+        } else {
+            console.warn('Element with ID "share-button" not found.');
+        }
+
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', closeModal);
+        } else {
+             console.warn('Element with ID "close-modal-button" not found.');
+        }
+
+        if (backdrop) {
+            backdrop.addEventListener('click', (event) => {
+                 if (event.target === backdrop) {
+                     closeModal();
+                 }
+            });
+        } else {
+             console.warn('Element with ID "share-modal-backdrop" not found.');
+        }
+
+        if (modalCopyButton) {
+            modalCopyButton.addEventListener('click', copyModalCode);
+        } else {
+             console.warn('Element with ID "modal-copy-button" not found.');
+        }
+    });
+
+    function getUserData() {
+		return JSON.parse(
+		decodeURIComponent(
+			document.cookie.split('; ')
+			.find(row => row.startsWith('user='))
+			?.split('=')[1] || '{}'
+			)   
+		);
+	}
+
+    const teacher_id = getUserData().id;
+
+    function createRandomString(sumString){
+        const symbolArr = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        var randomString = "";
+        for (let i = 0; i < sumString; i++){
+            var index = Math.floor(Math.random()*symbolArr.length);
+            randomString +=symbolArr[index];
+        }
+        return randomString;
+    }
+
+    async function codeIsFree(teacher_id, code) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/teacher/check/code`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code,
+					teacher_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    async function setNewCode(teacher_id, code) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/teacher/set/code`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    code,
+					teacher_id
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    newCode.addEventListener('click', async () => {
+        let code = createRandomString(10);
+        let isFree = await codeIsFree(teacher_id, code)
+
+        while (!isFree.success) {
+            let code = createRandomString(10);
+            let isFree = await codeIsFree(teacher_id, code)
+        }
+
+        const res = await setNewCode(teacher_id, code);
+
+        if (res.success) {
+            invite_code.textContent = code;
+        }
+    });
+</script>
+{include '../../partials/footer.latte'}
