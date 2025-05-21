@@ -1,0 +1,150 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Edit User
+            </h1>
+            <p class="text-sm text-gray-500">
+                Update the details for this user.
+            </p>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+
+                    <div>
+                        <label for="teacher_code" class="block text-sm font-medium mb-2">Student's name</label>
+                        <input type="text" id="name" name="teacher_code" value="{$student['name']}" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter teacher's code">
+                    </div>
+
+                    <div>
+                        <label for="teacher_code" class="block text-sm font-medium mb-2">Student's email</label>
+                        <input type="text" id="email" name="teacher_code" value="{$student['email']}" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter teacher's code">
+                    </div>
+
+                    <div>
+                        <label for="teacher_code" class="block text-sm font-medium mb-2">Student's token</label>
+                        <input type="text" id="token" name="teacher_code" value="{$student['token']}" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter teacher's code">
+                    </div>
+
+                    <div>
+                        <label for="grade" class="text-sm font-medium mb-2">Grade</label>
+                        <select id="grade" name="grade" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option n:attr="selected => $student['grade'] == 0" value="0">Дошкольный</option>
+                            <option n:attr="selected => $student['grade'] == 1" value="1">Детский сад</option>
+                            <option n:attr="selected => $student['grade'] == 2" value="2">Первый класс</option>
+                            <option n:attr="selected => $student['grade'] == 3" value="3">Второй класс</option>
+                            <option n:attr="selected => $student['grade'] == 4" value="4">Третий класс</option>
+                            <option n:attr="selected => $student['grade'] == 5" value="5">Четвертый класс</option>
+                            <option n:attr="selected => $student['grade'] == 6" value="6">Пятый класс</option>
+                            <option n:attr="selected => $student['grade'] == 7" value="7">Шестой класс</option>
+                            <option n:attr="selected => $student['grade'] == 8" value="8">Седьмой класс</option>
+                            <option n:attr="selected => $student['grade'] == 9" value="9">Восьмой класс</option>
+                            <option n:attr="selected => $student['grade'] == 10" value="10">Старшая школа</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="mt-6 flex justify-end gap-x-2">
+                    <a href="/adminPanel/users" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700">
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                    .find(row => row.startsWith('admin='))?.split('=')[1] || '{}'
+            )
+        );
+    }
+
+    function getUserId() {
+        const currentUrl = window.location.pathname;
+        return currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+    }
+
+    async function editUser(id, adminToken) {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const token = document.getElementById('token').value;
+        const grade = parseInt(document.getElementById('grade').value);
+
+        if (grade < 0 || grade > 10 || isNaN(grade)) {
+            Toastify({
+                text: "Grade must be a number from 0 to 10.",
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }
+            }).showToast();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/user/edit`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    name,
+                    email,
+                    token,
+                    grade,
+                    adminToken
+                })
+            });
+
+            const res = await response.json();
+
+            if (res.success) {
+                window.location.href = '/adminPanel/users';
+            } else {
+                throw new Error(res.message || 'Failed to update user.');
+            }
+        } catch (error) {
+            Toastify({
+                text: error.message,
+                duration: 3000,
+                gravity: "top",
+                position: "right",
+                style: {
+                    background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                }
+            }).showToast();
+        }
+    }
+
+    const token = getAdmin().token;
+    const userId = getUserId();
+
+    document.querySelector('button[type="submit"]').addEventListener('click', (e) => {
+        e.preventDefault();
+        editUser(userId, token);
+    });
+</script>
+
+
+{include './partials/footer.latte'}

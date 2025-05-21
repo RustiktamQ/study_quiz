@@ -1,0 +1,98 @@
+{include '../partials/header.latte'}
+<script>
+   window.addEventListener("load", () => {
+       const preloader = document.getElementById("preloader");
+       const loadingMessage = document.getElementById("loading-message");
+       clearTimeout(showMessageTimeout);
+       preloader.style.transition = "opacity 0.5s ease";
+       preloader.style.opacity = "0";
+       setTimeout(() => {
+           preloader.style.display = "none";
+       }, 500);
+   });
+   const showMessageTimeout = setTimeout(() => {
+       const loadingMessage = document.getElementById("loading-message");
+       loadingMessage.style.opacity = "1";
+   }, 10000);
+</script>
+<div id="preloader" class="preloader fixed inset-0 z-50 bg-white flex flex-col items-center justify-center">
+   <div class="animate-spin inline-block w-8 h-8 border-[3px] border-current border-t-transparent text-green-600 rounded-full " role="status" aria-label="loading"></div>
+   <p id="loading-message" class="mt-4 text-gray-500 opacity-0 transition-opacity duration-500">Still loading...</p>
+</div>
+<div class="fixed inset-0 z-10 flex items-center justify-center pointer-events-none">
+    <div class="grid grid-cols-1">
+    <div class="bg-white/80 backdrop-blur-sm p-8 rounded-xl border text-center pointer-events-auto max-w-3xl w-full mx-4">
+
+      <div class="flex justify-center">
+        <svg class="text-green-500 size-16 mb-8" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="m8 12.5l2.5 2.5L16 9"/></g></svg>
+      </div>
+
+      <h1 class="text-3xl font-semibold text-gray-800">Отлично</h1>
+      <p class="mt-4 text-gray-600">Квиз был успешно пройден!</p>
+      <div class="mt-6 flex justify-center space-x-4">
+         <button id="repeatBtn" class="whitespace-nowrap  flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
+            Заново
+         </button>
+         <button id="otherQuizzesBtn" class="whitespace-nowrap  flex items-center font-semibold border transition-all ease-in duration-75 text-center select-none disabled:shadow-none disabled:opacity-50 disabled:cursor-not-allowed gap-x-1 active:shadow-none text-sm leading-5 rounded-xl py-1.5 h-8 px-4 bg-green-500 text-white border-green-600 hover:bg-green-600 disabled:bg-green-400 disabled:border-green-400 shadow-10 hover:shadow-15">
+            Другие квизы
+         </button>
+      </div>
+    </div>
+    
+    <div class="mt-4 mx-4 bg-white/80 backdrop-blur-sm p-8 rounded-xl border text-center pointer-events-auto max-w-3xl w-full">
+  <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 lg:gap-32">
+
+
+
+    <div class="flex flex-col items-center my-4 md:my-0">
+      <div class="p-3 border rounded-full">
+        <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.09 14.999a6.9 6.9 0 0 1-.59-2.794C5.5 8.5 8.41 5.499 12 5.499s6.5 3.002 6.5 6.706a6.9 6.9 0 0 1-.59 2.794m-5.91-13v1m10 9h-1m-18 0H2m17.07-7.071l-.707.707m-12.726.001l-.707-.707m9.587 14.377c1.01-.327 1.416-1.252 1.53-2.182c.034-.278-.195-.509-.475-.509H8.477a.483.483 0 0 0-.488.534c.112.928.394 1.606 1.464 2.156m5.064 0H9.453m5.064 0c-.121 1.945-.683 2.716-2.51 2.694c-1.954.036-2.404-.916-2.554-2.693" />
+        </svg>
+      </div>
+      <h1 class="font-normal mt-2">
+        Счет <br>
+        <span class="font-bold">{$score} / 100</span>
+      </h1>
+    </div>
+
+    <div class="flex flex-col items-center my-4 md:my-0">
+      <div class="p-3 border rounded-full">
+        <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+            <path d="M17 3.338A9.95 9.95 0 0 0 12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10q-.002-1.03-.2-2" />
+            <path d="M8 12.5s1.5 0 3.5 3.5c0 0 5.559-9.167 10.5-11" />
+          </g>
+        </svg>
+      </div>
+      <h1 class="font-normal mt-2">
+        Пройдено вопросов <br>
+        <span class="font-bold">{$correct_answers}</span>
+      </h1>
+    </div>
+
+    <div class="flex flex-col items-center my-4 md:my-0">
+      <div class="p-3 border rounded-full">
+        <svg class="text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+            <circle cx="12" cy="13" r="9" />
+            <path d="m5 19l-2 2m16-2l2 2M19 3.57l.596-.298c.845-.423 1.162-.374 1.834.298s.72.99.298 1.834L21.43 6M5 3.57l-.596-.298c-.845-.423-1.162-.374-1.834.298s-.72.99-.298 1.834L2.57 6M12 9.5v4l2 2m-2-12V2m-2 0h4" />
+          </g>
+        </svg>
+      </div>
+      <h1 class="font-normal mt-2">
+        Время <br>
+        <span class="font-bold">{$elapsed_time}</span>
+      </h1>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+<button></button>
+<script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+<script src="/tailwind.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/preline@2.6.0/dist/preline.min.js"></script>
+<script type="module" src="/scripts/completedQuizController.js"></script>
+{include '../partials/footer.latte'}

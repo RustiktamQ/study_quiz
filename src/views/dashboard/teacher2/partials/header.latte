@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - AqylApp</title>
+    <link rel="stylesheet" href="/assets/teacher/css/output.css">
+    <link rel="stylesheet" href="/assets/teacher/css/input.css">
+    <link rel="shortcut icon" href="/assets/teacher/favicon.ico" type="image/x-icon">
+
+    <style>
+    .spinner-container {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 999999;
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+    }
+
+    .dark .spinner-container {
+      background-color: black;
+    }
+
+    .spinner {
+      height: 4rem;
+      width: 4rem;
+      border-radius: 9999px;
+      border: 4px solid;
+      border-color: oklch(62.7% 0.194 149.214);
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          const spinner = document.getElementById('loading-spinner');
+          if (spinner) {
+            spinner.style.display = 'none';
+          }
+        }, 500);
+      });
+    </script>
+
+  </head>
+
+  <div id="loading-spinner" class="spinner-container ">
+    <div class="spinner"></div>
+  </div>
+  
+  <body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+      <!-- ===== Sidebar Start ===== -->
+      <aside
+        id="sidebar"
+        class="sidebar fixed left-0 top-0 z-9999 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 transition-transform duration-300 ease-linear lg:static lg:translate-x-0 -translate-x-full"
+      >
+        <!-- SIDEBAR HEADER -->
+        <div
+          id="sidebar-header"
+          class="gap-2 pt-8 pb-7 sidebar-header"
+        >
+          <a href="/dashboard/teacher">
+            <span id="sidebar-logo-full" class="logo">
+              <img class="" src="/assets/teacher/logo.png" alt="Logo" width="160px"/>
+            </span>
+            <img
+              id="sidebar-logo-icon"
+              class="hidden logo-icon"
+              src="/assets/teacher/logo.png"
+              alt="Logo"
+              width="160px"
+            />
+          </a>
+        </div>
+        <!-- SIDEBAR HEADER -->
+
+        <div
+          class="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar"
+        >
+          <!-- Sidebar Menu -->
+          <nav>
+            <!-- Menu Group -->
+            <div>
+              <ul class="flex flex-col gap-2 mb-6">
+                <!-- Menu Item Главная -->
+                <li>
+                  <a
+                    href="/dashboard/teacher"
+                    class="menu-item group menu-item-inactive flex items-center gap-3.5 rounded-lg px-4 py-3 text-base font-medium"
+                  >
+                    <svg class="w-5 shrink-0 fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                    <span class="menu-item-text">Главная</span>
+                  </a>
+                </li>
+                <!-- Menu Item Главная -->
+
+                <!-- Menu Item Students -->
+                <li>
+                  <a
+                    href="#"
+                    data-accordion-trigger="students"
+                    class="menu-item group menu-item-inactive relative flex items-center gap-3.5 rounded-lg px-4 py-3 text-base font-medium"
+                  >
+                    <svg class="w-5 shrink-0 fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.616 20h.49c1.15 0 2.065-.524 2.886-1.256C24.078 16.883 19.174 15 17.5 15m-2-9.931Q15.841 5 16.205 5c1.82 0 3.295 1.343 3.295 3s-1.475 3-3.295 3q-.364 0-.705-.069m-11.019 5.18c-1.179.632-4.27 1.922-2.387 3.536c.92.789 1.944 1.353 3.232 1.353h7.348c1.288 0 2.312-.564 3.232-1.353c1.883-1.614-1.208-2.904-2.387-3.536c-2.765-1.481-6.273-1.481-9.038 0M13 7.5a4 4 0 1 1-8 0a4 4 0 0 1 8 0"/></svg>
+                    <span class="menu-item-text"> Ученики </span>
+                    <svg
+                      class="absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current transition-transform duration-300 menu-item-arrow js-sidebar-arrow menu-item-arrow-inactive"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      />
+                    </svg>
+                  </a>
+                  <!-- Dropdown Menu Start -->
+                  <div
+                    data-accordion-content="students"
+                    class="overflow-hidden transition-all duration-300 ease-in-out hidden"
+                    style="max-height: 0px;"
+                  >
+                    <ul class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
+                      <li> <a href="/dashboard/teacher/students/list/0" class="menu-dropdown-item group menu-dropdown-item-inactive block rounded-md px-3 py-2 text-sm font-medium"> Управление </a> </li>
+                      <li> <a href="/dashboard/teacher/students/invite" class="menu-dropdown-item group menu-dropdown-item-inactive block rounded-md px-3 py-2 text-sm font-medium"> Пригласить </a> </li>
+                    </ul>
+                  </div>
+                  <!-- Dropdown Menu End -->
+                </li>
+                <!-- Menu Item Students -->
+
+                <!-- Menu Item My Profile -->
+                <li>
+                   <a
+                    href="/dashboard/teacher/profile"
+                    data-accordion-trigger="my-profile"
+                    class="menu-item group menu-item-inactive relative flex items-center gap-3.5 rounded-lg px-4 py-3 text-base font-medium"
+                  >
+                    <svg class="w-5 shrink-0 fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0"/></svg>
+                    <span class="menu-item-text"> Мой профиль </span>
+                    <svg
+                      class="absolute right-2.5 top-1/2 -translate-y-1/2 stroke-current transition-transform duration-300 menu-item-arrow js-sidebar-arrow menu-item-arrow-inactive"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                      />
+                    </svg>
+                  </a>
+                  <!-- Dropdown Menu Start -->
+                   <div
+                    data-accordion-content="my-profile"
+                    class="overflow-hidden transition-all duration-300 ease-in-out hidden"
+                    style="max-height: 0px;"
+                  >
+                    <ul class="flex flex-col gap-1 mt-2 menu-dropdown pl-9">
+                     <li> <a href="/dashboard/teacher/profile" class="menu-dropdown-item group menu-dropdown-item-inactive block rounded-md px-3 py-2 text-sm font-medium"> Мой профиль </a> </li>
+                     <li> <a href="/dashboard/teacher/settings" class="menu-dropdown-item group menu-dropdown-item-inactive block rounded-md px-3 py-2 text-sm font-medium"> Настройки </a> </li>
+                     <li> <a href="/logout" class="cursor-pointer menu-dropdown-item group menu-dropdown-item-inactive block rounded-md px-3 py-2 text-sm font-medium"> Выйти </a> </li>
+                    </ul>
+                  </div>
+                  <!-- Dropdown Menu End -->
+                </li>
+                <!-- Menu Item My Profile -->
+
+                <!-- Menu Item ai -->
+                <li>
+                  <a
+                    href="/dashboard/teacher/manual"
+                    class="menu-item group menu-item-inactive flex items-center gap-3.5 rounded-lg px-4 py-3 text-base font-medium"
+                  >
+                  <svg class="w-5 shrink-0 fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M20.5 16.929V10c0-3.771 0-5.657-1.172-6.828S16.271 2 12.5 2h-1C7.729 2 5.843 2 4.672 3.172S3.5 6.229 3.5 10v9.5"/><path d="M20.5 17H6a2.5 2.5 0 0 0 0 5h14.5"/><path d="M20.5 22a2.5 2.5 0 0 1 0-5M15 7H9m3 4H9"/></g></svg>
+                    <span class="menu-item-text">База знаний</span>
+                  </a>
+                </li>
+                <!-- Menu Item ai -->
+
+                <!-- Menu Item ai -->
+                <li>
+                  <a
+                    href="#"
+                    class="menu-item group menu-item-inactive flex items-center gap-3.5 rounded-lg px-4 py-3 text-base font-medium"
+                  >
+                  <img src="/assets/teacher/logo.svg" alt="" class="w-5">
+                    <span class="menu-item-text">AI</span>
+                  </a>
+                </li>
+                <!-- Menu Item ai -->
+              </ul>
+            </div>
+          </nav>
+          <!-- Sidebar Menu -->
+
+          <!-- Promo Box -->
+          <div
+            id="sidebar-promo"
+            class="mx-auto mb-10 w-full max-w-60 rounded-2xl bg-gray-50 px-4 py-5 text-center"
+          >
+            <h3 class="mb-2 font-semibold text-gray-900"> ИИ в учебе </h3>
+            <p class="mb-4 text-sm text-gray-500"> Не упустите шанс сделать учебу учеников более эффективной! </p>
+            <a href="#" target="_blank" rel="nofollow" class="flex items-center justify-center p-3 font-medium transition text-white rounded-full bg-green-500 text-sm hover:bg-green-600"> Подробнее </a>
+          </div>
+          <!-- Promo Box -->
+        </div>
+      </aside>
+      <!-- ===== Sidebar End ===== -->
+
+      <!-- ===== Content Area Start ===== -->
+      <div
+        class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden"
+      >
+        <!-- ===== Header Start ===== -->
+        <header
+          class="sticky top-0 z-999 flex w-full border-gray-200 bg-white lg:border-b"
+        >
+          <div
+            class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6"
+          >
+            <div
+              class="!flex w-full items-center justify-between gap-2 border-b border-gray-200 px-3 py-3 sm:gap-4 lg:justify-normal lg:border-b-0 lg:px-0 lg:py-4"
+            >
+              <!-- Hamburger Toggle BTN -->
+              <button
+                id="hamburger-toggle"
+                aria-controls="sidebar"
+                class="z-99999 flex h-10 w-10 items-center cursor-pointer justify-center rounded-lg border border-gray-200 text-gray-500 lg:hidden lg:h-11 lg:w-11"
+              >
+                <!-- LG Menu Icon -->
+                <svg
+                  id="hamburger-lg-icon"
+                  class="hidden fill-current lg:block"
+                  width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"
+                > <path fill-rule="evenodd" clip-rule="evenodd" d="M0.583252 1C0.583252 0.585788 0.919038 0.25 1.33325 0.25H14.6666C15.0808 0.25 15.4166 0.585786 15.4166 1C15.4166 1.41421 15.0808 1.75 14.6666 1.75L1.33325 1.75C0.919038 1.75 0.583252 1.41422 0.583252 1ZM0.583252 11C0.583252 10.5858 0.919038 10.25 1.33325 10.25L14.6666 10.25C15.0808 10.25 15.4166 10.5858 15.4166 11C15.4166 11.4142 15.0808 11.75 14.6666 11.75L1.33325 11.75C0.919038 11.75 0.583252 11.4142 0.583252 11ZM1.33325 5.25C0.919038 5.25 0.583252 5.58579 0.583252 6C0.583252 6.41421 0.919038 6.75 1.33325 6.75L7.99992 6.75C8.41413 6.75 8.74992 6.41421 8.74992 6C8.74992 5.58579 8.41413 5.25 7.99992 5.25L1.33325 5.25Z" fill=""></path> </svg>
+                <!-- Mobile Menu Open Icon -->
+                <svg
+                  id="hamburger-open-icon"
+                  class="block fill-current lg:hidden"
+                  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                > <path fill-rule="evenodd" clip-rule="evenodd" d="M3.25 6C3.25 5.58579 3.58579 5.25 4 5.25L20 5.25C20.4142 5.25 20.75 5.58579 20.75 6C20.75 6.41421 20.4142 6.75 20 6.75L4 6.75C3.58579 6.75 3.25 6.41422 3.25 6ZM3.25 18C3.25 17.5858 3.58579 17.25 4 17.25L20 17.25C20.4142 17.25 20.75 17.5858 20.75 18C20.75 18.4142 20.4142 18.75 20 18.75L4 18.75C3.58579 18.75 3.25 18.4142 3.25 18ZM4 11.25C3.58579 11.25 3.25 11.5858 3.25 12C3.25 12.4142 3.58579 12.75 4 12.75L12 12.75C12.4142 12.75 12.75 12.4142 12.75 12C12.75 11.5858 12.4142 11.25 12 11.25L4 11.25Z" fill=""></path> </svg>
+              </button>
+              <!-- Hamburger Toggle BTN -->
+
+              <a href="index.html" class="lg:hidden">
+                <img src="/assets/teacher/logo2.png" alt="Logo" width="32px"/>
+              </a>
+
+              <!-- Mobile Nav Menu Button -->
+              <button
+                id="mobile-menu-toggle"
+                class="z-99999 flex h-10 w-10 items-center justify-center rounded-lg text-gray-700 hover:bg-gray-100 lg:hidden"
+              >
+                <svg
+                  class="fill-current"
+                  width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                > <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99902 10.4951C6.82745 10.4951 7.49902 11.1667 7.49902 11.9951V12.0051C7.49902 12.8335 6.82745 13.5051 5.99902 13.5051C5.1706 13.5051 4.49902 12.8335 4.49902 12.0051V11.9951C4.49902 11.1667 5.1706 10.4951 5.99902 10.4951ZM17.999 10.4951C18.8275 10.4951 19.499 11.1667 19.499 11.9951V12.0051C19.499 12.8335 18.8275 13.5051 17.999 13.5051C17.1706 13.5051 16.499 12.8335 16.499 12.0051V11.9951C16.499 11.1667 17.1706 10.4951 17.999 10.4951ZM13.499 11.9951C13.499 11.1667 12.8275 10.4951 11.999 10.4951C11.1706 10.4951 10.499 11.1667 10.499 11.9951V12.0051C10.499 12.8335 11.1706 13.5051 11.999 13.5051C12.8275 13.5051 13.499 12.8335 13.499 12.0051V11.9951Z" fill=""></path> </svg>
+              </button>
+              <!-- Mobile Nav Menu Button -->
+            </div>
+
+            <div
+              id="mobile-menu-content"
+              class="shadow-theme-md flex w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none"
+            >
+              <div class="2xsm:gap-3 flex items-center gap-2">
+                <!-- Notification Menu Area -->
+                <div class="relative z-[9999]">
+                  <button
+                    id="notification-button"
+                    class="relative cursor-pointer flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+                  >
+                    <svg class="fill-current" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M10.75 2.29248C10.75 1.87827 10.4143 1.54248 10 1.54248C9.58583 1.54248 9.25004 1.87827 9.25004 2.29248V2.83613C6.08266 3.20733 3.62504 5.9004 3.62504 9.16748V14.4591H3.33337C2.91916 14.4591 2.58337 14.7949 2.58337 15.2091C2.58337 15.6234 2.91916 15.9591 3.33337 15.9591H4.37504H15.625H16.6667C17.0809 15.9591 17.4167 15.6234 17.4167 15.2091C17.4167 14.7949 17.0809 14.4591 16.6667 14.4591H16.375V9.16748C16.375 5.9004 13.9174 3.20733 10.75 2.83613V2.29248ZM14.875 14.4591V9.16748C14.875 6.47509 12.6924 4.29248 10 4.29248C7.30765 4.29248 5.12504 6.47509 5.12504 9.16748V14.4591H14.875ZM8.00004 17.7085C8.00004 18.1228 8.33583 18.4585 8.75004 18.4585H11.25C11.6643 18.4585 12 18.1228 12 17.7085C12 17.2943 11.6643 16.9585 11.25 16.9585H8.75004C8.33583 16.9585 8.00004 17.2943 8.00004 17.7085Z" fill=""></path> </svg>
+                  </button>
+                  <!-- *** ADDED: transition, duration, ease, origin, opacity, scale *** -->
+                  <div
+                    id="notification-dropdown"
+                    class="shadow-theme-lg absolute -right-[240px] mt-[17px] flex h-[480px] w-[350px] flex-col rounded-2xl border border-gray-200 bg-white p-3 sm:w-[361px] lg:right-0 hidden transition-all duration-300 ease-out origin-top-right transform opacity-0 scale-95"
+                  >
+                    <div class="mb-3 flex items-center justify-between border-b border-gray-100 pb-3">
+                      <h5 class="text-lg font-semibold text-gray-800"> Уведомления </h5>
+                      <button id="notification-close-button" class="text-gray-500 cursor-pointer"> <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.21967 7.28131C5.92678 6.98841 5.92678 6.51354 6.21967 6.22065C6.51256 5.92775 6.98744 5.92775 7.28033 6.22065L11.999 10.9393L16.7176 6.22078C17.0105 5.92789 17.4854 5.92788 17.7782 6.22078C18.0711 6.51367 18.0711 6.98855 17.7782 7.28144L13.0597 12L17.7782 16.7186C18.0711 17.0115 18.0711 17.4863 17.7782 17.7792C17.4854 18.0721 17.0105 18.0721 16.7176 17.7792L11.999 13.0607L7.28033 17.7794C6.98744 18.0722 6.51256 18.0722 6.21967 17.7794C5.92678 17.4865 5.92678 17.0116 6.21967 16.7187L10.9384 12L6.21967 7.28131Z" fill=""></path> </svg> </button>
+                    </div>
+                    <ul class="custom-scrollbar flex h-auto flex-col overflow-y-auto">
+                    {foreach $notifs as $notif}
+                      <li> 
+                        <a class="flex gap-3 rounded-lg border-b transition border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100" href="#"> 
+                          <span class="relative z-1 block h-10 w-full max-w-10 rounded-full"> 
+                          <img src="{$notif['picture']}" alt="User" class="overflow-hidden rounded-full" /> 
+                          </span> <span class="block"> <span class="text-sm mb-1.5 block text-gray-500"> 
+                          <span class="font-medium text-gray-800">{$notif['name']}</span> {$notif['message']} </span>  
+                          <span class="text-xs flex items-center gap-2 text-gray-500"> <span>{$notif['type']}</span> 
+                          <span class="h-1 w-1 rounded-full bg-gray-400"></span> <span>{$notif['created_at']}</span> </span> 
+                        </a> 
+                      </li>
+                    {/foreach}
+                    </ul>
+
+                    <ul class="custom-scrollbar flex h-auto flex-col overflow-y-auto">
+  <li>
+    <a class="flex gap-3 rounded-lg border-b transition border-gray-100 p-3 px-4.5 py-3 hover:bg-gray-100" href="ai.php">
+      <span class="relative z-1 block h-10 w-full max-w-10 rounded-full">
+        <img src="/assets/teacher/logo.svg" alt="User" class="overflow-hidden rounded-full" />
+      </span>
+      <span class="flex flex-col w-full">
+        <div class="flex text-sm mb-2 text-gray-500">
+          <span class="font-medium text-gray-800">AqylApp</span>
+          <svg class="text-blue-500 my-auto ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+            <g fill="#2b7fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="#fff">
+              <path d="M18.99 19H19m-.01 0c-.622.617-1.75.464-2.542.464-.972 0-1.44.19-2.133.883C13.725 20.937 12.934 22 12 22s-1.725-1.063-2.315-1.653c-.694-.693-1.162-.883-2.133-.883-.791 0-1.92.154-2.543-.464-.627-.622-.473-1.756-.473-2.552 0-1.007-.22-1.47-.937-2.186C2.533 13.196 2 12.662 2 12s.533-1.196 1.6-2.262c.64-.64.936-1.274.936-2.186 0-.791-.154-1.92.464-2.543.622-.627 1.756-.473 2.552-.473.912 0 1.546-.297 2.186-.937C10.804 2.533 11.338 2 12 2s1.196.533 2.262 1.6c.64.64 1.274.936 2.186.936.791 0 1.92-.154 2.543.464.627.622.473 1.756.473 2.552 0 1.007.22 1.47.937 2.186C21.467 10.804 22 11.338 22 12s-.533 1.196-1.6 2.262c-.716.717-.936 1.18-.936 2.186 0 .796.154 1.93-.473 2.552"/>
+              <path d="m9 12.893 1.8 1.607 4.2-5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="text-sm text-gray-500 mb-3">Скидки до 30% на нейросети в честь начала учебного года. Не пропустите!</div>
+        <span class="text-xs flex items-center gap-2 text-gray-500">
+          <span>1 hr ago</span>
+        </span>
+      </span>
+    </a>
+  </li>
+</ul>
+
+                  </div>
+                </div>
+                <!-- Notification Menu Area -->
+              </div>
+
+              <!-- User Area -->
+              <div class="relative">
+                <a id="user-button" class="flex items-center text-gray-700 cursor-pointer" href="#">
+                  <span class="mr-3 h-11 w-11 overflow-hidden rounded-full"> <img src="{$teacher['picture']}" alt="User" /> </span>
+                  <svg id="user-chevron" class="stroke-gray-500 transition-transform duration-300" width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M4.3125 8.65625L9 13.3437L13.6875 8.65625" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/> </svg>
+                </a>
+                 <!-- *** ADDED: transition, duration, ease, origin, opacity, scale *** -->
+                <div
+                    id="user-dropdown"
+                    class="shadow-theme-lg absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 hidden transition-all duration-300 ease-out origin-top-right transform opacity-0 scale-95"
+                >
+                  <ul class="flex flex-col gap-1 border-b border-gray-200 pb-3">
+                    <li> <a href="/dashboard/teacher/settings" class="group text-sm flex items-center gap-3 rounded-lg px-3 transition py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700"> <svg class="w-5 text-gray-500 group-hover:text-gray-700" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M21.011 14.097c.522-.141.783-.212.886-.346c.103-.135.103-.351.103-.784v-1.934c0-.433 0-.65-.103-.784s-.364-.205-.886-.345c-1.95-.526-3.171-2.565-2.668-4.503c.139-.533.208-.8.142-.956s-.256-.264-.635-.479l-1.725-.98c-.372-.21-.558-.316-.725-.294s-.356.21-.733.587c-1.459 1.455-3.873 1.455-5.333 0c-.377-.376-.565-.564-.732-.587c-.167-.022-.353.083-.725.295l-1.725.979c-.38.215-.57.323-.635.48c-.066.155.003.422.141.955c.503 1.938-.718 3.977-2.669 4.503c-.522.14-.783.21-.886.345S2 10.6 2 11.033v1.934c0 .433 0 .65.103.784s.364.205.886.346c1.95.526 3.171 2.565 2.668 4.502c-.139.533-.208.8-.142.956s.256.264.635.48l1.725.978c.372.212.558.317.725.295s.356-.21.733-.587c1.46-1.457 3.876-1.457 5.336 0c.377.376.565.564.732.587c.167.022.353-.083.726-.295l1.724-.979c.38-.215.57-.323.635-.48s-.003-.422-.141-.955c-.504-1.937.716-3.976 2.666-4.502"/></g></svg> Настройки аккаунта </a> </li>
+                  </ul>
+                  <a href="/logout" class="group text-sm mt-3 flex cursor-pointer transition items-center gap-3 rounded-lg px-3 py-2 font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-700">
+                  <svg class="w-5 text-red-500 group-hover:text-red-700" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.023 5.5a9 9 0 1 0 9.953 0M12 2v8" color="currentColor"/></svg>
+                  Выйти </a>
+                </div>
+              </div>
+              <!-- User Area -->
+            </div>
+          </div>
+        </header>
+        

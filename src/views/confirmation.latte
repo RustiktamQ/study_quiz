@@ -1,0 +1,153 @@
+{include 'partials/header.latte'}
+<style type="text/tailwindcss">
+        @layer utilities {
+          .animate-wiggle {
+            animation: wiggle 1s ease-in-out infinite;
+          }
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+          }
+          .animate-slow-pulse {
+              animation: slow-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+          }
+          @keyframes slow-pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: .7; }
+          }
+        }
+      </style>
+<div class=" flex items-center justify-center p-4">
+    <div class=" p-8 md:p-12 text-center max-w-3xl w-full ">
+
+        <!-- Fun Animated Icon -->
+        <div class="mb-6">
+            <svg class="w-20 h-20 mx-auto text-green-500 animate-wiggle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+        </div>
+
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+        Почти готово, {$firstname}!
+        </h1>
+
+        <p class="text-gray-600 mb-8 text-base md:text-lg">
+            Твой аккаунт ждет, когда на нее посыплется волшебство ✨ (а именно одобрение учителя!). Попроси учителя проверить свои уведомления, чтобы активировать твоё учебное приключение.
+        </p>
+
+        <div class="relative inline-block group mb-8">
+             <button
+                type="button"
+                id="check-status-btn"
+                class="relative z-10 inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-green-500 border border-transparent rounded-full shadow-lg hover:from-pink-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-300 ease-in-out transform hover:-translate-y-1 active:translate-y-0"
+             >
+                <svg class="w-5 h-5 mr-2 -ml-1 animate-slow-pulse" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+                Проверить запрос!
+             </button>
+             <span class="absolute -inset-1 bg-gradient-to-r from-green-500 to-green-600 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-tilt"></span>
+        </div>
+
+
+        <p class="text-xs text-gray-400 mt-6">
+            Пссс... Пока ты ждешь, почему бы не подумать о первой потрясающей вещи, <br> которой ты бы хотел научиться? 🤔
+        </p>
+
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+        async function checkConfirm(user_id) {
+            try {
+                const response = await fetch(`${window.location.origin}/api/student/check/confirm`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        user_id
+                    })
+                });
+        
+                return await response.json();
+            } catch (error) {
+                return error.message;
+            }
+        }
+
+        function getUserData() {
+            return JSON.parse(
+            decodeURIComponent(
+                document.cookie.split('; ')
+                .find(row => row.startsWith('user='))
+                ?.split('=')[1] || '{}'
+                )   
+            );
+        }
+
+        const user_id = getUserData().id;
+
+
+    const checkBtn = document.getElementById('check-status-btn');
+    if (checkBtn) {
+        checkBtn.addEventListener('click', async () => {
+            checkBtn.classList.add('animate-head-shake');
+            setTimeout(() => {
+               checkBtn.classList.remove('animate-head-shake');
+            }, 500);
+
+            const res = await checkConfirm(user_id);
+
+            if (res.success) {
+                window.location.href = '/dashboard/student';
+            } else if (!res.success) {
+                Toastify({
+                    text: res.message,
+                    duration: 3000,
+                    newWindow: true,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    stopOnFocus: true,
+                    style: {
+                    background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+                    },
+                }).showToast();
+            }
+        });
+    }
+
+    const styleSheet = document.styleSheets[0];
+    const keyframes =
+      `@keyframes head-shake {
+        0% { transform: translateX(0) rotate(0); }
+        6.5% { transform: translateX(-3px) rotate(-1deg); }
+        18.5% { transform: translateX(2px) rotate(1deg); }
+        31.5% { transform: translateX(-2px) rotate(-1deg); }
+        43.5% { transform: translateX(1px) rotate(1deg); }
+        50% { transform: translateX(0) rotate(0); }
+        100% { transform: translateX(0) rotate(0); }
+      }`;
+
+    styleSheet.insertRule(
+      `.animate-head-shake { animation: head-shake 0.5s cubic-bezier(.36,.07,.19,.97) both; transform: translate3d(0, 0, 0); backface-visibility: hidden; perspective: 1000px; }`,
+      styleSheet.cssRules.length
+    );
+    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+
+    const tiltKeyframes =
+    `@keyframes tilt {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(0.5deg); }
+        75% { transform: rotate(-0.5deg); }
+      }`;
+    styleSheet.insertRule(
+      `.animate-tilt { animation: tilt 10s infinite linear; }`,
+      styleSheet.cssRules.length
+    );
+    styleSheet.insertRule(tiltKeyframes, styleSheet.cssRules.length);
+
+</script>
+{include 'partials/footer.latte'}

@@ -1,0 +1,145 @@
+{include '../partials/header.latte'}
+
+<main id="swup" class="transition-fade bg-white">
+    <div class="max-w-[1440px] mx-auto py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Page Heading -->
+        <div class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight animate-on-load">
+                Простое и понятное ценообразование
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto animate-on-load" style="animation-delay: 0.1s;">
+                Выберите план, который подходит для вашего класса. Начните бесплатно или раскройте весь потенциал с планом Pro.
+            </p>
+        </div>
+
+        <!-- Slider & Billing Cycle -->
+        <div class="max-w-2xl mx-auto mb-12 md:mb-16 space-y-8">
+            <!-- Student Quantity Slider -->
+            <div class="slider-container animate-on-load" style="animation-delay: 0.2s;">
+                <label for="student-slider" class="block text-lg font-medium text-gray-700 mb-3 text-center">
+                    Количество учеников: <span id="student-count" class="font-bold text-green-600 text-xl">1</span>
+                </label>
+                <input 
+                    id="student-slider" 
+                    type="range" 
+                    min="1" 
+                    max="100" 
+                    value="1" 
+                    class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-green-500"
+                >
+                <div class="flex justify-between text-sm text-gray-500 mt-1 px-1">
+                    <span>1</span>
+                    <span>100+</span>
+                </div>
+            </div>
+
+            <!-- Billing Cycle Toggle -->
+            <div class="billing-toggle flex justify-center items-center space-x-2 animate-on-load" style="animation-delay: 0.3s;">
+                <button id="monthly-btn" class="px-6 py-2 rounded-full text-sm font-medium transition-colors duration-300 ease-in-out bg-green-500 text-white">
+                    Ежемесячно
+                </button>
+                <button id="annual-btn" class="px-6 py-2 rounded-full text-sm font-medium transition-colors duration-300 ease-in-out bg-gray-200 text-gray-700 hover:bg-gray-300">
+                    Ежегодно <span class="hidden sm:inline">(Экономия 20%)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pricing Plans -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            
+            <!-- Free Plan -->
+            <div id="free-plan-card" class="plan-card bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm flex flex-col transition-opacity duration-300 ease-in-out animate-on-load" style="animation-delay: 0.4s;">
+                 <h3 class="text-2xl font-semibold text-gray-900 mb-3">Бесплатный</h3>
+                 <p class="text-gray-600 mb-6 min-h-[40px]">Идеально для ознакомления и небольших групп до 5 учеников.</p>
+                 
+                 <div class="mb-8">
+                     <span class="text-4xl font-bold text-gray-900">0 KZT</span>
+                     <span class="text-base font-normal text-gray-500"> / месяц</span>
+                 </div>
+
+                 <ul class="space-y-3 text-gray-700 mb-10 flex-grow">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        До 5 учеников
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        50 AI запросов / месяц
+                    </li>
+                    <li class="flex items-center">
+                         <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Базовое отслеживание прогресса
+                    </li>
+                     <li class="flex items-center">
+                         <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Поддержка сообщества
+                    </li>
+                 </ul>
+
+                 <a id="free-plan-button" href="#" class="block w-full text-center bg-gray-100 text-gray-800 font-medium py-3 px-6 rounded-lg hover:bg-gray-200 transition duration-300 ease-in-out mt-auto">
+                     Начать бесплатно
+                 </a>
+            </div>
+
+            <!-- Paid Plan (Pro) -->
+            <div id="paid-plan-card" class="plan-card bg-white border-2 border-green-500 rounded-2xl p-6 md:p-8 shadow-lg flex flex-col relative overflow-hidden animate-on-load" style="animation-delay: 0.5s;">
+                <span class="absolute top-0 right-0 bg-green-500 text-white text-xs font-semibold px-4 py-1 rounded-bl-lg z-10">
+                    Популярный
+                </span>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-3">Pro</h3>
+                <p class="text-gray-600 mb-6 min-h-[40px]">Все возможности для эффективного обучения и управления классом.</p>
+
+                <div class="mb-2">
+                    <span id="paid-plan-price" class="text-4xl font-bold text-gray-900">700</span>
+                    <span id="paid-plan-currency" class="text-4xl font-bold text-gray-900"> &#8376;</span>
+                    <span id="paid-plan-unit" class="text-base font-normal text-gray-500"> / ученик / месяц</span>
+                </div>
+                 <p id="annual-price-note" class="text-sm text-green-600 font-medium mb-6 h-5"></p> <!-- Placeholder for height -->
+
+
+                 <ul class="space-y-3 text-gray-700 mb-10 flex-grow">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        <span id="paid-plan-students">1</span>&nbsp;ученик(-ов) (или больше)
+                    </li>
+                     <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Неограниченные AI запросы
+                    </li>
+                    <li class="flex items-center">
+                         <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Продвинутое отслеживание прогресса
+                    </li>
+                     <li class="flex items-center">
+                         <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Генерация сертификатов
+                    </li>
+                     <li class="flex items-center">
+                         <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Приоритетная поддержка
+                    </li>
+                 </ul>
+
+                 <a href="#" class="block w-full text-center bg-green-500 text-white font-medium py-3 px-6 rounded-lg hover:bg-green-600 transition duration-300 ease-in-out mt-auto">
+                     Выбрать Pro
+                 </a>
+            </div>
+
+        </div>
+        
+        <!-- Creative Element Example: Animated Gradient Background (Optional) -->
+        <!-- You could add a subtle, slow-moving gradient background to the whole section or behind the cards -->
+        <!-- <div class="absolute inset-0 -z-10 overflow-hidden">
+            <div class="absolute left-0 top-0 h-full w-full bg-gradient-to-br from-white via-green-50 to-white animate-gradient-xy"></div>
+        </div> -->
+        <!-- Add CSS for animate-gradient-xy if you use this -->
+
+    </div>
+</main>
+
+<script>
+
+</script>
+
+{include '../partials/footer.latte'}

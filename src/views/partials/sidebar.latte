@@ -1,0 +1,203 @@
+<!-- ========== MAIN CONTENT ========== -->
+  <!-- Breadcrumb -->
+  <div class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden  ">
+    <div class="flex items-center py-2">
+      <!-- Navigation Toggle -->
+      <button type="button" class="size-8 flex justify-center items-center gap-x-2 border border-gray-200 text-gray-800 hover:text-gray-500 rounded-lg focus:outline-none focus:text-gray-500 disabled:opacity-50 disabled:pointer-events-none    " aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-application-sidebar" aria-label="Toggle navigation" data-hs-overlay="#hs-application-sidebar">
+        <span class="sr-only">Toggle Navigation</span>
+        <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M15 3v18" />
+          <path d="m8 9 3 3-3 3" />
+        </svg>
+      </button>
+      <!-- End Navigation Toggle -->
+
+      <!-- Breadcrumb -->
+      <ol class="ms-3 flex items-center whitespace-nowrap">
+        <li class="flex items-center text-sm text-gray-800 ">
+          Application Layout
+          <svg class="shrink-0 mx-3 overflow-visible size-2.5 text-gray-400 " width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 1L10.6869 7.16086C10.8637 7.35239 10.8637 7.64761 10.6869 7.83914L5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </li>
+        <li class="text-sm font-semibold text-gray-800 truncate " aria-current="page">
+          Dashboard
+        </li>
+      </ol>
+      <!-- End Breadcrumb -->
+    </div>
+  </div>
+  <!-- End Breadcrumb -->
+
+  <!-- Sidebar -->
+  <div id="hs-application-sidebar" class="hs-overlay  [--auto-close:lg]
+    hs-overlay-open:translate-x-0
+    -translate-x-full transition-all duration-300 transform
+    w-[260px] h-full
+    hidden
+    fixed inset-y-0 start-0 z-[60]
+    bg-white border-e border-gray-200
+    lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
+     " role="dialog" tabindex="-1" aria-label="Sidebar">
+    <div class="relative flex flex-col h-full max-h-full">
+      <div class="px-6 pt-4">
+        <!-- Logo -->
+        <div class="flex my-auto">
+        <a href="{$ROOT_URL}dashboard">
+        <div class="rounded-xl my-auto text-xl inline-block font-semibold focus:outline-none focus:opacity-80">
+          {$APP_NAME}
+        </div>
+        <span class="text-md my-auto px-2 py-1 rounded-md ml-2 bg-green-600 text-white">For Teachers</span>
+        </a>
+        </div>
+        <!-- End Logo -->
+      </div>
+
+      <!-- Content -->
+      <div class="h-full overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
+        <nav class="hs-accordion-group p-3 w-full flex flex-col flex-wrap" data-hs-accordion-always-open>
+          <ul class="flex flex-col space-y-1">
+            <li>
+              <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="{$ROOT_URL}dashboard">
+              <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                Dashboard
+              </a>
+            </li>
+
+            <li class="hs-accordion" id="users-accordion">
+              <button type="button" class="hs-accordion-toggle transition w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100   " aria-expanded="true" aria-controls="users-accordion-child">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.616 20h.49c1.15 0 2.065-.524 2.886-1.256C24.078 16.883 19.174 15 17.5 15m-2-9.931Q15.841 5 16.205 5c1.82 0 3.295 1.343 3.295 3s-1.475 3-3.295 3q-.364 0-.705-.069m-11.019 5.18c-1.179.632-4.27 1.922-2.387 3.536c.92.789 1.944 1.353 3.232 1.353h7.348c1.288 0 2.312-.564 3.232-1.353c1.883-1.614-1.208-2.904-2.387-3.536c-2.765-1.481-6.273-1.481-9.038 0M13 7.5a4 4 0 1 1-8 0a4 4 0 0 1 8 0" color="currentColor"/></svg>
+                Students
+
+                <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m18 15-6-6-6 6" />
+                </svg>
+
+                <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <div id="users-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="users-accordion">
+                <ul class="hs-accordion-group ps-8 pt-1 space-y-1" data-hs-accordion-always-open>
+                  <li class="hs-accordion" id="users-accordion-sub-1">
+                    <button type="button" class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100   " aria-expanded="true" aria-controls="users-accordion-sub-1-child">
+                      Manage
+
+                      <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m18 15-6-6-6 6" />
+                      </svg>
+
+                      <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                         <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </button>
+
+                    <div id="users-accordion-sub-1-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="users-accordion-sub-1">
+                      <ul class="pt-1 space-y-1">
+                        <li>
+                          <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="#">
+                            Add new
+                          </a>
+                        </li>
+                        <li>
+                          <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="#">
+                            Edit existed
+                          </a>
+                        </li>
+                        <li>
+                          <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="{$ROOT_URL}dashboard/profile/settings">
+                            Invite via code
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="hs-accordion" id="account-accordion">
+              <button type="button" class="hs-accordion-toggle transition w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100   " aria-expanded="true" aria-controls="account-accordion-child">
+              <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.578 15.482c-1.415.842-5.125 2.562-2.865 4.715C4.816 21.248 6.045 22 7.59 22h8.818c1.546 0 2.775-.752 3.878-1.803c2.26-2.153-1.45-3.873-2.865-4.715a10.66 10.66 0 0 0-10.844 0M16.5 6.5a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0" color="currentColor"/></svg>
+                Account
+
+                <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m18 15-6-6-6 6" />
+                </svg>
+
+                <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <div id="account-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="account-accordion">
+                <ul class="ps-8 pt-1 space-y-1">
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="{$ROOT_URL}dashboard/profile">
+                      My profile
+                    </a>
+                  </li>
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="{$ROOT_URL}dashboard/profile/settings">
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="{$ROOT_URL}dashboard/logout.php">
+                      Logout
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="hs-accordion" id="projects-accordion">
+              <button type="button" class="hs-accordion-toggle transition w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100   " aria-expanded="true" aria-controls="projects-accordion-child">
+                <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.583 7.238c3.007.53 4.799 1.639 5.417 2.276c.618-.637 2.41-1.746 5.418-2.276c1.523-.269 2.285-.403 2.933.112C21 7.864 21 8.7 21 10.372v6.007c0 1.529 0 2.293-.416 2.77c-.417.477-1.333.639-3.166.962c-1.635.288-2.91.747-3.833 1.208c-.909.454-1.363.681-1.585.681s-.677-.227-1.585-.68c-.923-.462-2.198-.921-3.832-1.21c-1.834-.322-2.75-.484-3.167-.961S3 17.908 3 16.379v-6.007C3 8.7 3 7.864 3.649 7.35c.648-.515 1.41-.38 2.933-.112M12 9v13M8.5 3.059a6.29 6.29 0 0 1 7 .01M13.622 5.5a3.14 3.14 0 0 0-3.244-.01" color="currentColor"/></svg>
+                Skills
+
+                <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m18 15-6-6-6 6" />
+                </svg>
+
+                <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </button>
+
+              <div id="projects-accordion-child" class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden" role="region" aria-labelledby="projects-accordion">
+                <ul class="ps-8 pt-1 space-y-1">
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="#">
+                      Math
+                    </a>
+                  </li>
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="/lang/en">
+                      English
+                    </a>
+                  </li>
+                  <li>
+                    <a class="transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100  " href="/lang/kz">
+                      Kazakh
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li><a class="w-full transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100   " href="{$ROOT_URL}dashboard/school">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 22v-9.602c0-1.068 0-1.602.245-2.05c.244-.448.693-.737 1.592-1.315l2.082-1.338c.525-.337.787-.506 1.081-.506s.556.169 1.082.506l2.081 1.338c.899.578 1.348.867 1.592 1.315c.245.448.245.982.245 2.05V22m-5-9h.009M21 22v-5.838c0-2.291-1.26-2.477-4-3.162M3 22v-5.838C3 13.871 4.26 13.685 7 13m-5 9h20m-10 0v-4m0-11V4.982m0 0V2.97c0-.474 0-.711.146-.858c.46-.463 2.354.631 3.074 1.075c.608.374.78 1.122.78 1.795z" color="currentColor"/></svg>
+                My school
+              </a></li>
+            <li><a class="w-full transition flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100   " href="https://docs.{$domain}">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M16.613 16.085C13.98 17.568 12.477 20.64 12 21.5V8c.415-.746 1.602-2.884 3.632-4.336c.855-.612 1.282-.918 1.825-.64c.543.28.543.896.543 2.127v8.84c0 .666 0 .999-.137 1.232c-.136.234-.508.443-1.25.862"/><path d="M12 7.806c-.687-.722-2.678-2.436-6.02-3.036c-1.692-.305-2.538-.457-3.26.126C2 5.48 2 6.426 2 8.321v6.809c0 1.732 0 2.598.463 3.139c.462.54 1.48.724 3.518 1.09c1.815.326 3.232.847 4.258 1.37c1.01.514 1.514.771 1.761.771s.752-.257 1.76-.771c1.027-.523 2.444-1.044 4.26-1.37c2.036-.366 3.055-.55 3.517-1.09c.463-.541.463-1.407.463-3.14V8.322c0-1.894 0-2.841-.72-3.425C20.557 4.313 19 4.77 18 5.5"/></g></svg>
+                Documentation
+              </a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>

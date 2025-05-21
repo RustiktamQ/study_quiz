@@ -1,0 +1,126 @@
+{include './partials/header.latte'}
+{include './partials/sidebar.latte'}
+
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">Create New Quiz</h1>
+            <p class="text-sm text-gray-500">Enter the basic details for the new quiz. Questions can be added after creation.</p>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="sm:col-span-2">
+                        <label for="quiz-title" class="text-sm font-medium mb-2">Quiz Title</label>
+                        <input type="text" id="nameInp" required class="py-3 px-4 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="e.g., Chapter 3 Vocabulary">
+                    </div>
+
+                    <div>
+                        <label for="category" class="text-sm font-medium mb-2">Category</label>
+                        <select id="category" name="category_id" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            {foreach $categories as $category}
+                                <option value="{$category['id']}">{$category['name']}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="subcategory" class="text-sm font-medium mb-2">Sub category</label>
+                        <select id="subCategory" name="sub_category_id" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            {foreach $subCategories as $sub}
+                                <option value="{$sub['id']}">{$sub['name']}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="grade" class="text-sm font-medium mb-2">Grade</label>
+                        <select id="grade" name="grade" class="py-3 px-4 pe-9 w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="0">Дошкольный</option>
+                            <option value="1">Детский сад</option>
+                            <option value="2">Первый класс</option>
+                            <option value="3">Второй класс</option>
+                            <option value="4">Третий класс</option>
+                            <option value="5">Четвертый класс</option>
+                            <option value="6">Пятый класс</option>
+                            <option value="7">Шестой класс</option>
+                            <option value="8">Седьмой класс</option>
+                            <option value="9">Восьмой класс</option>
+                            <option value="10">Старшая школа</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-x-2">
+                    <a href="/adminPanel/quizzes" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button id="submit" type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700">
+                        <svg class="flex-shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                        Create Quiz & Add Questions
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include './partials/footer.latte'}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    async function createQuiz(name, category, subCategory, grade, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/create/quiz`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    category,
+                    subCategory,
+                    grade,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const token = getAdmin().token;
+
+    submit.addEventListener('click', async () => {
+        const res = await createQuiz(nameInp.value, category.value, subCategory.value, grade.value, token);
+
+        if (res.success) {
+            location.href = '/adminPanel/quizzes';
+      	} else if (res.error) {
+			Toastify({
+				text: res.message,
+				duration: 3000,
+				newWindow: true,
+				close: true,
+				gravity: "top",
+				position: "right",
+				stopOnFocus: true,
+				style: {
+						background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+					},
+			}).showToast();
+      	}
+    });
+</script>

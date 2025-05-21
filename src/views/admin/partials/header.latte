@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta name="robots" content="max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="{$APP_NAME} Dashboard">
+      <link rel="stylesheet" href="{$ROOT_URL}css/style.css" media="all">
+      <link rel="stylesheet" href="{$ROOT_URL}css/output.css" media="all">
+      <!-- Title -->
+      <title>{$APP_NAME} - Student's portal</title>
+      <!-- Favicon -->
+      <link rel="shortcut icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="https://preline.co/assets/css/main.min.css">
+
+      <style>html,body { font-family: 'Inter' !important; }</style>
+      <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic" rel="stylesheet" />
+
+      <!-- modal -->
+      <script n:syntax=off>
+         document.addEventListener('DOMContentLoaded', () => {
+            // --- Elements ---
+            // Trigger element to open the modal (YOU NEED TO CREATE THIS IN HTML)
+            // Example: <button id="open-modal-trigger">Open Modal</button>
+            const openModalTrigger = document.getElementById('open-modal-trigger');
+
+            // Modal container and backdrop
+            const shareModal = document.getElementById('share-modal');
+            const backdrop = document.getElementById('share-modal-backdrop');
+
+            // Button inside the modal to close it
+            const closeModalButton = document.getElementById('close-modal-button');
+
+            // New modal content elements (YOU NEED TO CREATE THESE IN YOUR MODAL HTML)
+            // Example: <input type="text" id="modal-input" placeholder="Enter something...">
+            const modalInput = document.getElementById('modal-input');
+            // Example: <button id="modal-action-button">Submit</button>
+            const modalActionButton = document.getElementById('modal-action-button');
+
+            // --- Check if essential elements exist ---
+            if (!openModalTrigger) console.warn('Trigger element with ID "open-modal-trigger" not found.');
+            if (!shareModal) console.error('Modal element with ID "share-modal" not found.');
+            if (!backdrop) console.error('Backdrop element with ID "share-modal-backdrop" not found.');
+            if (!closeModalButton) console.warn('Close button with ID "close-modal-button" not found.');
+            // Check for new elements (good practice)
+            if (!modalInput) console.warn('Input element with ID "modal-input" not found inside the modal.');
+            if (!modalActionButton) console.warn('Action button with ID "modal-action-button" not found inside the modal.');
+
+
+            // --- Functions ---
+            const openModal = () => {
+               // Ensure core modal elements exist before proceeding
+               if (!shareModal || !backdrop) {
+                     console.error('Cannot open modal: Modal or backdrop element missing.');
+                     return;
+               }
+
+               // Show modal backdrop and structure immediately
+               backdrop.classList.remove('hidden');
+               shareModal.classList.remove('hidden');
+
+               // Start opening animation
+               requestAnimationFrame(() => {
+                     backdrop.classList.remove('opacity-0');
+                     shareModal.classList.remove('opacity-0', 'scale-95');
+                     shareModal.classList.add('opacity-100', 'scale-100');
+               });
+
+               // Add Escape key listener
+               document.addEventListener('keydown', handleEscapeKey);
+
+               // Optional: Focus the input field when modal opens for better UX
+               if(modalInput) {
+                  // Use a small timeout to ensure the element is visible and focusable after animation starts
+                  setTimeout(() => modalInput.focus(), 50);
+               }
+            };
+
+            const closeModal = () => {
+               if (!shareModal || !backdrop) return;
+
+               // Start closing animation
+               backdrop.classList.add('opacity-0');
+               shareModal.classList.remove('opacity-100', 'scale-100');
+               shareModal.classList.add('opacity-0', 'scale-95');
+
+               // Wait for animation to finish (match CSS transition duration) before hiding
+               setTimeout(() => {
+                     backdrop.classList.add('hidden');
+                     shareModal.classList.add('hidden');
+
+                     // Optional: Clear the input field when the modal closes
+                     // if(modalInput) {
+                     //    modalInput.value = '';
+                     // }
+
+               }, 300); // Adjust this timing (in ms) to match your CSS transition duration
+
+               // Remove Escape key listener
+               document.removeEventListener('keydown', handleEscapeKey);
+            };
+
+            const handleEscapeKey = (event) => {
+               if (event.key === 'Escape') {
+                     closeModal();
+               }
+            };
+
+            // --- Action for the button inside the modal ---
+            const handleModalAction = () => {
+               if (!modalInput) {
+                     console.warn('Modal input element not found');
+                     return;
+               }
+               const inputValue = modalInput.value.trim(); // Get the value from the input
+
+               // --- !!! Add your logic here !!! ---
+               // What should happen when the user clicks the button?
+               // Examples: Validate input, send data via fetch, etc.
+               console.log('Modal action button clicked!');
+               if (inputValue) {
+                     console.log('Input value:', inputValue);
+                     alert(`You entered: ${inputValue}`); // Replace with your actual logic
+                     // Maybe close the modal after action?
+                     // closeModal();
+               } else {
+                     console.log('Input is empty.');
+                     alert('Please enter something!'); // Example validation
+                     modalInput.focus(); // Keep focus on input if empty
+               }
+               // --- End of your logic ---
+            };
+
+
+            // --- Event Listeners ---
+            // Listener for the single trigger element that opens the modal
+            if (openModalTrigger) {
+               openModalTrigger.addEventListener('click', openModal);
+            }
+
+            // Listener for the close button inside the modal
+            if (closeModalButton) {
+               closeModalButton.addEventListener('click', closeModal);
+            }
+
+            // Listener for the backdrop (to close when clicking outside the modal content)
+            if (backdrop) {
+               backdrop.addEventListener('click', (event) => {
+                     // Ensure the click is directly on the backdrop, not on the modal itself
+                     if (event.target === backdrop) {
+                        closeModal();
+                     }
+               });
+            }
+
+            // Listener for the new action button inside the modal
+            if (modalActionButton) {
+               modalActionButton.addEventListener('click', handleModalAction);
+            }
+
+         });
+      </script>
+
+   </head>
+   <body class="bg-gray-50 ">
+
+   <div id="ban-modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<div id="ban-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="ban-modal-title">
+   <div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-md mx-4">
+      <button id="close-ban-modal-button" type="button" class="absolute top-2 end-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+         <svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+         </svg>
+      </button>
+      <div class="text-center mb-6">
+         <h3 id="ban-modal-title" class="text-xl font-bold text-gray-800">
+            Ban User
+         </h3>
+         <p class="text-sm text-gray-600 mt-1">
+            Please provide the user ID and reason for banning.
+         </p>
+      </div>
+      <div class="space-y-4 flex flex-col items-center">
+         <div class="w-full max-w-xs">
+            <label for="ban-user-id" class="block text-sm font-medium mb-2 text-gray-700 text-center">User ID:</label>
+            <input type="text" id="banUserId" name="ban-user-id" placeholder="Enter user ID..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" required>
+         </div>
+
+         <div class="w-full max-w-xs">
+            <label for="ban-reason" class="block text-sm font-medium mb-2 text-gray-700 text-center">Reason:</label>
+            <textarea id="banReason" name="ban-reason" placeholder="Enter reason for banning..." class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+         </div>
+
+         <!-- Action Button -->
+         <button id="ban-modal-action-button" type="button" class="w-full max-w-xs py-2 px-4 inline-flex justify-center transition items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors">
+            Ban User
+         </button>
+      </div>
+   </div>
+</div>
+
+<script n:syntax=off>
+document.addEventListener('DOMContentLoaded', () => {
+   const openBanModalTrigger = document.getElementById('open-ban-modal-trigger');
+   const banModal = document.getElementById('ban-modal');
+   const banBackdrop = document.getElementById('ban-modal-backdrop');
+   const closeBanModalButton = document.getElementById('close-ban-modal-button');
+   const banModalActionButton = document.getElementById('ban-modal-action-button');
+   const banUserIdInput = document.getElementById('banUserId');
+   const banReasonInput = document.getElementById('banReason');
+
+   function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    async function banUser(id, reason, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/api/admin/user/ban`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id,
+                    reason,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const token = getAdmin().token;
+
+   const openBanModal = () => {
+      if (!banModal || !banBackdrop) return;
+      banBackdrop.classList.remove('hidden');
+      banModal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+         banBackdrop.classList.remove('opacity-0');
+         banModal.classList.remove('opacity-0', 'scale-95');
+         banModal.classList.add('opacity-100', 'scale-100');
+      });
+      document.addEventListener('keydown', handleBanEscapeKey);
+   };
+
+   const closeBanModal = () => {
+      if (!banModal || !banBackdrop) return;
+      banBackdrop.classList.add('opacity-0');
+      banModal.classList.remove('opacity-100', 'scale-100');
+      banModal.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+         banBackdrop.classList.add('hidden');
+         banModal.classList.add('hidden');
+      }, 300);
+      document.removeEventListener('keydown', handleBanEscapeKey);
+   };
+
+   const handleBanEscapeKey = (event) => {
+      if (event.key === 'Escape') closeBanModal();
+   };
+
+   const handleBanAction = async () => {
+      const userId = banUserIdInput.value.trim();
+      const reason = banReasonInput.value.trim();
+      if (!userId || !reason) {
+         alert('Please provide both User ID and a reason for banning.');
+         return;
+      }
+
+      const res = await banUser(userId, reason, token);
+      console.log(res);
+      if (res.success) {
+         alert(`User with ID ${userId} has been banned for: ${reason}`);
+      } else {
+         alert(res.message);
+      }
+      closeBanModal();
+   };
+
+   if (openBanModalTrigger) openBanModalTrigger.addEventListener('click', openBanModal);
+   if (closeBanModalButton) closeBanModalButton.addEventListener('click', closeBanModal);
+   if (banBackdrop) banBackdrop.addEventListener('click', (event) => {
+      if (event.target === banBackdrop) closeBanModal();
+   });
+   if (banModalActionButton) banModalActionButton.addEventListener('click', handleBanAction);
+});
+</script>
+
+
+<div id="share-modal-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-[100] hidden transition-opacity duration-300 ease-in-out opacity-0"></div>
+
+<div id="share-modal" class="fixed inset-0 flex items-center justify-center z-[999] hidden transition-all duration-300 ease-in-out opacity-0 transform scale-95" role="dialog" aria-modal="true" aria-labelledby="share-modal-title">
+	<div class="relative bg-white rounded-xl shadow-xl p-4 sm:p-7 w-full max-w-md mx-4">
+		<button id="close-modal-button" type="button" class="absolute top-2 end-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 rounded-md" aria-label="Close">
+			<svg class="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M18 6 6 18"/>
+				<path d="m6 6 12 12"/>
+			</svg>
+		</button>
+		<div class="text-center mb-6">
+			<h3 id="share-modal-title" class="text-xl font-bold text-gray-800 ">
+				Send notification
+			</h3>
+			<p class="text-sm text-gray-600 mt-1">
+				Please provide the requested information below. <!-- MODIFIED DESCRIPTION -->
+			</p>
+		</div>
+		<div class="space-y-4 flex flex-col items-center">
+
+         <!-- select notification type!!! -->
+         <div class="">
+            <button class="bg-sky-100 py-2 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 transition text-gray-800 shadow-sm hover:bg-sky-200 disabled:opacity-50 disabled:pointer-events-none focus:bg-sky-300">
+               <svg class="shrink-0 mr-1 size-4 text-sky-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="M12.242 17v-5c0-.471 0-.707-.146-.854c-.147-.146-.382-.146-.854-.146m.75-3h.009"/></g></svg>   
+               
+               <span class="text-sky-700">Info</span>
+            </button>
+            <button class="bg-green-100 py-2 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 transition text-gray-800 shadow-sm hover:bg-green-200 disabled:opacity-50 disabled:pointer-events-none focus:bg-green-300">
+               <svg class="shrink-0 mr-1 size-4 text-green-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12s4.477 10 10 10s10-4.477 10-10"/><path d="m8 12.5l2.5 2.5L16 9"/></g></svg>
+               
+               <span class="text-green-700">Success</span>
+            </button>
+            <button class="bg-orange-100 py-2 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 transition text-gray-800 shadow-sm hover:bg-orange-200 disabled:opacity-50 disabled:pointer-events-none focus:bg-orange-300">
+               <svg class="shrink-0 mr-1 size-4 text-orange-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.322 9.683c2.413-4.271 3.62-6.406 5.276-6.956a4.45 4.45 0 0 1 2.804 0c1.656.55 2.863 2.685 5.276 6.956c2.414 4.27 3.62 6.406 3.259 8.146c-.2.958-.69 1.826-1.402 2.48C19.241 21.5 16.827 21.5 12 21.5s-7.241 0-8.535-1.19a4.66 4.66 0 0 1-1.402-2.48c-.362-1.74.845-3.876 3.259-8.147M11.992 16h.009M12 13V9" color="currentColor"/></svg>   
+               <span class="text-orange-700">Warning</span>
+            </button>
+            <button class="bg-red-100 py-2 px-2 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 transition text-gray-800 shadow-sm hover:bg-red-200 disabled:opacity-50 disabled:pointer-events-none focus:bg-red-300">
+               <svg class="shrink-0 mr-1 size-4 text-red-500" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.322 9.683c2.413-4.271 3.62-6.406 5.276-6.956a4.45 4.45 0 0 1 2.804 0c1.656.55 2.863 2.685 5.276 6.956c2.414 4.27 3.62 6.406 3.259 8.146c-.2.958-.69 1.826-1.402 2.48C19.241 21.5 16.827 21.5 12 21.5s-7.241 0-8.535-1.19a4.66 4.66 0 0 1-1.402-2.48c-.362-1.74.845-3.876 3.259-8.147M11.992 16h.009M12 13V9" color="currentColor"/></svg>   
+               
+               <span class="text-red-700">Error</span>
+            </button>
+         </div>
+
+         <div class="w-full max-w-xs">
+            <label for="modal-input" class="block text-sm font-medium mb-2 text-gray-700 text-center">Message:</label>
+            <textarea placeholder="Enter value here..." name="modal-input" id="modal-input" class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            <p class="hidden text-xs text-red-600 mt-2" id="modal-input-description">Error message placeholder</p>
+         </div>
+
+         <div class="w-full max-w-xs">
+                <label for="modal-input" class="block text-sm font-medium mb-2 text-gray-700 text-center">Send to specific user (ID):</label>
+                <input type="text"
+                       id="modal-input"
+                       name="modal-input"
+                       placeholder="Enter value here..."
+                       class="py-3 px-4 block w-full border border-gray-300 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500"
+                       required aria-describedby="modal-input-description"
+                />
+                <p class="hidden text-xs text-red-600 mt-2" id="modal-input-description">Error message placeholder</p>
+         </div>
+
+         <br><div class="flex">
+            <input type="checkbox" class="shrink-0 mt-0.5 border-gray-200 rounded-sm border text-blue-600 focus:ring-blue-500 checked:border-blue-500 disabled:opacity-50 disabled:pointer-events-none" id="hs-default-checkbox">
+            <label for="hs-default-checkbox" class="text-sm text-gray-500 ms-3">Send to all users</label>
+         </div><br>
+
+			<!-- Action Button -->
+			<!-- Added w-full max-w-xs to control width -->
+			<button id="modal-action-button"
+				type="button"
+				class="w-full max-w-xs py-2 px-4 inline-flex justify-center transition items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors">
+			   Submit Action
+			</button>
+		</div>
+	</div>
+</div>
+
+      <!-- ========== HEADER ========== -->
+      <header class="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-white border-b text-sm py-2.5 lg:ps-[260px]  ">
+         <nav class="px-4 sm:px-6 flex basis-full items-center w-full mx-auto">
+            <div class="me-5 lg:me-0 lg:hidden">
+               <!-- Logo -->
+               <a class="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80" href="#" aria-label="Preline">
+               {$APP_NAME}
+               </a>
+               <!-- todo: сделать как в сайдбаре -->
+               <!-- End Logo -->
+            </div>
+            <div class="w-full flex items-center justify-end ms-auto md:justify-between gap-x-1 md:gap-x-3">
+               <div class="hidden md:block">
+                  <div class="flex flex-col gap-y-4 ml-4 gap-x-0 mt-5 md:flex-row md:justify-center md:items-center md:gap-y-0 md:gap-x-7 md:mt-0">
+                     <div>
+                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}adminPanel">Statistics</a>
+                     </div>
+                     <div>
+                        <a class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" href="{$ROOT_URL}adminPanel/quizzes/create">Create Quiz</a>
+                     </div>
+                     <div>
+                        <button class="inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" id="open-ban-modal-trigger">Quick Ban</button>
+                     </div>
+                     <div>
+                        <button disabled class="hidden inline-block text-black hover:text-red-500 focus:outline-none transition focus:text-red-700" id="open-modal-trigger">Quick notification</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="flex flex-row items-center justify-end gap-1">
+
+               <!-- Dropdown -->
+               <div class="hs-dropdown [--placement:bottom-right] relative inline-flex mr-2">
+                  <button id="hs-dropdown-account" type="button" class="size-[38px] inline-flex hover:bg-gray-100 transition justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none " aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                  <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M2.53 14.77c-.213 1.394.738 2.361 1.902 2.843c4.463 1.85 10.673 1.85 15.136 0c1.164-.482 2.115-1.45 1.902-2.843c-.13-.857-.777-1.57-1.256-2.267c-.627-.924-.689-1.931-.69-3.003C19.525 5.358 16.157 2 12 2S4.475 5.358 4.475 9.5c0 1.072-.062 2.08-.69 3.003c-.478.697-1.124 1.41-1.255 2.267"/><path d="M8 19c.458 1.725 2.076 3 4 3c1.925 0 3.541-1.275 4-3"/></g></svg>
+                  </button>
+
+                  <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2     after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
+                  <div class="py-3 px-5 bg-gray-100 rounded-t-lg ">
+                     <p class="text-sm text-gray-500 ">Notifications</p>
+                  </div>
+                  <div class="p-1.5 space-y-0.5">
+                     <span class="transition flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800" href="#">
+                        No data to show
+                     </span>
+                  </div>
+                  </div>
+               </div>
+               <!-- End Dropdown -->
+
+               <!-- Dropdown -->
+               <div class="hs-dropdown [--placement:bottom-right] relative inline-flex">
+                  <button id="hs-dropdown-account" type="button" class="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none " aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                  <img class="shrink-0 size-[38px] rounded-full" src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="Avatar">
+                  </button>
+                  <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2     after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-account">
+                     <div class="py-3 px-5 bg-gray-100 rounded-t-lg ">
+                        <p class="text-sm text-gray-500 ">Signed in as</p>
+                        <p class="text-sm font-medium text-gray-800 ">{$fullname}</p>
+                     </div>
+                     <div class="p-1.5 space-y-0.5">
+                        <a class="transition flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="{$ROOT_URL}learn/profile/">
+                           <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
+                              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>
+                           </svg>
+                           Account
+                        </a>
+                        <a class="transition flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="{$ROOT_URL}learn/profile/settings/">
+                           <svg class="w-4 h-4" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M15.5 12C15.5 13.933 13.933 15.5 12 15.5C10.067 15.5 8.5 13.933 8.5 12C8.5 10.067 10.067 8.5 12 8.5C13.933 8.5 15.5 10.067 15.5 12Z" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+                              <path d="M21.011 14.0964C21.5329 13.9557 21.7939 13.8853 21.8969 13.7507C22 13.6162 22 13.3997 22 12.9668V11.0331C22 10.6002 22 10.3837 21.8969 10.2492C21.7938 10.1146 21.5329 10.0442 21.011 9.90352C19.0606 9.37753 17.8399 7.33845 18.3433 5.40081C18.4817 4.86793 18.5509 4.6015 18.4848 4.44523C18.4187 4.28896 18.2291 4.18128 17.8497 3.9659L16.125 2.98667C15.7528 2.77533 15.5667 2.66966 15.3997 2.69216C15.2326 2.71466 15.0442 2.90267 14.6672 3.27867C13.208 4.73442 10.7936 4.73436 9.33434 3.27858C8.95743 2.90257 8.76898 2.71457 8.60193 2.69206C8.43489 2.66956 8.24877 2.77523 7.87653 2.98657L6.15184 3.96581C5.77253 4.18117 5.58287 4.28885 5.51678 4.44509C5.45068 4.60134 5.51987 4.86781 5.65825 5.40074C6.16137 7.33844 4.93972 9.37757 2.98902 9.90354C2.46712 10.0442 2.20617 10.1146 2.10308 10.2491C2 10.3837 2 10.6002 2 11.0331V12.9668C2 13.3997 2 13.6162 2.10308 13.7507C2.20615 13.8853 2.46711 13.9557 2.98902 14.0964C4.9394 14.6224 6.16008 16.6615 5.65672 18.5991C5.51829 19.132 5.44907 19.3984 5.51516 19.5547C5.58126 19.711 5.77092 19.8187 6.15025 20.034L7.87495 21.0133C8.24721 21.2246 8.43334 21.3303 8.6004 21.3078C8.76746 21.2853 8.95588 21.0972 9.33271 20.7212C10.7927 19.2643 13.2088 19.2642 14.6689 20.7211C15.0457 21.0972 15.2341 21.2852 15.4012 21.3077C15.5682 21.3302 15.7544 21.2245 16.1266 21.0132L17.8513 20.0339C18.2307 19.8186 18.4204 19.7109 18.4864 19.5546C18.5525 19.3983 18.4833 19.1319 18.3448 18.599C17.8412 16.6615 19.0609 14.6225 21.011 14.0964Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                           </svg>
+                           Settings
+                        </a>
+                        <a class="transition flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100" href="{$ROOT_URL}learn/logout/">
+                           <svg class="w-4 h-4" width="20" height="20" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M7.00033 9H12.8337M12.8337 9L10.3337 11.5M12.8337 9L10.3337 6.5M12.8337 4V3.16667C12.8337 2.72464 12.6581 2.30072 12.3455 1.98816C12.0329 1.67559 11.609 1.5 11.167 1.5H2.83366C2.39163 1.5 1.96771 1.67559 1.65515 1.98816C1.34259 2.30072 1.16699 2.72464 1.16699 3.16667V14.8333C1.16699 15.2754 1.34259 15.6993 1.65515 16.0118C1.96771 16.3244 2.39163 16.5 2.83366 16.5H11.167C11.609 16.5 12.0329 16.3244 12.3455 16.0118C12.6581 15.6993 12.8337 15.2754 12.8337 14.8333V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                           </svg>
+                           Logout
+                        </a>
+                     </div>
+                  </div>
+               </div>
+               <!-- End Dropdown -->
+            </div>
+            </div>
+         </nav>
+      </header>
+      <!-- ========== END HEADER ========== -->

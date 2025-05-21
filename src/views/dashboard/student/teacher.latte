@@ -1,0 +1,109 @@
+{include '../../partials/header.latte'}
+  <div class="min-h-screen flex flex-col">
+    <div class="container mx-auto px-4 py-6">
+      <!-- Main content -->
+      <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2">
+          <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
+            <h1 class="text-2xl flex font-bold">
+              Мой учитель
+            </h1>
+          </div>
+
+          <!-- Teacher Information -->
+          <div class="space-y-6">
+            <div class="bg-white rounded-2xl p-6 border">
+              <h2 class="text-xl font-semibold mb-4">Ваш учитель</h2>
+              
+              <div class="flex items-start space-x-4 mb-6">
+                <img src="{$teacher->picture}" alt="Teacher" class="w-16 h-16 object-cover rounded-full bg-gray-200">
+                <div>
+                  <h3 class="text-lg font-semibold flex">
+                    {$teacher->name}
+                    <span class="shadow-md ml-4 inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium border border-gray-200 bg-white text-gray-800 shadow-2xs">
+                    <svg class="size-3 mr-1 my-auto" xmlns="http://www.w3.org/2000/svg" width="31.76" height="32" viewBox="0 0 256 258"><!-- Icon from All by undefined - undefined --><defs><radialGradient id="logosGoogleBardIcon0" cx="78.302%" cy="55.52%" r="78.115%" fx="78.302%" fy="55.52%" gradientTransform="scale(.99947 1)rotate(78.858 .783 .555)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient><radialGradient id="logosGoogleBardIcon1" cx="-3.409%" cy="-54.219%" r="169.363%" fx="-3.409%" fy="-54.219%" gradientTransform="matrix(.19314 .98115 -.98062 .19324 -.559 -.404)"><stop offset="0%" stop-color="#1BA1E3"/><stop offset=".01%" stop-color="#1BA1E3"/><stop offset="30.022%" stop-color="#5489D6"/><stop offset="54.552%" stop-color="#9B72CB"/><stop offset="82.537%" stop-color="#D96570"/><stop offset="100%" stop-color="#F49C46"/></radialGradient></defs><path fill="url(#logosGoogleBardIcon0)" d="m122.062 172.77l-10.27 23.52c-3.947 9.042-16.459 9.042-20.406 0l-10.27-23.52c-9.14-20.933-25.59-37.595-46.108-46.703L6.74 113.52c-8.987-3.99-8.987-17.064 0-21.053l27.385-12.156C55.172 70.97 71.917 53.69 80.9 32.043L91.303 6.977c3.86-9.303 16.712-9.303 20.573 0l10.403 25.066c8.983 21.646 25.728 38.926 46.775 48.268l27.384 12.156c8.987 3.99 8.987 17.063 0 21.053l-28.267 12.547c-20.52 9.108-36.97 25.77-46.109 46.703"/><path fill="url(#logosGoogleBardIcon1)" d="m217.5 246.937l-2.888 6.62c-2.114 4.845-8.824 4.845-10.937 0l-2.889-6.62c-5.148-11.803-14.42-21.2-25.992-26.34l-8.898-3.954c-4.811-2.137-4.811-9.131 0-11.269l8.4-3.733c11.87-5.273 21.308-15.017 26.368-27.22l2.966-7.154c2.067-4.985 8.96-4.985 11.027 0l2.966 7.153c5.06 12.204 14.499 21.948 26.368 27.221l8.4 3.733c4.812 2.138 4.812 9.132 0 11.27l-8.898 3.953c-11.571 5.14-20.844 14.537-25.992 26.34"/></svg>
+                    Базовый
+                    </span>
+                  </h3>
+                  <p class="text-gray-600">{$teacher->specialization}</p>
+                  <!-- <div class="flex items-center mt-2">
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Available for Chat</span>
+                  </div> -->
+                </div>
+              </div>
+
+              <div class="space-y-4 border-t pt-4">
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700">На сайте с:</span>
+                  <span class="font-['Inter'] font-normal">{$teacher->join_date}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-gray-700">Школа:</span>
+                  <span class="font-semibold flex font-['Inter'] font-normal">
+                    <img class="size-4 mr-2 my-auto" src="https://seitzhanschool.edu.kz/wp-content/uploads/2024/08/WhatsApp-Image-2024-08-23-at-12.29.02-e1724398192296.jpeg" alt="" srcset="">
+                    {$teacher->school}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          <!-- Upcoming Classes -->
+<div class="hidden bg-white rounded-2xl p-6 border">
+  <h3 class="text-xl font-semibold mb-4">Upcoming Events</h3>
+  <div class="space-y-3">
+    <div class="flex items-center justify-between space-x-3 p-2 rounded-lg bg-green-50 border border-green-100">
+      <div class="flex items-center space-x-3">
+        <div class="bg-green-500 text-white rounded-lg p-2 text-center min-w-[50px]">
+          <div class="text-xs">MAR</div>
+          <div class="font-bold text-lg">17</div>
+        </div>
+        <div>
+          <p class="font-semibold">Mathematics</p>
+          <p class="text-sm text-gray-600">4:00 PM - 5:00 PM</p>
+        </div>
+      </div>
+      <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+        Join Event
+      </button>
+    </div>
+    
+    <div class="flex items-center justify-between space-x-3 p-2 rounded-lg">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gray-200 rounded-lg p-2 text-center min-w-[50px]">
+          <div class="text-xs">MAR</div>
+          <div class="font-bold text-lg">19</div>
+        </div>
+        <div>
+          <p class="font-semibold">Science</p>
+          <p class="text-sm text-gray-600">3:30 PM - 4:30 PM</p>
+        </div>
+      </div>
+      <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+        Join Event
+      </button>
+    </div>
+    
+    <div class="flex items-center justify-between space-x-3 p-2 rounded-lg">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gray-200 rounded-lg p-2 text-center min-w-[50px]">
+          <div class="text-xs">MAR</div>
+          <div class="font-bold text-lg">24</div>
+        </div>
+        <div>
+          <p class="font-semibold">Mathematics</p>
+          <p class="text-sm text-gray-600">4:00 PM - 5:00 PM</p>
+        </div>
+      </div>
+      <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+        Join Event
+      </button>
+    </div>
+  </div>
+</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
+{include '../../partials/footer.latte'}

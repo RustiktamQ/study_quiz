@@ -21,6 +21,6 @@ class LanguageController {
 
         $referer = $_SERVER['HTTP_REFERER'] ?? '/';
         header("Location: $referer");
-        exit;
+        return;
     }
 }

@@ -1,0 +1,352 @@
+{include 'partials/header.latte'}
+<main>
+    <div class="p-4 mx-auto max-w-[1632px] md:p-6 2xl:p-10">
+        <!-- Breadcrumb Start -->
+        <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-2xl font-semibold text-gray-900">
+                База знаний
+            </h2>
+
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+                    <li class="font-medium text-green-600">База знаний</li>
+                </ol>
+            </nav>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <!-- Card Container -->
+        <div class="border border-gray-200 p-4 md:p-10 rounded-2xl w-full bg-white">
+
+            <!-- Flex Container for Tabs: Column on small, Row on medium+ -->
+            <div class="flex flex-col md:flex-row">
+
+                <!-- Tab List (Sidebar on medium+) -->
+                <!-- Full width below md, fixed width w-64 at md+. Border bottom below md, border right at md+. -->
+                <div class="tab-list w-full md:w-64 flex-shrink-0 pb-6 mb-6 border-b border-gray-200 md:border-b-0 md:pb-0 md:mb-0 md:pr-6 md:mr-6 md:border-r md:border-gray-200">
+                    <!-- Note: First button uses 'rounded', others use 'rounded-2xl'. Consider standardizing to 'rounded-lg' or similar if desired -->
+                    <button data-tab-target="#tab1-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl hover:bg-gray-100 focus:outline-none active bg-green-100 text-green-700 font-semibold">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" color="currentColor"><path d="M15 17c-.8.622-1.85 1-3 1s-2.2-.378-3-1"/><path d="M2.352 13.214c-.354-2.298-.53-3.446-.096-4.465s1.398-1.715 3.325-3.108L7.021 4.6C9.418 2.867 10.617 2 12.001 2c1.382 0 2.58.867 4.978 2.6l1.44 1.041c1.927 1.393 2.89 2.09 3.325 3.108c.434 1.019.258 2.167-.095 4.464l-.301 1.96c-.5 3.256-.751 4.884-1.919 5.856S16.554 22 13.14 22h-2.28c-3.415 0-5.122 0-6.29-.971c-1.168-.972-1.418-2.6-1.918-5.857z"/></g></svg>
+                        <span class="my-auto">Введение</span>
+                    </button>
+                    <button data-tab-target="#tab2-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                         <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15.708 8.33c.943.935-.566 8.533-2.114 8.667c-1.298.112-1.703-2.45-1.976-3.26c-.27-.802-.57-1.09-1.365-1.353c-2.019-.668-3.028-1.002-3.228-1.53c-.53-1.4 7.479-3.717 8.683-2.523"/><path d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10"/></g></svg>
+                        <span class="my-auto">Навигация</span>
+                    </button>
+                    <button data-tab-target="#tab3-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 5l-7-3l-7 3l3.5 1.5v2S9.667 8 12 8s3.5.5 3.5.5v-2zm0 0v4m-3.5-.5v1a3.5 3.5 0 1 1-7 0v-1m-.717 8.203c-1.1.685-3.986 2.082-2.229 3.831C6.413 21.39 7.37 22 8.571 22h6.858c1.202 0 2.158-.611 3.017-1.466c1.757-1.749-1.128-3.146-2.229-3.83a7.99 7.99 0 0 0-8.434 0"/></svg>
+                        <span class="my-auto">Ученики</span>
+                    </button>
+                     <button data-tab-target="#tab4-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 8.333C20.075 7.032 18.865 6 16.978 6C8.468 6 12.92 20.5 5 20.5"/><path d="M21 21H10c-3.3 0-4.95 0-5.975-1.025S3 17.3 3 14V3"/></g></svg>
+                        <span class="my-auto">Аналитика</span>
+                    </button>
+                    <button data-tab-target="#tab5-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m10 7l-.516 1.394c-.676 1.828-1.014 2.742-1.681 3.409s-1.581 1.005-3.409 1.681L3 14l1.394.516c1.828.676 2.742 1.015 3.409 1.681s1.005 1.581 1.681 3.409L10 21l.516-1.394c.676-1.828 1.015-2.742 1.681-3.409s1.581-1.005 3.409-1.681L17 14l-1.394-.516c-1.828-.676-2.742-1.014-3.409-1.681s-1.005-1.581-1.681-3.409zm8-4l-.221.597c-.29.784-.435 1.176-.72 1.461c-.286.286-.678.431-1.462.72L15 6l.598.221c.783.29 1.175.435 1.46.72c.286.286.431.678.72 1.462L18 9l.221-.597c.29-.784.435-1.176.72-1.461c.286-.286.678-.431 1.462-.72L21 6l-.598-.221c-.783-.29-1.175-.435-1.46-.72c-.286-.286-.431-.678-.72-1.462z"/></svg>
+                        <span class="my-auto">AI</span>
+                    </button>
+                    <button data-tab-target="#tab6-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15.5 12a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0"/><path d="M21.011 14.097c.522-.141.783-.212.886-.346c.103-.135.103-.351.103-.784v-1.934c0-.433 0-.65-.103-.784s-.364-.205-.886-.345c-1.95-.526-3.171-2.565-2.668-4.503c.139-.533.208-.8.142-.956s-.256-.264-.635-.479l-1.725-.98c-.372-.21-.558-.316-.725-.294s-.356.21-.733.587c-1.459 1.455-3.873 1.455-5.333 0c-.377-.376-.565-.564-.732-.587c-.167-.022-.353.083-.725.295l-1.725.979c-.38.215-.57.323-.635.48c-.066.155.003.422.141.955c.503 1.938-.718 3.977-2.669 4.503c-.522.14-.783.21-.886.345S2 10.6 2 11.033v1.934c0 .433 0 .65.103.784s.364.205.886.346c1.95.526 3.171 2.565 2.668 4.502c-.139.533-.208.8-.142.956s.256.264.635.48l1.725.978c.372.212.558.317.725.295s.356-.21.733-.587c1.46-1.457 3.876-1.457 5.336 0c.377.376.565.564.732.587c.167.022.353-.083.726-.295l1.724-.979c.38-.215.57-.323.635-.48s-.003-.422-.141-.955c-.504-1.937.716-3.976 2.666-4.502"/></g></svg>
+                        <span class="my-auto">Настройки</span>
+                    </button>
+                     <button data-tab-target="#tab8-content" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <svg class="w-4 h-4 mr-2 my-auto text-gray-600" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 10.805c0-.346 0-.519.052-.673c.151-.448.55-.621.95-.803c.448-.205.672-.307.895-.325c.252-.02.505.034.721.155c.286.16.486.466.69.714c.943 1.146 1.415 1.719 1.587 2.35c.14.51.14 1.044 0 1.553c-.251.922-1.046 1.694-1.635 2.41c-.301.365-.452.548-.642.655a1.27 1.27 0 0 1-.721.155c-.223-.018-.447-.12-.896-.325c-.4-.182-.798-.355-.949-.803c-.052-.154-.052-.327-.052-.673zm-10 0c0-.436-.012-.827-.364-1.133c-.128-.111-.298-.188-.637-.343c-.449-.204-.673-.307-.896-.325c-.667-.054-1.026.402-1.41.87c-.944 1.145-1.416 1.718-1.589 2.35a2.94 2.94 0 0 0 0 1.553c.252.921 1.048 1.694 1.636 2.409c.371.45.726.861 1.363.81c.223-.018.447-.12.896-.325c.34-.154.509-.232.637-.343c.352-.306.364-.697.364-1.132z"/><path d="M5 9c0-3.314 3.134-6 7-6s7 2.686 7 6m0 8v.8c0 1.767-1.79 3.2-4 3.2h-2"/></g></svg>
+                        <span class="my-auto">Помощь</span>
+                    </button>
+                </div>
+
+                <!-- Tab Content Area -->
+                <!-- Grows to fill space at md+. Padding left added at md+ -->
+                <div class="tab-content-area w-full md:flex-grow md:pl-6 relative min-h-[250px]">
+
+                    <!-- Tab Panel 1 -->
+                    <div id="tab1-content" class="tab-panel active transition-opacity duration-300 ease-in-out">
+                        <p class="text-gray-700 text-2xl">
+                            Добро пожаловать в AqylApp!
+                        </p>
+                        <div class="mt-4">
+                            AqylApp - инновационная образовательная платформа для школьников. <br> Вы можете просматривать статистику, получать уведомления,
+                            <br> использовать AI для улучшения результата ваших студентов.
+                        </div>
+                        <div class="mt-4">
+                            Данная страница создана для помощи учителям разобраться как пользоваться платформой.
+                        </div>
+                        <div class="mt-4 p-4 bg-blue-50 border border-blue-200 rounded text-blue-800">
+                            <p><strong class="font-medium">Начать:</strong> используйте вкладки слева для навигации по разделам базы знаний.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tab Panel 2 -->
+                    <div id="tab2-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                         <h3 class="text-xl font-semibold mb-4 text-gray-900">Навигация по страницам</h3>
+                        <p class="text-gray-700">
+                            Слева вы можете увидеть боковое меню где вы можете переходить по страницам. Всего в боковом меню 7 страниц:
+                        </p>
+                        <ul class="list-disc ml-8 mt-4">
+                            <li>Главная</li>
+                            <li>Ученики -> Управление</li>
+                            <li>Ученики -> Пригласить</li>
+                            <li>Мой профиль -> Мой профиль</li>
+                            <li>Мой профиль -> Настройки</li>
+                            <li>Мой профиль -> Выйти</li>
+                            <li>База знаний</li>
+                        </ul>
+                        <p class="text-gray-700 mt-4">
+                            Страница "AI" В данный момент не доступна.
+                        </p>
+                    </div>
+
+                    <!-- Tab Panel 3 -->
+                    <div id="tab3-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                        <h3 class="text-xl font-semibold mb-4 text-gray-900">Ученики</h3>
+                        <p class="text-gray-700">
+                           На данный момент на сайте присутствует две группы пользователей: Ученики и Учителя. Учитель - вы :).
+                            <br> Давайте посмотрим как привязать, удалить, управлять и пригласить ученика в ваш класс.
+                        </p>
+                        <p class="text-gray-700 mt-4">
+                            Для того что-бы пригласить ученика перейдите в боковое меню: Ученики -> Пригласить:
+                        </p>
+                        <a data-fslightbox="gallery" href="https://iili.io/3v42QPR.png">
+                            <img src="https://iili.io/3v42QPR.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                        </a>
+                        <p class="text-gray-700 mt-4">
+                            На данной странице вы уведите ваш код приглашения который вы указывали при регистрации. С помощью этого кода ваши студенты смогут подать заявку на вступления в ваш класс:
+                        </p>
+                        <a data-fslightbox="gallery" href="https://iili.io/3v4xyru.md.png">
+                            <img src="https://iili.io/3v4xyru.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                        </a>
+                        <p class="text-gray-700 mt-4">
+                            При нажатии кнопки "QR" вы уведете всплывающее меню где расположен QR код отсканировав который ученики смогут автоматически перейти на нашу платформу и войти с вашим кодом.
+                        </p>
+                        <p class="text-gray-700 mt-4">
+                            Если вы хотите создать новый код, то нажмите "Сгенирировать новый код" и вы получите новый, уникальный код приглашения по которому ваши ученики смогут войти в ваш класс:
+                        </p>
+                        <a data-fslightbox="gallery" href="https://iili.io/3v4paWl.md.png">
+                            <img src="https://iili.io/3v4paWl.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                        </a>
+                    </div>
+
+                    <!-- Tab Panel 4 -->
+                     <div id="tab4-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                         <h3 class="text-xl font-semibold mb-4 text-gray-900">Аналитика</h3>
+                         <p class="text-gray-700">
+                           Самое главное преимущество нашей платформы - аналитика. Вы можете смотреть статистику пройденных квизов ваших учеников, затраченное время, вопросов и т.д.
+                         </p>
+                         <p class="text-gray-700 mt-4">
+                             На главной странице вы увидите статистику которая собирается со всех учеников и суммируется в одно значение.
+                         </p>
+                         <a data-fslightbox="gallery" href="https://iili.io/3vPNHIj.md.png">
+                            <img src="https://iili.io/3vPNHIj.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                         </a>
+                         <p class="text-gray-700 mt-2">
+                             Слева - полное количество вопросов которые решили ваши ученики во всех заданиях, за всё время.
+                             <br>
+                             Справа - количество квизов (заданий) которые выполнили ваши студенты за всё время.
+                         </p>
+                         <a data-fslightbox="gallery" href="https://iili.io/3viKcqg.md.png">
+                            <img src="https://iili.io/3viKcqg.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                         </a>
+                         <p class="text-gray-700 mt-4">
+                             Так-же, вы можете увидеть более подробную статистику (на главной странице) по вашим ученикам.
+                             <br>
+                             Затрачено - суммированное время, которое провели ученики сидя в квизах.
+                             <br>
+                             Онлайн - временно отключен, но используется для вывода количество учеников которые сейчас онлайн.
+                             <br>
+                             Начато - начатые, но не законченные квизы.
+                         </p>
+                         <p class="text-gray-700 mt-4">
+                             Графики временно не работают.
+                         </p>
+                         <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded text-green-800">
+                             <p><strong class="font-medium">Ученики!</strong> Как смотреть статистику по каждому ученику.</p>
+                         </div>
+                         <p class="text-gray-700 mt-4">
+                             Перейдите в "Ученики -> Управление", выберите нужного ученика, нажмите "СТАТИСТИКА":
+                         </p>
+                         <a data-fslightbox="gallery" href="https://iili.io/3viENNp.md.png">
+                            <img src="https://iili.io/3viENNp.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                         </a>
+                         <p class="text-gray-700 mt-4">
+                             Здесь вы можете увидеть статистику по выбранному студенту:
+                         </p>
+                         <a data-fslightbox="gallery" href="https://iili.io/3viMH4n.md.png">
+                            <img src="https://iili.io/3viMH4n.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                         </a>
+                         <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded text-green-800">
+                            <p><strong class="font-medium">Кстати!</strong> Данные обновляются динамически.</p>
+                         </div>
+                    </div>
+
+                    <!-- Tab Panel 5 -->
+                     <div id="tab5-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                         <h3 class="text-xl font-semibold mb-4 text-gray-900">AqylAI ✨</h3>
+                         <p class="text-gray-700">
+                             Получайте обратную связь, анализируйте, улучшайте результаты с помощью Искусственного Интеллекта.
+                         </p>
+                         <div class="mt-4 p-4 bg-green-100 border border-green-200 rounded text-green-800">
+                             <p>AqylAI Будет презентован в Мае 2025.</p>
+                         </div>
+                    </div>
+
+                     <!-- Tab Panel 6 -->
+                    <div id="tab6-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                         <h3 class="text-xl font-semibold mb-4 text-gray-900">Настройки</h3>
+                        <p class="text-gray-700">
+                           В боковом меню "Мой профиль -> Настройки" Расположены настройки аккаунта. В данный момент там находиться только пункт удаления аккаунта.
+                        </p>
+                        <a data-fslightbox="gallery" href="https://iili.io/3vP1sse.md.png">
+                            <img src="https://iili.io/3vP1sse.md.png" alt="" class="mt-4 border rounded-xl border-gray-200">
+                        </a>
+                        <div class="mt-8 p-4 bg-red-100 border border-red-200 rounded text-red-800">
+                            <p><strong>ВНИМАНИЕ!</strong> При удалении аккаунта вы потеряете всех учеников!</p>
+                        </div>
+                    </div>
+
+                     <!-- Tab Panel 8 -->
+                    <div id="tab8-content" class="tab-panel transition-opacity duration-300 ease-in-out">
+                         <h3 class="text-xl font-semibold mb-4 text-gray-900">Помощь</h3>
+                        <p class="text-gray-700">
+                           Ниже предоставлены способы связи с нашей службой технической поддержки.
+                        </p>
+                         <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded text-green-800">
+                            <p><strong class="font-medium">Поддержка:</strong> Свяжитесь с нами по <a href="mailto:support@aqyl.app">support@aqyl.app</a></p>
+                        </div>
+                        <p class="text-gray-700 mt-4">
+                            Так же вы можете написать нам в директ instagram: <a href="https://instagram.com/aqyl.app" class="underline">@aqyl.app</a>
+                        </p>
+                    </div>
+
+                </div> <!-- End Tab Content Area -->
+            </div> <!-- End Flex Container -->
+        </div> <!-- End Card Container -->
+
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/fslightbox@3/index.min.js"></script>
+
+<script n:syntax=off>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+        //const tabContentArea = document.querySelector('.tab-content-area'); // Not directly used in func
+
+        // Classes for ACTIVE button state
+        const activeClasses = ['active', 'bg-green-100', 'text-green-700', 'font-semibold'];
+        // Classes for INACTIVE button state (default text color)
+        const inactiveClasses = ['text-gray-900'];
+        // Classes for VISIBLE panel state
+        const panelVisibleClasses = ['active', 'opacity-100', 'visible'];
+        // Classes for HIDDEN panel state
+        const panelHiddenClasses = ['opacity-0', 'invisible', 'absolute', 'top-0', 'left-0', 'w-full'];
+
+        function activateTab(targetButton, targetPanel) {
+            // Deactivate all buttons
+            tabButtons.forEach(btn => {
+                btn.classList.remove(...activeClasses);
+                // Ensure inactive text colors are applied if they were removed by active state
+                if (!btn.classList.contains('active')) { // Check if it *was* active before removing classes
+                    btn.classList.add(...inactiveClasses);
+                } else { // If it's the one being deactivated, ensure it gets the inactive class
+                     btn.classList.add(...inactiveClasses);
+                }
+            });
+
+            // Hide all panels
+            tabPanels.forEach(panel => {
+                panel.classList.remove(...panelVisibleClasses);
+                panel.classList.add(...panelHiddenClasses);
+            });
+
+            // Activate the target button
+            if (targetButton) {
+                 // Remove inactive classes before adding active ones
+                 targetButton.classList.remove(...inactiveClasses);
+                 targetButton.classList.add(...activeClasses);
+            }
+
+            // Show the target panel
+            if (targetPanel) {
+                targetPanel.classList.remove(...panelHiddenClasses);
+                targetPanel.classList.add(...panelVisibleClasses);
+            }
+        }
+
+        // --- Initial State Setup ---
+        // Find initially active elements based on the 'active' class in HTML
+        let initialActiveButton = document.querySelector('.tab-button.active');
+        let initialActivePanel = document.querySelector('.tab-panel.active');
+
+        // If no initial active elements found, default to the first button/panel
+        if (!initialActiveButton && tabButtons.length > 0) {
+            initialActiveButton = tabButtons[0];
+            const firstPanelId = initialActiveButton.getAttribute('data-tab-target');
+            initialActivePanel = document.querySelector(firstPanelId);
+            // Add 'active' class programmatically if defaulting
+             if(initialActiveButton) initialActiveButton.classList.add('active');
+             if(initialActivePanel) initialActivePanel.classList.add('active');
+        }
+
+        // Apply initial styles based on which button/panel is active
+        if (initialActiveButton && initialActivePanel) {
+             tabButtons.forEach(btn => {
+                 if (btn === initialActiveButton) {
+                     // It should already have active classes from HTML or the default logic above
+                     // Ensure it DOES NOT have inactive classes
+                     btn.classList.remove(...inactiveClasses);
+                     // Ensure it HAS active classes (might be redundant but safe)
+                     btn.classList.add(...activeClasses);
+                 } else {
+                     // Ensure it DOES NOT have active classes
+                     btn.classList.remove(...activeClasses);
+                     // Ensure it HAS inactive classes
+                     btn.classList.add(...inactiveClasses);
+                 }
+             });
+             tabPanels.forEach(panel => {
+                 if (panel === initialActivePanel) {
+                     panel.classList.remove(...panelHiddenClasses);
+                     panel.classList.add(...panelVisibleClasses);
+                     // Ensure position is relative/static for the visible panel
+                     panel.classList.remove('absolute', 'top-0', 'left-0', 'w-full');
+                 } else {
+                     panel.classList.remove(...panelVisibleClasses);
+                     panel.classList.add(...panelHiddenClasses);
+                 }
+            });
+        } else if(tabButtons.length > 0) {
+            // Fallback if default logic somehow didn't find panel - ensure first button has inactive style
+             tabButtons.forEach((btn, index) => {
+                if (index !== 0) {
+                    btn.classList.remove(...activeClasses);
+                    btn.classList.add(...inactiveClasses);
+                }
+             });
+        }
+        // --- End Initial State Setup ---
+
+
+        // Add click listeners
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetPanelId = button.getAttribute('data-tab-target');
+                const targetPanel = document.querySelector(targetPanelId);
+                if(targetPanel){
+                    // Prevent re-activating the already active tab
+                    if (!button.classList.contains('active')) {
+                       activateTab(button, targetPanel);
+                    }
+                } else {
+                    console.error(`Tab panel with ID ${targetPanelId} not found.`);
+                }
+            });
+        });
+    });
+</script>
+{include 'partials/footer.latte'}
+
+<!-- Include Tailwind CSS (e.g., via CDN for testing) -->
+<!-- <script src="/tailwind.js"></script> -->
+<!-- Make sure your project is set up to compile Tailwind CSS -->

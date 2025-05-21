@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Убедимся, что запросы не идут на существующие файлы или папки
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Все запросы, которые не соответствуют файлам или папкам, перенаправляем на index.php
+RewriteRule ^ index.php [QSA,L]
+
+# Кастомная страница 404
+ErrorDocument 404 /404.html

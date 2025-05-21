@@ -1,0 +1,259 @@
+{include '../../partials/header.latte'}
+<!-- Main container -->
+<div class="col-span-1 lg:col-span-3">
+  
+  <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
+    <h1 class="text-2xl font-bold flex">
+      Аналитика обучения
+    </h1>
+    <div class="flex flex-wrap justify-center gap-2 w-full md:w-auto md:ml-4">
+      <a href="" class="my-auto mr-4">Экспортировать</a>
+      <button class="px-6 py-2 bg-black text-white rounded-full flex text-sm w-full sm:w-auto transition hover:bg-gray-700">
+      <svg class="mr-3 size-4 my-auto" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20.01 2v3.132a.314.314 0 0 1-.556.201A9.98 9.98 0 0 0 12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10" color="currentColor"/></svg>  
+      Обновить информацию
+      </button>
+    </div>
+  </div>
+  
+  <!-- Charts Section - Side by side on desktop, stacked on mobile -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Chart 1 -->
+    <div class="bg-white p-4 rounded-xl border">
+      <h2 class="text-lg font-semibold mb-2">Навыков изучено</h2>
+      <div class="text-sm text-gray-500 mb-4">Посмотрите на ежедневную статистику</div>
+      <div id="revenueChart" class="w-full h-64"></div>
+    </div>
+    
+    <!-- Chart 2 -->
+    <div class="bg-white p-4 rounded-xl border">
+      <h2 class="text-lg font-semibold mb-2">Вопросов отвечено</h2>
+      <div class="text-sm text-gray-500 mb-4">Количество по дням</div>
+      <div id="usersChart" class="w-full h-64"></div>
+    </div>
+  </div>
+  
+  <!-- Cards Section - 3 cards in a row on desktop, stacked on mobile -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Card 1 -->
+    <div class="bg-white p-6 rounded-xl border">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Всего навыков</h3>
+        <span class="text-green-500 bg-green-100 px-2 py-1 rounded-full text-xs">+12.5%</span>
+      </div>
+      <p class="text-3xl font-bold mb-2">216</p>
+      <p class="text-sm text-gray-500">По сравнению с 192 в прошлом месяце</p>
+    </div>
+    
+    <!-- Card 2 -->
+    <div class="bg-white p-6 rounded-xl border">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Вопрсов решено</h3>
+        <span class="text-green-500 bg-green-100 px-2 py-1 rounded-full text-xs">+8.2%</span>
+      </div>
+      <p class="text-3xl font-bold mb-2">13,432</p>
+      <p class="text-sm text-gray-500">По сравнению с 192 в прошлом месяце в прошлом месяце</p>
+    </div>
+    
+    <!-- Card 3 -->
+    <div class="bg-white p-6 rounded-xl border">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">Использование AI (Токены)</h3>
+        <span class="text-red-500 bg-red-100 px-2 py-1 rounded-full text-xs">-2.4%</span>
+      </div>
+      <p class="text-3xl font-bold mb-2">109,516</p>
+      <p class="text-sm text-gray-500">По сравнению с 85,163 в прошлом месяце</p>
+    </div>
+  </div>
+</div>
+
+<!-- ApexCharts CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.0/apexcharts.min.js"></script>
+
+<!-- Charts Initialization -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const sharedOptions = {
+      chart: {
+        type: 'line',
+        height: 256,
+        toolbar: {
+          show: false
+        },
+        fontFamily: 'Inter, system-ui, sans-serif',
+        zoom: {
+          enabled: false
+        }
+      },
+      stroke: {
+        curve: 'smooth',  // Rounded lines
+        width: 5
+      },
+      grid: {
+        borderColor: '#f1f1f1',
+        row: {
+          colors: ['transparent']
+        }
+      },
+      markers: {
+        size: 4,
+        strokeWidth: 0
+      },
+      xaxis: {
+        labels: {
+          style: {
+            colors: '#64748b',
+            fontSize: '12px'
+          }
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#64748b',
+            fontSize: '12px'
+          },
+          formatter: function(val) {
+            return val.toFixed(0);
+          }
+        }
+      },
+      tooltip: {
+        theme: 'light',
+        x: {
+          show: false
+        }
+      }
+    };
+    
+    // Generate 31 days of mock data for Skills learned
+    const daysInMonth = 31;
+    const skillsData = [];
+    const skillsDates = [];
+    
+    // Start with a base value and add some randomness
+    let currentSkillValue = 10;
+    for (let i = 1; i <= daysInMonth; i++) {
+      // Add a random increase between 1-5 skills per day with some variation
+      const dailyIncrease = Math.floor(Math.random() * 5) + 1;
+      currentSkillValue += dailyIncrease;
+      skillsData.push(currentSkillValue);
+      skillsDates.push(i.toString());
+    }
+    
+    // Generate 31 days of mock data for Questions answered
+    const questionsData = [];
+    // Start with a baseline of questions per day
+    for (let i = 1; i <= daysInMonth; i++) {
+      // Generate between 30-120 questions per day with some trends
+      const baseQuestions = 50;
+      const weekdayBoost = (i % 7 === 0 || i % 7 === 6) ? 0.7 : 1.2; // Less on weekends
+      const randomVariation = (Math.random() * 40) + 10; // Random variation
+      const questions = Math.round((baseQuestions + randomVariation) * weekdayBoost);
+      questionsData.push(questions);
+    }
+    
+    // Skills Chart
+    const revenueOptions = {
+      ...sharedOptions,
+      series: [{
+        name: 'Навыки',
+        data: skillsData
+      }],
+      colors: ['#00a63e'],
+      xaxis: {
+        ...sharedOptions.xaxis,
+        categories: skillsDates
+      },
+      yaxis: {
+        ...sharedOptions.yaxis,
+        title: {
+          text: 'Кол-во навыков',
+          style: {
+            color: '#64748b',
+            fontSize: '12px',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontWeight: 400
+          }
+        },
+        labels: {
+          ...sharedOptions.yaxis.labels,
+          formatter: function(val) {
+            return val.toFixed(0);
+          }
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: 'vertical',
+          shadeIntensity: 0.5,
+          gradientToColors: ['#00c951'],
+          opacityFrom: 0.7,
+          opacityTo: 0.2,
+          stops: [0, 100]
+        }
+      }
+    };
+    
+    // Questions Chart
+    const usersOptions = {
+      ...sharedOptions,
+      series: [{
+        name: 'Вопросов',
+        data: questionsData
+      }],
+      colors: ['#0ea5e9'],
+      xaxis: {
+        ...sharedOptions.xaxis,
+        categories: skillsDates
+      },
+      yaxis: {
+        ...sharedOptions.yaxis,
+        title: {
+          text: 'Кол-во вопросов',
+          style: {
+            color: '#0084d1',
+            fontSize: '12px',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontWeight: 400
+          }
+        }
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: 'vertical',
+          shadeIntensity: 0.5,
+          gradientToColors: ['#00a6f4'],
+          opacityFrom: 0.7,
+          opacityTo: 0.2,
+          stops: [0, 100]
+        }
+      }
+    };
+    
+    // Initialize charts
+    const revenueChart = new ApexCharts(document.querySelector("#revenueChart"), revenueOptions);
+    const usersChart = new ApexCharts(document.querySelector("#usersChart"), usersOptions);
+    
+    revenueChart.render();
+    usersChart.render();
+    
+    // Make charts responsive
+    window.addEventListener('resize', function() {
+      revenueChart.render();
+      usersChart.render();
+    });
+  });
+</script>
+</div>
+{include '../../partials/footer.latte'}

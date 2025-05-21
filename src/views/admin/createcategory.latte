@@ -1,0 +1,93 @@
+    {include './partials/header.latte'}
+    {include './partials/sidebar.latte'}
+
+<div class="w-full max-w-7xl lg:ps-64">
+    <div class="p-4 sm:p-6 space-y-4 sm:space-y-6">
+
+        <!-- Page Title -->
+        <div>
+            <h1 class="text-2xl font-semibold text-gray-800">
+                Create New Category
+            </h1>
+            <p class="text-sm text-gray-500">Fill in the details for the new question category.</p>
+        </div>
+        <!-- End Page Title -->
+
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 sm:p-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">New Category Details</h2>
+            <div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <div class="sm:col-span-2">
+                        <label for="category-name" class="block text-sm font-medium mb-2">Category Name</label>
+                        <input type="text" id="nameInp" name="category_name" required class="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Enter category name...">
+                    </div>
+                </div>
+
+                 <div class="mt-6 flex justify-end gap-x-2 border-t pt-4">
+                     <a href="list_categories.php" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+                        Cancel
+                    </a>
+                    <button id="submit" type="submit" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Save Category
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{include './partials/footer.latte'}
+<script n:syntax=off>
+    function getAdmin() {
+        return JSON.parse(
+        decodeURIComponent(
+            document.cookie.split('; ')
+            .find(row => row.startsWith('admin='))
+            ?.split('=')[1] || '{}'
+            )   
+        );
+    }
+
+    async function createCategory(name, token) {
+        try {
+            const response = await fetch(`${window.location.origin}/adminPanel/category/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    token
+                })
+            });
+    
+            return await response.json();
+        } catch (error) {
+            return error.message;
+        }
+    }
+
+    const token = getAdmin().token;
+
+    submit.addEventListener('click', async () => {
+        const res = await createCategory(nameInp.value, token);
+
+        if (res.success) {
+            location.href = '/adminPanel/categories';
+      	} else if (res.error) {
+			Toastify({
+				text: res.message,
+				duration: 3000,
+				newWindow: true,
+				close: true,
+				gravity: "top",
+				position: "right",
+				stopOnFocus: true,
+				style: {
+						background: "linear-gradient(to right, rgb(255, 102, 102), rgb(255, 153, 153))",
+					},
+			}).showToast();
+      	}
+    });
+</script>
