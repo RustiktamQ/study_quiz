@@ -550,16 +550,18 @@ class AuthController extends BaseController {
         $data = json_decode(file_get_contents("php://input"), true);
         $email = $data['email'];
         $password = md5($data['password']);
+
         if (empty($email) || empty($password)) {
             echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
             return;
         }
-        $teacher = R::findOne('admins', 'email = ? AND password = ?', [$email, $password]);
-        if (!$teacher) {
+        $admin = R::findOne('admins', 'email = ? AND password = ?', [$email, $password]);
+        if (!$admin) {
             echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
             return;
         }
         $adminToken = json_encode(['token' => md5($email . $password)]);
+
         $this->setCookie('admin', $adminToken, time() + 3600);
         echo json_encode(['success' => true, 'message' => 'success auth']);
     }

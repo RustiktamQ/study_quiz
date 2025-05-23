@@ -32,6 +32,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
 
         <div class="lg:col-span-2">
+            <!-- Start Screen -->
+            <div id="startScreen"
+                class="hidden border border-gray-200 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-white">
+                <h1 class="text-xl sm:text-xl md:text-3xl font-bold mb-8 md:mb-12 text-gray-800">Время квиза!</h1>
+                <button id="start-quiz"
+                        class="px-16 py-4 bg-green-500 text-white font-semibold rounded-full hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out transform hover:scale-105 text-lg md:text-xl">
+                        Начать!
+                </button>
+            </div>
             <div id="quizBox" class="border border-gray-200 h-full rounded-3xl flex flex-col items-center justify-center p-6 md:p-10 bg-white">
                 <div id="quiz-inner-container" class="quiz-container max-w-3xl w-full">
                     <div class="question mb-8 md:mb-10">
@@ -69,9 +78,6 @@
                          </button>
                     </div>
                 </div>
-             <button id="start-quiz" class="hidden w-full sm:w-auto px-16 py-3 bg-green-600 text-white font-semibold rounded-full hover:from-green-600 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out transform disabled:opacity-50 disabled:cursor-not-allowed">
-                    Начать!
-                </button>
             </div>
         </div>
 

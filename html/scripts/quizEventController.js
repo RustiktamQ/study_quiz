@@ -29,8 +29,8 @@ const main = function() {
     let selectedOption = null;
 
     if (!isStarted(quizId)) {
-        document.getElementById("quiz-inner-container").style.filter = "blur(5px)"; 
-        document.getElementById("start-quiz").style.display = "block"; 
+        document.getElementById("quiz-inner-container").style.display = "none"; 
+        document.getElementById("startScreen").classList.remove('hidden');
         options.forEach(button => {
             button.disabled = true;
         });
@@ -94,9 +94,12 @@ const main = function() {
     }
 
     document.getElementById('start-quiz').addEventListener("click", async () => {
+        document.getElementById("quiz-inner-container").style.display = "block"; 
+        document.getElementById("startScreen").classList.add('hidden');
+
         const quizData =  await apiController.startQuiz(user.id, quizId);
         quizData.answered = 0;
-        quizRender.blur();
+
         quizRender.update(quizData);
         quizRender.render(quizData);
         quizTimer.startTimer(quizId);
