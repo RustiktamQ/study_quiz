@@ -392,7 +392,7 @@ class HomeController extends BaseController {
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';       
 
         $notificationCollection = $this->getAllNotifs($user->id);
-        $this->renderPartial('learn/complete', [
+        $this->renderPartial('learn/1complete', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -844,7 +844,7 @@ class HomeController extends BaseController {
 
         $stats['total_time_spent'] = $this->secondsToHours($stats['total_time_spent']);
 
-        $this->renderPartial('dashboard/teacher2/index', [
+        $this->renderPartial('dashboard/teacher/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -868,7 +868,7 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/profile/index', [
+        $this->renderPartial('dashboard/teacher/profile/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -891,7 +891,7 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/profile/settings', [
+        $this->renderPartial('dashboard/teacher/profile/settings', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -909,16 +909,16 @@ class HomeController extends BaseController {
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
         $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
 
-        $page;
-        if ($params['page']) {
-            $page = $params['page'];
-        } else {
-            $page = 0;
+        $perPage = 10;
+        $page = 1;
+        if (isset($params['page']) && is_numeric($params['page']) && $params['page'] > 0) {
+            $page = (int)$params['page'];
         }
+        $offset = ($page - 1) * $perPage;
 
         $teacher = R::findOne('teachers', 'id = ?', [$user['id']]);
         $students = R::getAll('
-            SELECT 
+            SELECT
                 users.id, 
                 users.name, 
                 users.picture, 
@@ -928,23 +928,26 @@ class HomeController extends BaseController {
             FROM users
             LEFT JOIN progress ON users.id = progress.student_id
             WHERE users.token = ? AND users.token_confirmed = 1
-            GROUP BY users.id, users.name, users.picture;
-        ', [$teacher['invite_code']]);
+            GROUP BY users.id, users.name, users.picture
+            LIMIT ? OFFSET ?
+        ', [$teacher['invite_code'], $perPage, $offset]);
 
         foreach ($students as &$student) {
             $student['time_spent'] = $this->secondsToHours($student['time_spent']);
         }
         unset($student);
-        
 
         $notConfirmed = R::getAll('SELECT * FROM users WHERE token = ? AND token_confirmed = 0', [$teacher['invite_code']]);
-    
+
         $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
         JOIN users ON users.id = home_id
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/students/index', [
+        $totalStudents = R::getCell('SELECT COUNT(*) FROM users WHERE token = ? AND token_confirmed = 1', [$teacher['invite_code']]) + count($notConfirmed);
+        $totalPages = ceil($totalStudents / $perPage);
+
+        $this->renderPartial('dashboard/teacher/students/index', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -952,9 +955,13 @@ class HomeController extends BaseController {
             'teacher' => $user,
             'students' => $students,
             'notConfirmed' => $notConfirmed,
-            'notifs' => $notifs
+            'notifs' => $notifs,
+            'page' => $page,
+            'totalStudents' => $totalStudents,
+            'totalPages' => $totalPages
         ]);
     }
+
 
     public function showTeacherStudentsInvite()
     {
@@ -971,7 +978,7 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/students/invite', [
+        $this->renderPartial('dashboard/teacher/students/invite', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -1027,7 +1034,7 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/students/view', [
+        $this->renderPartial('dashboard/teacher/students/view', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,
@@ -1055,7 +1062,7 @@ class HomeController extends BaseController {
         WHERE address_type = "teacher" AND address_id = ?
         ORDER BY created_at DESC LIMIT 20', [$user->id]);
 
-        $this->renderPartial('dashboard/teacher2/manual', [
+        $this->renderPartial('dashboard/teacher/manual', [
             'lang' => $this->lang,
             'APP_NAME' => $_ENV['APP_NAME'],
             'ROOT_URL' => $root,

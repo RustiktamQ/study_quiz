@@ -44,19 +44,19 @@
                     </div>
                     <h1 class="font-normal mt-2">
                         Вопросов <br>
-                        <span class="font-bold">{$question_count}</span>
+                        <span class="font-bold">{$correct_answers}</span>
                     </h1>
                 </div>
 
             </div>
 
             <div class="mt-6 flex flex-col sm:flex-row justify-center gap-4 w-full max-w-md mx-auto">
-                <button id="dashboardBtn" class="w-full px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-150 ease-in-out">
+                <a href="/dashboard/student" id="dashboardBtn" class="w-full px-8 py-3 bg-gray-200 text-gray-700 font-semibold rounded-full hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-150 ease-in-out">
                     Back to Dashboard
-                </button>
-                <button id="nextChallengeBtn" class="w-full px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full transition-all hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
-                    Next Challenge!
-                </button>
+                </a>
+                <a href="/dashboard/student/learn" id="nextChallengeBtn" class="w-full px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-full transition-all hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition duration-150 ease-in-out shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                    Other Challenges!
+                </a>
             </div>
 
             <div class="mt-8 text-xs text-gray-400 hover:text-gray-600 cursor-pointer select-none" title="Psst! Hover over the score card!">

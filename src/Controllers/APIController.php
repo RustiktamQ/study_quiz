@@ -144,9 +144,11 @@ class APIController extends BaseController {
         );
 
         if (is_null($nextQuest) || $progress->score >= 100) {
-            //$addressId, $addressType, $message, $type
-            $quiz = R::findOne('users', 'id = ?', [$studentId]);
+            $user = R::findOne('users', 'id = ?', [$studentId]);
+            $teacherId = R::findOne('teachers', 'invite_code = ?', [$user->token])->id;
+            $quizName = R::findOne('quizzes', 'id = ?', [$quizId])->name;
 
+            $message = "Ученик $user->name прошел квиз $quizName";
             $this->notify($teacherId, 'teacher', $message, 'Уведомление', $studentId);
             $progress->completed = 1;
             $progress->end_time = date('Y-m-d H:i:s');
