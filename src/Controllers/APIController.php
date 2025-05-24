@@ -1257,6 +1257,43 @@ class APIController extends BaseController {
         return;
     }
 
+    public function getMonthCompletedQuizzes() {
+        header('Content-Type: application/json; charset=utf-8');
+        $input = file_get_contents('php://input');
+        $params = json_decode($input, true);
+
+        if (!isset($params['user_id'])) {
+            http_response_code(400);
+            echo json_encode(['error' => true, 'message' => 'Missing required parameters']);
+            return;
+        }
+        $this->validateOwnership($params['user_id']);
+
+        $thisTeacher = R::findOne('teachers', 'id = ?', [$params['user_id']]);
+
+        $monthStart = date('Y-m-01');
+        $nextMonthStart = date('Y-m-01', strtotime('first day of next month'));
+
+        $stats = R::getAll('SELECT DATE(progress.end_time) AS day, COUNT(*) AS quizzes_completed FROM users 
+            JOIN progress ON progress.student_id = users.id 
+            WHERE users.token = ? 
+            AND progress.completed = 1 
+            AND progress.end_time >= ?
+            AND progress.end_time < ?
+            GROUP BY day ORDER BY day',
+        [$thisTeacher->invite_code, $monthStart, $nextMonthStart]);
+        
+        if (!$stats) {
+            http_response_code(404);
+            echo json_encode(['error' => true, 'message' => 'Users not found']);
+            return;
+        }
+
+        http_response_code(200);
+        echo json_encode(['success' => true, 'data' => $stats]);
+        return;
+    }
+
     private function calculateScore($progress) {
         $correctCount = $progress->answered;
         $correctScores = [

@@ -79,6 +79,7 @@ $r->addRoute('POST', '/api/student/check/confirm', ['APIController', 'checkStude
 $r->addRoute('POST', '/api/teacher/confirm', ['APIController', 'confirmStudent']);
 $r->addRoute('POST', '/api/teacher/deny', ['APIController', 'denyStudent']);
 $r->addRoute('GET', '/join/{code}', ['AuthController', 'showJoin']);
+$r->addRoute('POST', '/stats/teacher/quizzes', ['APIController', 'getMonthCompletedQuizzes']);
 
 // Student dashboard
 $r->addRoute('GET', '/dashboard/student', ['HomeController', 'showStudentDashboard']);

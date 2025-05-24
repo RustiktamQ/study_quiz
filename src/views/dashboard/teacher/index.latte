@@ -151,222 +151,133 @@
 </div>
 <!-- ===== Page Wrapper End ===== -->
 <script n:syntax=off>
-	document.addEventListener('DOMContentLoaded', () => {
+	function mapStatsToMonth(dates, stats) {
+		const dataMap = {};
+		stats.forEach(item => dataMap[item.day] = Number(item.quizzes_completed));
+		return dates.map(date => dataMap[date] || 0);
+	}
 
+	function getMonthDateLabels(year, month) {
+		const labels = [];
+		const dates = [];
+		const date = new Date(year, month, 1);
+		const russianMonths = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+		while (date.getMonth() === month) {
+			const day = date.getDate();
+			const monthAbbr = russianMonths[month];
+			labels.push(`${day} ${monthAbbr}.`);
+			dates.push(date.toISOString().slice(0, 10));
+			date.setDate(date.getDate() + 1);
+		}
+		return { labels, dates };
+	}
 
-	    const colors = {
-	        primary: '#2563eb',
-	        secondary: '#9333ea',
-	        grid: '#e5e7eb',
-	        text: '#6b7280'
-	    };
+	function getUserData() {
+		const userCookie = document.cookie.split('; ').find(row => row.startsWith('user='));
+		if (!userCookie) return {};
+		return JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+	}
 
-        const russianMonths = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+	async function fetchQuizStats(userId) {
+		const response = await fetch(`${window.location.origin}/stats/teacher/quizzes`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ user_id: userId })
+		});
+		return await response.json();
+	}
 
-        function generateDateLabels(startDate) {
-            const labels = [];
-            const currentDate = new Date(startDate);
-            for (let i = 0; i < 31; i++) {
-                const day = currentDate.getDate();
-                const monthIndex = currentDate.getMonth();
-                const monthAbbr = russianMonths[monthIndex];
-                labels.push(`${day} ${monthAbbr}.`);
-                currentDate.setDate(currentDate.getDate() + 1);
-            }
-            return labels;
-        }
-
-        const startDate = new Date(2024, 3, 1);
-        let dateLabels = generateDateLabels(startDate);
-        dateLabels.reverse();
-
-        let voprosovData = [
-            10, 20, 15, 30, 25, 40, 35, 50, 45, 60, 55, 110, 65, 80, 75, 90, 85, 100, 95, 110, 105, 120, 115, 130, 125, 140, 135, 150, 145, 160, 155
-        ];
-        let vremeniData = [
-            5, 10, 8, 15, 12, 20, 18, 25, 22, 30, 28, 55, 32, 40, 38, 45, 42, 50, 48, 55, 52, 60, 58, 65, 62, 70, 68, 75, 72, 80, 78
-        ];
-        let QuizTotalData = [
-            100, 110, 105, 120, 115, 130, 125, 140, 135, 150, 145, 160, 155, 170, 165, 180, 175, 190, 185, 200, 195, 210, 205, 220, 215, 230, 225, 240, 235, 250, 245
-        ];
-
-        voprosovData.reverse();
-        vremeniData.reverse();
-        QuizTotalData.reverse();
-
-
-	    const options1 = {
-            
-	      chart: {
-	        height: 300,
-	        type: 'area',
-	        toolbar: { show: false },
-	        zoom: { enabled: false }
-	      },
-	      series: [
-	        { name: 'Вопросов', data: voprosovData },
-	        { name: 'Времени', data: vremeniData }
-	      ],
-	      legend: { show: false },
-	      dataLabels: { enabled: false },
-	      stroke: { curve: 'smooth', width: 2 },
-	      grid: {
-	        borderColor: colors.grid,
-	        strokeDashArray: 2
-	      },
-	      fill: {
-	        type: 'gradient',
-	        gradient: {
-	          type: 'vertical',
-	          shadeIntensity: 0.1,
-	          opacityFrom: 0.4,
-	          opacityTo: 0.0,
-	          stops: [0, 100]
-	        }
-	      },    
-	      xaxis: {
-	        type: 'category',
-	        tickPlacement: 'on',
-	        categories: dateLabels,
-	        axisBorder: { show: false },
-	        axisTicks: { show: false },
-	        tooltip: { enabled: false },
-	        labels: {
-	          style: {
-	            colors: colors.text,
-	            fontSize: '12px',
-	            fontFamily: 'Inter, ui-sans-serif'
-	          },
-	        }
-	      },
-	      yaxis: {
-	        labels: {
-	          align: 'left',
-	          minWidth: 0,
-	          maxWidth: 140,
-	          style: {
-	            colors: colors.text,
-	            fontSize: '12px',
-	            fontFamily: 'Inter, ui-sans-serif'
-	          },
-	          formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
-	        }
-	      },
-	      colors: [colors.primary, colors.secondary],
-	      tooltip: {
-	        theme: 'light',
-	        x: {
-                formatter: (val) => val
-            },
-	        y: {
-                formatter: (value, { seriesIndex }) => {
-                    if (seriesIndex === 0) {
-                        return value.toString();
-                    } else if (seriesIndex === 1) {
-                        return `${value} ч.`;
-                    }
-                    return value;
-                }
-            }
-	      },
-	      responsive: [{
-	        breakpoint: 568,
-	        options: {
-	          chart: { height: 250 },
-	          xaxis: { labels: { style: { fontSize: '11px' } } },
-	          yaxis: { labels: { style: { fontSize: '11px' } } }
-	        },
-	      }]
-	    };
-
-	    const chart1El = document.querySelector("#hs-curved-area-charts");
-	    if (chart1El) {
-	        const chart1 = new ApexCharts(chart1El, options1);
-	        chart1.render();
-	    }
-
-
-	    const options3 = {
-	      chart: {
-	        height: 300,
-	        type: 'area',
-	        toolbar: { show: false },
-	        zoom: { enabled: false }
-	      },
-	      series: [
-	        { name: 'Квизов', data: QuizTotalData }
-	      ],
-	      legend: { show: false },
-	      dataLabels: { enabled: false },
-	      stroke: { curve: 'smooth', width: 2 },
-	      grid: {
-	        borderColor: colors.grid,
-	        strokeDashArray: 2
-	      },
-	      fill: {
-	        type: 'gradient',
-	        gradient: {
-	          type: 'vertical',
-	          shadeIntensity: 0.1,
-	          opacityFrom: 0.4,
-	          opacityTo: 0.0,
-	          stops: [0, 100]
-	        }
-	      },
-	      xaxis: {
-	        type: 'category',
-	        tickPlacement: 'on',
-	        categories: dateLabels,
-	        axisBorder: { show: false },
-	        axisTicks: { show: false },
-	        tooltip: { enabled: false },
-	        labels: {
-	          style: {
-	            colors: colors.text,
-	            fontSize: '12px',
-	            fontFamily: 'Inter, ui-sans-serif'
-	          },
-	        }
-	      },
-	      yaxis: {
-	        labels: {
-	          align: 'left',
-	          minWidth: 0,
-	          maxWidth: 140,
-	          style: {
-	            colors: colors.text,
-	            fontSize: '12px',
-	            fontFamily: 'Inter, ui-sans-serif'
-	          },
-	          formatter: (value) => value >= 1000 ? `${value / 1000}k` : value
-	        }
-	      },
-	      colors: [colors.primary],
-	       tooltip: {
-	        theme: 'light',
-	        x: {
-                formatter: (val) => val
-            },
-	        y: {
-                formatter: (value) => `${value >= 1000 ? `${value / 1000}k` : value}`
-            }
-	      },
-	      responsive: [{
-	        breakpoint: 568,
-	        options: {
-	          chart: { height: 250 },
-	          xaxis: { labels: { style: { fontSize: '11px' } } },
-	          yaxis: { labels: { style: { fontSize: '11px' } } }
-	        },
-	      }]
-	    };
-
-	    const chart3El = document.querySelector("#hs-single-area-chart");
-	    if (chart3El) {
-	        const chart3 = new ApexCharts(chart3El, options3);
-	        chart3.render();
-	    }
-
+	document.addEventListener('DOMContentLoaded', async () => {
+		const userId = getUserData().id;
+		if (!userId) return;
+		const now = new Date();
+		const { labels, dates } = getMonthDateLabels(now.getFullYear(), now.getMonth());
+		const statsRes = await fetchQuizStats(userId);
+		if (!statsRes.success || !statsRes.data) return;
+		const quizzesData = mapStatsToMonth(dates, statsRes.data);
+		const colors = {
+			primary: '#2563eb',
+			secondary: '#9333ea',
+			grid: '#e5e7eb',
+			text: '#6b7280'
+		};
+		const options3 = {
+			chart: {
+				height: 300,
+				type: 'area',
+				toolbar: { show: false },
+				zoom: { enabled: false }
+			},
+			series: [
+				{ name: 'Квизов', data: quizzesData }
+			],
+			legend: { show: false },
+			dataLabels: { enabled: false },
+			stroke: { curve: 'smooth', width: 2 },
+			grid: {
+				borderColor: colors.grid,
+				strokeDashArray: 2
+			},
+			fill: {
+				type: 'gradient',
+				gradient: {
+					type: 'vertical',
+					shadeIntensity: 0.1,
+					opacityFrom: 0.4,
+					opacityTo: 0.0,
+					stops: [0, 100]
+				}
+			},
+			xaxis: {
+				type: 'category',
+				tickPlacement: 'on',
+				categories: labels,
+				axisBorder: { show: false },
+				axisTicks: { show: false },
+				tooltip: { enabled: false },
+				labels: {
+					style: {
+						colors: colors.text,
+						fontSize: '12px',
+						fontFamily: 'Inter, ui-sans-serif'
+					}
+				}
+			},
+			yaxis: {
+				forceNiceScale: true,
+				labels: {
+					align: 'left',
+					minWidth: 0,
+					maxWidth: 140,
+					style: {
+						colors: colors.text,
+						fontSize: '12px',
+						fontFamily: 'Inter, ui-sans-serif'
+					},
+					formatter: (value) => Math.floor(value)
+				}
+			},
+			colors: [colors.primary],
+			tooltip: {
+				theme: 'light',
+				x: { formatter: (val) => val },
+				y: { formatter: (value) => value }
+			},
+			responsive: [{
+				breakpoint: 568,
+				options: {
+					chart: { height: 250 },
+					xaxis: { labels: { style: { fontSize: '11px' } } },
+					yaxis: { labels: { style: { fontSize: '11px' } } }
+				}
+			}]
+		};
+		const chart3El = document.querySelector("#hs-single-area-chart");
+		if (chart3El) {
+			const chart3 = new ApexCharts(chart3El, options3);
+			chart3.render();
+		}
 	});
 </script>
+
 {include 'partials/footer.latte'}
