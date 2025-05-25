@@ -96,6 +96,7 @@ $r->addRoute('GET', '/dashboard/teacher/students/view/{id}', ['HomeController', 
 $r->addRoute('GET', '/dashboard/teacher/students/list/{page}', ['HomeController', 'showTeacherStudents']);
 $r->addRoute('GET', '/dashboard/teacher/students/invite', ['HomeController', 'showTeacherStudentsInvite']);
 $r->addRoute('GET', '/dashboard/teacher/manual', ['HomeController', 'showTeacherManual']);
+$r->addRoute('GET', '/dashboard/teacher/learn', ['HomeController', 'showTeacherLern']);
 
 // Quizzes
 $r->addRoute('GET', '/quiz/{id}', ['HomeController', 'showQuiz']);

@@ -1,0 +1,194 @@
+{include './partials/header.latte'}
+
+<script src="/tailwind.js"></script>
+
+<main>
+    <div class="p-4 mx-auto max-w-[1632px] md:p-6 2xl:p-10">
+        <div class="flex flex-col gap-3 mb-6 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-2xl font-semibold text-gray-900">Центр навыков</h2>
+            <nav>
+                <ol class="flex items-center gap-2">
+                    <li><a class="font-medium" href="/dashboard/teacher">Главная /</a></li>
+                    <li class="font-medium text-green-600">Центр навыков</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="border border-gray-200 p-4 md:p-10 rounded-2xl w-full bg-white">
+            <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                <div class="relative sm:max-w-xs w-full mb-4 sm:mb-0">
+                    <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
+                        <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="32"
+                             height="32" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                  stroke-width="2" d="M17.5 17.5L22 22m-2-11a9 9 0 1 0-18 0a9 9 0 0 0 18 0"
+                                  color="currentColor"/>
+                        </svg>
+                    </div>
+                    <input id="search-input" class="border outline-none py-3 ps-10 pe-4 block w-full border-gray-200 rounded-2xl sm:text-sm focus:border-green-500 focus:ring-green-500 transition disabled:opacity-50 disabled:pointer-events-none"
+                           type="text" placeholder="Поиск навыков...">
+                </div>
+                <div class="relative sm:max-w-xs w-full">
+                    <select id="subject-filter" class="border cursor-pointer outline-none py-3 px-4 block w-full border-gray-200 rounded-2xl sm:text-sm focus:border-green-500 focus:ring-green-500 transition disabled:opacity-50 disabled:pointer-events-none appearance-none">
+                        <option value="">Выберите предмет</option>
+                        {foreach $categories as $category}
+                        <option value="{$category['name']}">{$category['name']}</option>
+                        {/foreach}
+                    </select>
+                    <div class="absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-3.5">
+                        <svg class="shrink-0 size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="16"
+                             height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                  d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row">
+                <div class="tab-list w-full md:w-64 flex-shrink-0 pb-6 mb-6 border-b border-gray-200 md:border-b-0 md:pb-0 md:mb-0 md:pr-6 md:mr-6 md:border-r md:border-gray-200">
+                    <button data-tab="1" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl hover:bg-gray-100 focus:outline-none bg-green-100 text-green-700 font-semibold active">
+                        <span class="my-auto">Первый класс</span>
+                    </button>
+                    <button data-tab="2" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <span class="my-auto">Второй класс</span>
+                    </button>
+                    <button data-tab="3" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <span class="my-auto">Третий класс</span>
+                    </button>
+                    <button data-tab="4" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <span class="my-auto">Четвертый класс</span>
+                    </button>
+                    <button data-tab="5" class="tab-button flex w-full text-left cursor-pointer px-4 py-2 mb-2 rounded-2xl transition hover:bg-gray-100 focus:outline-none text-gray-900">
+                        <span class="my-auto">Пятый класс</span>
+                    </button>
+                </div>
+
+                <div class="tab-content-area w-full md:flex-grow md:pl-6 relative min-h-[250px]">
+                    <div id="tab-content" class="transition-opacity duration-300 ease-in-out">
+                        <div id="quiz-list">
+                        </div>
+                        <div id="no-data" class="hidden text-gray-400 text-center text-sm mt-8">Нет данных по выбранным фильтрам</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/fslightbox@3/index.min.js"></script>
+
+<script n:syntax=off>
+const tabButtons = document.querySelectorAll('.tab-button');
+const quizList = document.getElementById('quiz-list');
+const noDataBlock = document.getElementById('no-data');
+const subjectFilter = document.getElementById('subject-filter');
+const searchInput = document.getElementById('search-input');
+
+const tabNames = {
+    1: 'Первый класс',
+    2: 'Второй класс',
+    3: 'Третий класс',
+    4: 'Четвертый класс',
+    5: 'Пятый класс',
+};
+
+let currentTab = 1;
+let currentSubject = '';
+let currentSearch = '';
+
+function groupByCategory(data) {
+    const result = {};
+    data.forEach(q => {
+        if (!result[q.category]) result[q.category] = [];
+        result[q.category].push(q);
+    });
+    return result;
+}
+
+function renderQuizzes(data) {
+    quizList.innerHTML = '';
+    if (!data || data.length === 0) {
+        noDataBlock.classList.remove('hidden');
+        return;
+    }
+    noDataBlock.classList.add('hidden');
+    const grouped = groupByCategory(data);
+    for (const [category, quizzes] of Object.entries(grouped)) {
+        quizList.innerHTML += `
+        <div class="mb-4">
+            <div class="inline-block mb-2 px-3 sm:px-4 py-1 rounded-2xl bg-green-100 text-green-600 text-xs sm:text-sm font-medium">
+                ${category}
+            </div>
+            <div class="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 xs:gap-4 sm:gap-5 md:gap-6">
+                ${quizzes.map(q => `
+                    <a href="#" class="group block rounded-2xl transition-all duration-300 ease-in-out hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                        <div class="quiz-card bg-white h-full border border-gray-200 group-hover:border-green-300 rounded-2xl p-3 sm:p-4 flex items-center justify-center text-center transition-colors duration-300">
+                            <div class="shrink-0 px-2 xs:px-2.5 py-0.5 xs:py-1 bg-gray-100 text-gray-500 text-xs sm:text-sm font-medium rounded-lg group-hover:bg-green-50 group-hover:text-green-600 transition-colors duration-300">${q.id}</div>
+                            <p class="ml-2 xs:ml-2.5 sm:ml-3 text-xs xs:text-sm md:text-base font-semibold text-gray-700 group-hover:text-green-700 transition-colors duration-300 line-clamp-2 sm:line-clamp-1">
+                                ${q.quiz}
+                            </p>
+                        </div>
+                    </a>
+                `).join('')}
+            </div>
+        </div>
+        `;
+    }
+}
+
+async function getGradeQuizzes(grade) {
+    try {
+        const response = await fetch(`${window.location.origin}/api/getAllQuizzes/${grade}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        return await response.json();
+    } catch (error) {
+        return [];
+    }
+}
+
+async function loadQuizzes() {
+    getGradeQuizzes(currentTab)
+    .then(res => {
+        let data = [];
+        for (const quiz of res) {
+            data.push({ id: quiz.id, quiz: quiz.quiz, subject: quiz.subject, category: quiz.category, grade: quiz.grade})
+        }
+        if (currentSubject) data = data.filter(q => q.subject === currentSubject);
+        if (currentSearch) data = data.filter(q => q.quiz.toLowerCase().includes(currentSearch.toLowerCase()));
+        renderQuizzes(data);
+    })
+    .catch(() => {
+        // TODO: REFACTOR LATER
+        console.log('Not found');
+        let data = [];
+        renderQuizzes(data);
+    })
+}
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('bg-green-100', 'text-green-700', 'font-semibold', 'active'));
+        btn.classList.add('bg-green-100', 'text-green-700', 'font-semibold', 'active');
+        currentTab = parseInt(btn.getAttribute('data-tab'));
+        loadQuizzes();
+    });
+});
+
+subjectFilter.addEventListener('change', () => {
+    currentSubject = subjectFilter.value;
+    loadQuizzes();
+});
+searchInput.addEventListener('input', () => {
+    currentSearch = searchInput.value.trim();
+    loadQuizzes();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    loadQuizzes();
+});
+</script>
+{include './partials/footer.latte'}

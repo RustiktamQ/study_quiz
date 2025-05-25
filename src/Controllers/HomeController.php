@@ -1073,6 +1073,32 @@ class HomeController extends BaseController {
         ]);
     }
 
+    public function showTeacherLern()
+    {
+        $this->checkTeacherAuthorization();
+        $user = $this->user;
+
+        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $root = $protocol . '://' . $_ENV['ROOT_URL'] . '/';
+
+        $notifs = R::getAll('SELECT *, users.name, users.picture FROM notifications 
+        JOIN users ON users.id = home_id
+        WHERE address_type = "teacher" AND address_id = ?
+        ORDER BY created_at DESC LIMIT 20', [$user->id]);
+
+        $categories = R::getAll('SELECT name FROM categories');
+
+        $this->renderPartial('dashboard/teacher/learn', [
+            'lang' => $this->lang,
+            'APP_NAME' => $_ENV['APP_NAME'],
+            'ROOT_URL' => $root,
+            'domain' => $_ENV['ROOT_URL'],
+            'teacher' => $user,
+            'notifs' => $notifs,
+            'categories' => $categories
+        ]);
+    }
+
     public function showConfirmation()
     {
         $this->checkAuthorization();
