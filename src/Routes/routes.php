@@ -53,9 +53,9 @@ $r->addRoute('POST', '/auth/adminPanel', ['AuthController', 'loginAdmin']);
 // Auth
 $r->addRoute('GET', '/auth/adminPanel', ['HomeController', 'showLoginAdminPanel']);
 $r->addRoute('GET', '/auth/signup', ['AuthController', 'showStudentAuth']);
-$r->addRoute('GET', '/auth/callback', ['AuthController', 'DEV_loginWithGoogle']);
-$r->addRoute('GET', '/auth/callback/join', ['AuthController', 'DEV_joinWithGoogle']);
-$r->addRoute('GET', '/auth/callback/teacher', ['AuthController', 'DEV_teacherAuthWithGoogle']);
+$r->addRoute('GET', '/auth/callback', ['AuthController', 'loginWithGoogle']);
+$r->addRoute('GET', '/auth/callback/join', ['AuthController', 'joinWithGoogle']);
+$r->addRoute('GET', '/auth/callback/teacher', ['AuthController', 'teacherAuthWithGoogle']);
 $r->addRoute('GET', '/auth/teacher/auth', ['AuthController', 'showTeacherAuth']);
 $r->addRoute('GET', '/auth/teacher/register/complete', ['AuthController', 'showTeacherRegister']);
 $r->addRoute('GET', '/auth/student/complete', ['AuthController', 'showRegister']);
