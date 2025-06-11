@@ -366,9 +366,9 @@
         btn.addEventListener('click', async function() {
             const student_id = this.getAttribute('data-id');
             const res = await confirm(user_id, student_id);
-            
-            if (res.success) {
-                window.location.href = '/dashboard/teacher/students/list/0';
+
+            if (!res.success) {
+                location.reload();
             } else if (res.error) {
                 Toastify({
                     text: res.message,

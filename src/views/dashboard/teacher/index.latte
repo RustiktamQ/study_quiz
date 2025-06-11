@@ -193,7 +193,10 @@
 		const now = new Date();
 		const { labels, dates } = getMonthDateLabels(now.getFullYear(), now.getMonth());
 		const statsRes = await fetchQuizStats(userId);
-		if (!statsRes.success || !statsRes.data) return;
+		if (!statsRes.success || !statsRes.data) {
+			document.getElementById('hs-single-area-chart').innerText = "Нету пройденных квизов учениками";
+			return;
+		}
 		const quizzesData = mapStatsToMonth(dates, statsRes.data);
 		const colors = {
 			primary: '#2563eb',
