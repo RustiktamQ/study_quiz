@@ -34,6 +34,7 @@ const main = function() {
         options.forEach(button => {
             button.disabled = true;
         });
+        document.getElementById("quizBox").classList.add('hidden');
     }
 
     const savedTimer = localStorage.getItem(`timerSec-${quizId}`)
@@ -96,6 +97,7 @@ const main = function() {
     document.getElementById('start-quiz').addEventListener("click", async () => {
         document.getElementById("quiz-inner-container").style.display = "block"; 
         document.getElementById("startScreen").classList.add('hidden');
+        document.getElementById("quizBox").classList.remove('hidden');
 
         const quizData =  await apiController.startQuiz(user.id, quizId);
         quizData.answered = 0;
